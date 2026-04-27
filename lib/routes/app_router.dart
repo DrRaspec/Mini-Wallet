@@ -1,13 +1,14 @@
 import 'package:go_router/go_router.dart';
-import 'package:mini_wallet/features/add_transaction/bindings/add_transaction_binding.dart';
-import 'package:mini_wallet/features/add_transaction/presentation/pages/add_transaction_page.dart';
-import 'package:mini_wallet/features/edit_transaction/bindings/edit_transaction_binding.dart';
-import 'package:mini_wallet/features/edit_transaction/presentation/pages/edit_transaction_page.dart';
-import 'package:mini_wallet/features/home/bindings/home_binding.dart';
-import 'package:mini_wallet/features/home/presentation/pages/home_page.dart';
+import 'package:mini_wallet/core/widgets/binding_scope.dart';
+import 'package:mini_wallet/features/transaction/bindings/add_transaction_binding.dart';
+import 'package:mini_wallet/features/transaction/presentation/pages/add_transaction_page.dart';
+import 'package:mini_wallet/features/transaction/bindings/edit_transaction_binding.dart';
+import 'package:mini_wallet/features/transaction/presentation/pages/edit_transaction_page.dart';
+import 'package:mini_wallet/features/transaction/bindings/home_binding.dart';
+import 'package:mini_wallet/features/transaction/presentation/pages/home_page.dart';
 import 'package:mini_wallet/features/shell/presentation/pages/app_shell_page.dart';
-import 'package:mini_wallet/features/transaction_details/bindings/transaction_details_binding.dart';
-import 'package:mini_wallet/features/transaction_details/presentation/pages/transaction_details_page.dart';
+import 'package:mini_wallet/features/transaction/bindings/transaction_details_binding.dart';
+import 'package:mini_wallet/features/transaction/presentation/pages/transaction_details_page.dart';
 import 'package:mini_wallet/routes/route_names.dart';
 import 'package:mini_wallet/routes/route_paths.dart';
 
@@ -26,24 +27,30 @@ class AppRouter {
             path: RoutePaths.home,
             name: RouteNames.home,
             builder: (context, state) {
-              HomeBinding().dependencies();
-              return const HomePage();
+              return BindingScope(
+                binding: HomeBinding(),
+                child: const HomePage(),
+              );
             },
           ),
           GoRoute(
             path: RoutePaths.addTransaction,
             name: RouteNames.addTransaction,
             builder: (context, state) {
-              AddTransactionBinding().dependencies();
-              return const AddTransactionPage();
+              return BindingScope(
+                binding: AddTransactionBinding(),
+                child: const AddTransactionPage(),
+              );
             },
           ),
           GoRoute(
             path: RoutePaths.editTransaction,
             name: RouteNames.editTransaction,
             builder: (context, state) {
-              EditTransactionBinding().dependencies();
-              return const EditTransactionPage();
+              return BindingScope(
+                binding: EditTransactionBinding(),
+                child: const EditTransactionPage(),
+              );
             },
           ),
         ],
@@ -52,8 +59,10 @@ class AppRouter {
         path: RoutePaths.transactionDetails,
         name: RouteNames.transactionDetails,
         builder: (context, state) {
-          TransactionDetailsBinding().dependencies();
-          return const TransactionDetailsPage();
+          return BindingScope(
+            binding: TransactionDetailsBinding(),
+            child: const TransactionDetailsPage(),
+          );
         },
       ),
     ],
