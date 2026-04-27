@@ -4,6 +4,8 @@ import 'package:mini_wallet/features/shell/presentation/controllers/app_shell_co
 class AppShellBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => AppShellController());
+    if (!Get.isRegistered<AppShellController>()) {
+      Get.lazyPut(() => AppShellController());
+    }
   }
 }
