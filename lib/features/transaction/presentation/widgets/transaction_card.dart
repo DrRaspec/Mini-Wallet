@@ -30,7 +30,7 @@ class TransactionCard extends StatelessWidget {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: toneColor.withOpacity(0.12),
+              color: toneColor.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
@@ -67,9 +67,7 @@ class TransactionCard extends StatelessWidget {
             children: [
               Text(
                 formattedAmount,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: toneColor,
-                ),
+                style: theme.textTheme.titleMedium?.copyWith(color: toneColor),
               ),
               const SizedBox(height: 4),
               Text(
