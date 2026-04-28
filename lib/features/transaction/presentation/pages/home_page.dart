@@ -53,7 +53,7 @@ class HomePage extends GetView<HomeController> {
                   ),
                 ),
                 SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 14),
+                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 36),
                   sliver: SliverToBoxAdapter(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,6 +129,10 @@ class HomePage extends GetView<HomeController> {
             ),
           );
         }),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.push(RoutePaths.addTransaction),
+        child: const Icon(Icons.add),
       ),
     );
   }
