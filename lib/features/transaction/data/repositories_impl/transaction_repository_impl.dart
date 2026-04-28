@@ -1,4 +1,5 @@
 import 'package:mini_wallet/features/transaction/data/datasources/transaction_local_ds.dart';
+import 'package:mini_wallet/features/transaction/data/models/account_balance.dart';
 import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
 import 'package:mini_wallet/features/transaction/domain/repositories/transaction_repository.dart';
 
@@ -15,6 +16,11 @@ class TransactionRepositoryImpl extends TransactionRepository {
   @override
   Future<List<TransactionModel>> getAll() {
     return local.getAllTransactions();
+  }
+
+  @override
+  Future<AccountBalance> getAccountBalance() {
+    return local.getAccountBalance();
   }
 
   @override

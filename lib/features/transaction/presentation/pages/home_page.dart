@@ -15,15 +15,11 @@ class HomePage extends GetView<HomeController> {
       appBar: AppBar(title: const Text('Mini Wallet')),
       body: Obx(() {
         final transactions = controller.transactions.toList();
-        final isLoading = controller.isLoading.value;
+        final isLoading = controller.isLoadingTransaction.value;
 
-        final incomeTotal = transactions
-            .where((item) => item.isIncome)
-            .fold<double>(0, (sum, item) => sum + item.amount);
-        final expenseTotal = transactions
-            .where((item) => !item.isIncome)
-            .fold<double>(0, (sum, item) => sum + item.amount);
-        final balance = incomeTotal - expenseTotal;
+        final incomeTotal = controller.accountBalance.value.income;
+        final expenseTotal = controller.accountBalance.value.expense;
+        final balance = controller.accountBalance.value.total;
 
         if (isLoading && transactions.isEmpty) {
           return const Center(child: CircularProgressIndicator());
