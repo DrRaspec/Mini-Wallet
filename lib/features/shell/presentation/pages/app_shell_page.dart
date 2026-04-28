@@ -28,9 +28,9 @@ class AppShellPage extends GetView<AppShellController> {
 
     return Scaffold(
       body: child,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (index) {
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: currentIndex,
+        onDestinationSelected: (index) {
           if (index == 0) {
             context.go(RoutePaths.home);
             return;
@@ -43,21 +43,25 @@ class AppShellPage extends GetView<AppShellController> {
 
           context.go(RoutePaths.editTransaction);
         },
-        items: const [
-          BottomNavigationBarItem(
+        backgroundColor: Colors.white,
+        indicatorColor: Theme.of(
+          context,
+        ).colorScheme.secondary.withValues(alpha: 0.18),
+        destinations: const [
+          NavigationDestination(
             icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
+            selectedIcon: Icon(Icons.home),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(Icons.add_circle_outline),
-            activeIcon: Icon(Icons.add_circle),
+            selectedIcon: Icon(Icons.add_circle),
             label: 'Add',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.edit_outlined),
-            activeIcon: Icon(Icons.edit),
-            label: 'Edit',
+          NavigationDestination(
+            icon: Icon(Icons.tune_outlined),
+            selectedIcon: Icon(Icons.tune_rounded),
+            label: 'Manage',
           ),
         ],
       ),

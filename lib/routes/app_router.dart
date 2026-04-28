@@ -1,13 +1,13 @@
 import 'package:go_router/go_router.dart';
-import 'package:mini_wallet/core/widgets/binding_scope.dart';
 import 'package:mini_wallet/features/transaction/bindings/add_transaction_binding.dart';
-import 'package:mini_wallet/features/transaction/presentation/pages/add_transaction_page.dart';
 import 'package:mini_wallet/features/transaction/bindings/edit_transaction_binding.dart';
-import 'package:mini_wallet/features/transaction/presentation/pages/edit_transaction_page.dart';
 import 'package:mini_wallet/features/transaction/bindings/home_binding.dart';
-import 'package:mini_wallet/features/transaction/presentation/pages/home_page.dart';
 import 'package:mini_wallet/features/shell/presentation/pages/app_shell_page.dart';
-import 'package:mini_wallet/features/transaction/bindings/transaction_details_binding.dart';
+import 'package:mini_wallet/core/widgets/binding_scope.dart';
+import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
+import 'package:mini_wallet/features/transaction/presentation/pages/add_transaction_page.dart';
+import 'package:mini_wallet/features/transaction/presentation/pages/edit_transaction_page.dart';
+import 'package:mini_wallet/features/transaction/presentation/pages/home_page.dart';
 import 'package:mini_wallet/features/transaction/presentation/pages/transaction_details_page.dart';
 import 'package:mini_wallet/routes/route_names.dart';
 import 'package:mini_wallet/routes/route_paths.dart';
@@ -59,10 +59,14 @@ class AppRouter {
         path: RoutePaths.transactionDetails,
         name: RouteNames.transactionDetails,
         builder: (context, state) {
-          return BindingScope(
-            binding: TransactionDetailsBinding(),
-            child: const TransactionDetailsPage(),
-          );
+          final transaction = state.extra;
+          if (transaction is! TransactionModel) {
+            throw ArgumentError(
+              'TransactionDetailsPage requires a TransactionModel in state.extra.',
+            );
+          }
+
+          return TransactionDetailsPage(transaction: transaction);
         },
       ),
     ],

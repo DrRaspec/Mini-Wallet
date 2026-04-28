@@ -44,6 +44,7 @@ class AddTransactionController extends GetxController {
       await repository.add(transaction.value!);
       if (Get.isRegistered<HomeController>()) {
         await Get.find<HomeController>().fetchTransactions();
+        await Get.find<HomeController>().fetchTotalBalance();
       }
       Get.snackbar(
         'Saved',

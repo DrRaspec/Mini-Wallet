@@ -20,9 +20,13 @@ class HomeController extends GetxController {
 
   @override
   void onInit() async {
+    await refreshHome();
+    super.onInit();
+  }
+
+  Future<void> refreshHome() async {
     await fetchTotalBalance();
     await fetchTransactions();
-    super.onInit();
   }
 
   Future<void> fetchTransactions() async {
