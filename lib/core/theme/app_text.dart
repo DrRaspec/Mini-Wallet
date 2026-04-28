@@ -9,7 +9,7 @@ class AppText {
     headlineLarge: GoogleFonts.inter(
       fontSize: 32,
       fontWeight: FontWeight.bold,
-      letterSpacing: -0.5,
+      letterSpacing: 0,
     ),
 
     // Section titles (e.g. "Transactions")
