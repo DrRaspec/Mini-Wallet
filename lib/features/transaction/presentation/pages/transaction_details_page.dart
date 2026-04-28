@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
-import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
+import 'package:mini_wallet/features/transaction/presentation/controllers/transaction_details_controller.dart';
 import 'package:mini_wallet/features/transaction/presentation/transaction_formatters.dart';
 
-class TransactionDetailsPage extends StatelessWidget {
-  const TransactionDetailsPage({super.key, required this.transaction});
-
-  final TransactionModel transaction;
+class TransactionDetailsPage extends GetView<TransactionDetailsController> {
+  const TransactionDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final transaction = controller.transaction;
     final isIncome = transaction.isIncome;
     final toneColor = isIncome ? AppColors.income : AppColors.expense;
 
@@ -97,6 +97,29 @@ class TransactionDetailsPage extends StatelessWidget {
                   ],
                 ),
               ),
+
+              const Spacer(),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: Obx(() {
+                      return _DeleteButton(
+                        onDeleteTap: () =>
+                            controller.onDeleteTransaction(context),
+                        isDeleting: controller.isDeleting.value,
+                      );
+                    }),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    flex: 2,
+                    child: _EditButton(
+                      onEditTap: () => controller.onEdit(context),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -140,6 +163,65 @@ class _InfoRow extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _DeleteButton extends StatelessWidget {
+  const _DeleteButton({required this.onDeleteTap, required this.isDeleting});
+
+  final VoidCallback onDeleteTap;
+  final bool isDeleting;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final errorColor = theme.colorScheme.error;
+
+    return SizedBox(
+      height: 52,
+      child: isDeleting
+          ? const CircularProgressIndicator()
+          : OutlinedButton.icon(
+              onPressed: onDeleteTap,
+              icon: const Icon(Icons.delete_outline_rounded, size: 20),
+              label: const Text('Delete'),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: errorColor,
+                side: BorderSide(color: errorColor.withValues(alpha: 0.35)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+            ),
+    );
+  }
+}
+
+class _EditButton extends StatelessWidget {
+  const _EditButton({required this.onEditTap});
+
+  final VoidCallback onEditTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final primaryColor = theme.colorScheme.primary;
+
+    return SizedBox(
+      height: 52,
+      child: ElevatedButton.icon(
+        onPressed: onEditTap,
+        icon: const Icon(Icons.edit_outlined, size: 20),
+        label: const Text('Edit transaction'),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: primaryColor,
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+      ),
     );
   }
 }

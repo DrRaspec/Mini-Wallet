@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mini_wallet/features/transaction/bindings/add_transaction_binding.dart';
 import 'package:mini_wallet/features/transaction/bindings/edit_transaction_binding.dart';
 import 'package:mini_wallet/features/transaction/bindings/home_binding.dart';
+import 'package:mini_wallet/features/transaction/bindings/transaction_details_binding.dart';
 import 'package:mini_wallet/core/widgets/binding_scope.dart';
 import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
 import 'package:mini_wallet/features/transaction/presentation/pages/add_transaction_page.dart';
@@ -92,7 +93,10 @@ class AppRouter {
             );
           }
 
-          return TransactionDetailsPage(transaction: transaction);
+          return BindingScope(
+            binding: TransactionDetailsBinding(transaction: transaction),
+            child: const TransactionDetailsPage(),
+          );
         },
       ),
     ],

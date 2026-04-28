@@ -116,10 +116,17 @@ class HomePage extends GetView<HomeController> {
                           ),
                           child: TransactionCard(
                             transaction: transaction,
-                            onTap: () => context.pushNamed(
-                              RouteNames.transactionDetails,
-                              extra: transaction,
-                            ),
+                            onTap: () async {
+                              final shouldRefresh = await context
+                                  .pushNamed<bool>(
+                                    RouteNames.transactionDetails,
+                                    extra: transaction,
+                                  );
+
+                              if (shouldRefresh == true && context.mounted) {
+                                await controller.refreshHome();
+                              }
+                            },
                           ),
                         );
                       }, childCount: transactions.length),
