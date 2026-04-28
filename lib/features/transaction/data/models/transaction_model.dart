@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class TransactionModel {
   final String id;
   final String title;
@@ -29,7 +31,7 @@ class TransactionModel {
       title: map['title'] as String,
       amount: (map['amount'] as num).toDouble(),
       isIncome: map['isIncome'] == 1,
-      date: DateTime.parse(map['date'] as String),
+      date: DateFormat('yyyy-MM-ddTHH:mm:ss').parse(map['date'] as String),
     );
   }
 
