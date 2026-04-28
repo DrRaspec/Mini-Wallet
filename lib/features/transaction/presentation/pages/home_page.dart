@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
-import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
 import 'package:mini_wallet/features/transaction/presentation/controllers/home_controller.dart';
 import 'package:mini_wallet/features/transaction/presentation/widgets/transaction_card.dart';
 
