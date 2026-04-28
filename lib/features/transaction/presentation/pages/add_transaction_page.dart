@@ -15,7 +15,10 @@ class AddTransactionPage extends GetView<AddTransactionController> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Transaction')),
+      appBar: AppBar(
+        leading: BackButton(onPressed: () => context.pop()),
+        title: const Text('Add Transaction'),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
@@ -154,8 +157,8 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                       onPressed: controller.isLoading.value
                           ? null
                           : () async {
-                              final didSave =
-                                  await controller.onAddTransaction();
+                              final didSave = await controller
+                                  .onAddTransaction();
                               if (!context.mounted || !didSave) {
                                 return;
                               }
