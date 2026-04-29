@@ -24,6 +24,7 @@ class EditTransactionController extends GetxController {
 
   @override
   void onInit() {
+    super.onInit();
     transaction.value = initialTransaction;
     final selectedTransaction = initialTransaction;
     if (selectedTransaction != null) {
@@ -31,7 +32,6 @@ class EditTransactionController extends GetxController {
       amountController.text = selectedTransaction.amount.toStringAsFixed(2);
       isIncome.value = selectedTransaction.isIncome;
     }
-    super.onInit();
   }
 
   String? validateTitle(String? value) {
