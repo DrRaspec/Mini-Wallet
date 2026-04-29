@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mini_wallet/core/utils/app_logger.dart';
+import 'package:mini_wallet/core/widgets/app_toast.dart';
 import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
 import 'package:mini_wallet/features/transaction/domain/repositories/transaction_repository.dart';
 import 'package:mini_wallet/features/transaction/presentation/controllers/home_controller.dart';
@@ -58,10 +59,9 @@ class EditTransactionController extends GetxController {
 
     final selectedTransaction = transaction.value;
     if (selectedTransaction == null) {
-      Get.snackbar(
+      AppToast.info(
         'No transaction',
         'Open a transaction detail before editing.',
-        snackPosition: SnackPosition.BOTTOM,
       );
       return null;
     }
@@ -79,19 +79,11 @@ class EditTransactionController extends GetxController {
       if (Get.isRegistered<HomeController>()) {
         await Get.find<HomeController>().refreshHome();
       }
-      Get.snackbar(
-        'Updated',
-        'Transaction updated successfully.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      AppToast.success('Updated', 'Transaction updated successfully.');
       return updatedTransaction;
     } catch (e) {
       AppLogger.log('Error updating transaction: $e');
-      Get.snackbar(
-        'Error',
-        'Unable to update transaction right now.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      AppToast.error('Error', 'Unable to update transaction right now.');
       return null;
     } finally {
       isLoading.value = false;
