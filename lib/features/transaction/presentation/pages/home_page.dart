@@ -39,9 +39,7 @@ class HomePage extends GetView<HomeController> {
                 // ── Header ──────────────────────────────────────────
                 SliverPadding(
                   padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
-                  sliver: SliverToBoxAdapter(
-                    child: _TopBar(theme: theme),
-                  ),
+                  sliver: SliverToBoxAdapter(child: _TopBar(theme: theme)),
                 ),
 
                 // ── Balance card ────────────────────────────────────
@@ -61,7 +59,8 @@ class HomePage extends GetView<HomeController> {
                   padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
                   sliver: SliverToBoxAdapter(
                     child: _QuickAddBanner(
-                      onAddPressed: () => context.go(RoutePaths.addTransaction),
+                      onAddPressed: () =>
+                          context.push(RoutePaths.addTransaction),
                       isEmpty: transactions.isEmpty,
                     ),
                   ),
@@ -120,8 +119,7 @@ class HomePage extends GetView<HomeController> {
                         final transaction = transactions[index];
                         return Padding(
                           padding: EdgeInsets.only(
-                            bottom:
-                                index == transactions.length - 1 ? 0 : 8,
+                            bottom: index == transactions.length - 1 ? 0 : 8,
                           ),
                           child: TransactionCard(
                             transaction: transaction,
@@ -181,11 +179,14 @@ class _TopBar extends StatelessWidget {
             borderRadius: BorderRadius.circular(14),
           ),
           child: const Center(
-            child: Text('MW', style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w800,
-              fontSize: 14,
-            )),
+            child: Text(
+              'MW',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+                fontSize: 14,
+              ),
+            ),
           ),
         ),
         const SizedBox(width: 14),
@@ -354,10 +355,7 @@ class _StatCard extends StatelessWidget {
 // Quick add banner
 // ─────────────────────────────────────────────────────────────────────────────
 class _QuickAddBanner extends StatelessWidget {
-  const _QuickAddBanner({
-    required this.onAddPressed,
-    required this.isEmpty,
-  });
+  const _QuickAddBanner({required this.onAddPressed, required this.isEmpty});
 
   final VoidCallback onAddPressed;
   final bool isEmpty;
@@ -381,11 +379,7 @@ class _QuickAddBanner extends StatelessWidget {
               color: AppColors.secondary,
               borderRadius: BorderRadius.circular(14),
             ),
-            child: const Icon(
-              Icons.add_rounded,
-              color: Colors.white,
-              size: 22,
-            ),
+            child: const Icon(Icons.add_rounded, color: Colors.white, size: 22),
           ),
           const SizedBox(width: 14),
           Expanded(

@@ -17,7 +17,7 @@ class TransactionDetailsController extends GetxController {
   final isDeleting = false.obs;
 
   void onEdit(BuildContext context) {
-    context.go(RoutePaths.editTransaction, extra: transaction);
+    context.push(RoutePaths.editTransaction, extra: transaction);
   }
 
   void onDeleteTransaction(BuildContext context) async {
