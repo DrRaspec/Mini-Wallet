@@ -19,9 +19,9 @@ class HomeController extends GetxController {
   ).obs;
 
   @override
-  void onInit() async {
-    await refreshHome();
+  void onInit() {
     super.onInit();
+    refreshHome();
   }
 
   Future<void> refreshHome() async {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mini_wallet/core/utils/app_logger.dart';
+import 'package:mini_wallet/core/widgets/app_toast.dart';
 import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
 import 'package:mini_wallet/features/transaction/domain/repositories/transaction_repository.dart';
 import 'package:mini_wallet/features/transaction/presentation/controllers/home_controller.dart';
@@ -46,12 +47,12 @@ class AddTransactionController extends GetxController {
         await Get.find<HomeController>().fetchTransactions();
         await Get.find<HomeController>().fetchTotalBalance();
       }
-      // AppToast.success('Saved', 'Transaction added successfully.');
+      AppToast.success('Saved', 'Transaction added successfully.');
       AppLogger.log('Transaction added successfully: ${transaction.value}');
       return true;
     } catch (e) {
       AppLogger.log('Error occurred while adding transaction: $e');
-      // AppToast.error('Error', 'Unable to add transaction right now.');
+      AppToast.error('Error', 'Unable to add transaction right now.');
       return false;
     } finally {
       isLoading.value = false;

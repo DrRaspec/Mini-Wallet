@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:mini_wallet/core/constants/api_endpoints.dart';
 import 'package:mini_wallet/core/network/api_client.dart';
 import 'package:mini_wallet/core/utils/app_logger.dart';
-import 'package:mini_wallet/core/widgets/app_toast.dart';
 import 'package:mini_wallet/features/transaction/data/models/account_balance.dart';
 import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
 
@@ -14,14 +13,8 @@ class TransactionRemoteDataSource {
   Future<void> saveTransaction(TransactionModel tx) async {
     try {
       await apiClient.dio.post(ApiEndpoints.transactions, data: tx.toMap());
-
-      AppToast.success(
-        'Create Transaction',
-        'Your transaction has been created successfully',
-      );
     } on DioException catch (e) {
       AppLogger.log('Error saving transaction: ${e.message}');
-      AppToast.error('Error', 'Failed to save transaction');
       rethrow;
     }
   }
@@ -74,14 +67,8 @@ class TransactionRemoteDataSource {
         ApiEndpoints.transactionById(tx.id),
         data: tx.toMap(),
       );
-
-      AppToast.success(
-        'Update Transaction',
-        'Your transaction has been updated successfully',
-      );
     } on DioException catch (e) {
       AppLogger.log('Error update transaction: ${e.message}');
-      AppToast.error('Error', 'Failed to update transaction');
       rethrow;
     }
   }
@@ -89,14 +76,8 @@ class TransactionRemoteDataSource {
   Future<void> deleteTransaction(String id) async {
     try {
       await apiClient.dio.delete(ApiEndpoints.transactionById(id));
-
-      AppToast.success(
-        'Delete Transaction',
-        'Your transaction has been deleted successfully',
-      );
     } on DioException catch (e) {
       AppLogger.log('Error deleting transaction: ${e.message}');
-      AppToast.error('Error', 'Failed to delete transaction');
       rethrow;
     }
   }
