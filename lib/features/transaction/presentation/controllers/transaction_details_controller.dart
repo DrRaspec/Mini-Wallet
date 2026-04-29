@@ -13,14 +13,30 @@ class TransactionDetailsController extends GetxController {
 
   final TransactionRepository repository;
   final TransactionModel transaction;
+  final selectedTransaction = Rx<TransactionModel?>(null);
 
   final isDeleting = false.obs;
 
-  void onEdit(BuildContext context) {
-    context.push(RoutePaths.editTransaction, extra: transaction);
+  @override
+  void onInit() {
+    selectedTransaction.value = transaction;
+    super.onInit();
+  }
+
+  Future<void> onEdit(BuildContext context) async {
+    final updatedTransaction = await context.push<TransactionModel>(
+      RoutePaths.editTransaction,
+      extra: selectedTransaction.value,
+    );
+    if (updatedTransaction != null) {
+      selectedTransaction.value = updatedTransaction;
+    }
   }
 
   void onDeleteTransaction(BuildContext context) async {
+    final transaction = selectedTransaction.value;
+    if (transaction == null) return;
+
     isDeleting.value = true;
     await repository.delete(transaction.id);
     isDeleting.value = false;

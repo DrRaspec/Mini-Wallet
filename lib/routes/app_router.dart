@@ -76,8 +76,11 @@ class AppRouter {
         path: RoutePaths.editTransaction,
         name: RouteNames.editTransaction,
         builder: (context, state) {
+          final transaction = state.extra;
           return BindingScope(
-            binding: EditTransactionBinding(),
+            binding: EditTransactionBinding(
+              transaction: transaction is TransactionModel ? transaction : null,
+            ),
             child: const EditTransactionPage(),
           );
         },
