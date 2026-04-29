@@ -1,40 +1,40 @@
-import 'package:mini_wallet/features/transaction/data/datasources/transaction_local_ds.dart';
+import 'package:mini_wallet/features/transaction/data/datasources/transaction_remote_ds.dart';
 import 'package:mini_wallet/features/transaction/data/models/account_balance.dart';
 import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
 import 'package:mini_wallet/features/transaction/domain/repositories/transaction_repository.dart';
 
 class TransactionRepositoryImpl extends TransactionRepository {
-  final TransactionLocalDataSource local;
+  final TransactionRemoteDataSource remote;
 
-  TransactionRepositoryImpl({required this.local});
+  TransactionRepositoryImpl({required this.remote});
 
   @override
   Future<void> add(TransactionModel tx) {
-    return local.saveTransaction(tx);
+    return remote.saveTransaction(tx);
   }
 
   @override
   Future<List<TransactionModel>> getAll() {
-    return local.getAllTransactions();
+    return remote.getAllTransactions();
   }
 
   @override
   Future<AccountBalance> getAccountBalance() {
-    return local.getAccountBalance();
+    return remote.getAccountBalance();
   }
 
   @override
   Future<TransactionModel?> getById(String id) {
-    return local.getTransactionById(id);
+    return remote.getTransactionById(id);
   }
 
   @override
   Future<void> update(TransactionModel tx) {
-    return local.updateTransaction(tx);
+    return remote.updateTransaction(tx);
   }
 
   @override
   Future<void> delete(String id) {
-    return local.deleteTransaction(id);
+    return remote.deleteTransaction(id);
   }
 }
