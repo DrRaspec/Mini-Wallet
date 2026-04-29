@@ -25,94 +25,103 @@ class HomePage extends GetView<HomeController> {
           final balance = controller.accountBalance.value.total;
 
           if (isLoading && transactions.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CircularProgressIndicator(color: AppColors.secondary),
+            );
           }
 
           return RefreshIndicator(
+            color: AppColors.secondary,
             onRefresh: controller.refreshHome,
             child: CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               slivers: [
+                // ── Header ──────────────────────────────────────────
                 SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
+                  padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
                   sliver: SliverToBoxAdapter(
-                    child: _HomeHeader(
+                    child: _TopBar(theme: theme),
+                  ),
+                ),
+
+                // ── Balance card ────────────────────────────────────
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(24, 28, 24, 0),
+                  sliver: SliverToBoxAdapter(
+                    child: _BalanceSection(
                       balance: balance,
                       incomeTotal: incomeTotal,
                       expenseTotal: expenseTotal,
                     ),
                   ),
                 ),
+
+                // ── Quick add banner ────────────────────────────────
                 SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
                   sliver: SliverToBoxAdapter(
-                    child: _QuickActions(
+                    child: _QuickAddBanner(
                       onAddPressed: () => context.go(RoutePaths.addTransaction),
-                      transactionCount: transactions.length,
+                      isEmpty: transactions.isEmpty,
                     ),
                   ),
                 ),
+
+                // ── Section header ──────────────────────────────────
                 SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 36),
+                  padding: const EdgeInsets.fromLTRB(24, 28, 24, 16),
                   sliver: SliverToBoxAdapter(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Recent activity',
-                              style: theme.textTheme.titleLarge?.copyWith(
+                        Text(
+                          'Recent Activity',
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        if (transactions.isNotEmpty)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.surfaceMuted,
+                              borderRadius: BorderRadius.circular(999),
+                            ),
+                            child: Text(
+                              '${transactions.length}',
+                              style: theme.textTheme.bodySmall?.copyWith(
                                 color: AppColors.textPrimary,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              'Simple, clear view of where money moved.',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: AppColors.textSecondary,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 8,
                           ),
-                          decoration: BoxDecoration(
-                            color: AppColors.surfaceMuted,
-                            borderRadius: BorderRadius.circular(999),
-                          ),
-                          child: Text(
-                            '${transactions.length} items',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: AppColors.textPrimary,
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
                 ),
+
+                // ── Transaction list / empty state ──────────────────
                 if (transactions.isEmpty)
                   SliverFillRemaining(
                     hasScrollBody: false,
                     child: Padding(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(24),
                       child: _EmptyState(theme: theme),
                     ),
                   )
                 else
                   SliverPadding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+                    padding: const EdgeInsets.fromLTRB(24, 0, 24, 100),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
                         final transaction = transactions[index];
                         return Padding(
                           padding: EdgeInsets.only(
-                            bottom: index == transactions.length - 1 ? 0 : 12,
+                            bottom:
+                                index == transactions.length - 1 ? 0 : 8,
                           ),
                           child: TransactionCard(
                             transaction: transaction,
@@ -145,8 +154,85 @@ class HomePage extends GetView<HomeController> {
   }
 }
 
-class _HomeHeader extends StatelessWidget {
-  const _HomeHeader({
+// ─────────────────────────────────────────────────────────────────────────────
+// Top bar — greeting + avatar
+// ─────────────────────────────────────────────────────────────────────────────
+class _TopBar extends StatelessWidget {
+  const _TopBar({required this.theme});
+  final ThemeData theme;
+
+  String get _greeting {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return 'Good Morning';
+    if (hour < 17) return 'Good Afternoon';
+    return 'Good Evening';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        // Wave icon
+        Container(
+          width: 42,
+          height: 42,
+          decoration: BoxDecoration(
+            color: AppColors.secondary,
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: const Center(
+            child: Text('MW', style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w800,
+              fontSize: 14,
+            )),
+          ),
+        ),
+        const SizedBox(width: 14),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                _greeting.toUpperCase(),
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                'Mini Wallet',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: AppColors.textPrimary,
+                ),
+              ),
+            ],
+          ),
+        ),
+        // Decorative wave icon (matches reference)
+        Container(
+          width: 42,
+          height: 42,
+          decoration: BoxDecoration(
+            color: AppColors.surfaceMuted,
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: const Icon(
+            Icons.notifications_none_rounded,
+            color: AppColors.textPrimary,
+            size: 20,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Balance section — big amount + income/expense tiles
+// ─────────────────────────────────────────────────────────────────────────────
+class _BalanceSection extends StatelessWidget {
+  const _BalanceSection({
     required this.balance,
     required this.incomeTotal,
     required this.expenseTotal,
@@ -159,81 +245,68 @@ class _HomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final now = DateTime.now();
 
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.circular(32),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Mini Wallet',
-            style: theme.textTheme.titleLarge?.copyWith(color: Colors.white),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Wallet Balance',
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: AppColors.textSecondary,
           ),
-          const SizedBox(height: 6),
-          Text(
-            formatTransactionDay(now),
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: Colors.white.withValues(alpha: 0.7),
-            ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          formatCurrency(balance),
+          style: theme.textTheme.displaySmall?.copyWith(
+            color: AppColors.textPrimary,
           ),
-          const SizedBox(height: 28),
-          Text(
-            'Available balance',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: Colors.white.withValues(alpha: 0.72),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            formatCurrency(balance),
-            style: theme.textTheme.displaySmall?.copyWith(color: Colors.white),
-          ),
-          const SizedBox(height: 22),
-          Row(
-            children: [
-              Expanded(
-                child: _StatTile(
-                  label: 'Income',
-                  value: formatCurrency(incomeTotal),
-                  icon: Icons.south_west_rounded,
-                  tone: AppColors.income,
-                ),
+        ),
+        const SizedBox(height: 20),
+
+        // Income / Expense tiles
+        Row(
+          children: [
+            Expanded(
+              child: _StatCard(
+                label: 'Income',
+                value: formatCurrency(incomeTotal),
+                icon: Icons.south_west_rounded,
+                backgroundColor: AppColors.income.withValues(alpha: 0.08),
+                iconColor: AppColors.income,
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _StatTile(
-                  label: 'Expense',
-                  value: formatCurrency(expenseTotal),
-                  icon: Icons.north_east_rounded,
-                  tone: AppColors.expense,
-                ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _StatCard(
+                label: 'Expense',
+                value: formatCurrency(expenseTotal),
+                icon: Icons.north_east_rounded,
+                backgroundColor: AppColors.secondary.withValues(alpha: 0.10),
+                iconColor: AppColors.secondary,
               ),
-            ],
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
 
-class _StatTile extends StatelessWidget {
-  const _StatTile({
+class _StatCard extends StatelessWidget {
+  const _StatCard({
     required this.label,
     required this.value,
     required this.icon,
-    required this.tone,
+    required this.backgroundColor,
+    required this.iconColor,
   });
 
   final String label;
   final String value;
   final IconData icon;
-  final Color tone;
+  final Color backgroundColor;
+  final Color iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -242,8 +315,8 @@ class _StatTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.09),
-        borderRadius: BorderRadius.circular(22),
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -252,22 +325,24 @@ class _StatTile extends StatelessWidget {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: tone.withValues(alpha: 0.16),
+              color: backgroundColor,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(icon, color: tone, size: 18),
+            child: Icon(icon, color: iconColor, size: 18),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
           Text(
             label,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: Colors.white.withValues(alpha: 0.72),
+              color: AppColors.textSecondary,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             value,
-            style: theme.textTheme.titleMedium?.copyWith(color: Colors.white),
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: AppColors.textPrimary,
+            ),
           ),
         ],
       ),
@@ -275,14 +350,17 @@ class _StatTile extends StatelessWidget {
   }
 }
 
-class _QuickActions extends StatelessWidget {
-  const _QuickActions({
+// ─────────────────────────────────────────────────────────────────────────────
+// Quick add banner
+// ─────────────────────────────────────────────────────────────────────────────
+class _QuickAddBanner extends StatelessWidget {
+  const _QuickAddBanner({
     required this.onAddPressed,
-    required this.transactionCount,
+    required this.isEmpty,
   });
 
   final VoidCallback onAddPressed;
-  final int transactionCount;
+  final bool isEmpty;
 
   @override
   Widget build(BuildContext context) {
@@ -291,42 +369,63 @@ class _QuickActions extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.card,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: AppColors.border),
+        color: AppColors.secondary.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         children: [
+          Container(
+            width: 42,
+            height: 42,
+            decoration: BoxDecoration(
+              color: AppColors.secondary,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: const Icon(
+              Icons.add_rounded,
+              color: Colors.white,
+              size: 22,
+            ),
+          ),
+          const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Keep it current',
+                  isEmpty ? 'Get started' : 'Keep it current',
                   style: theme.textTheme.titleMedium?.copyWith(
                     color: AppColors.textPrimary,
                   ),
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 2),
                 Text(
-                  transactionCount == 0
-                      ? 'Add your first income or expense.'
-                      : 'Record the next transaction in one tap.',
-                  style: theme.textTheme.bodyMedium?.copyWith(
+                  isEmpty
+                      ? 'Add your first transaction'
+                      : 'Record the next one',
+                  style: theme.textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 16),
-          ElevatedButton(
-            onPressed: onAddPressed,
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(0, 48),
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+          const SizedBox(width: 12),
+          Material(
+            color: AppColors.primary,
+            borderRadius: BorderRadius.circular(12),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(12),
+              onTap: onAddPressed,
+              child: const Padding(
+                padding: EdgeInsets.all(10),
+                child: Icon(
+                  Icons.arrow_forward_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
             ),
-            child: const Text('Add'),
           ),
         ],
       ),
@@ -334,55 +433,48 @@ class _QuickActions extends StatelessWidget {
   }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Empty state
+// ─────────────────────────────────────────────────────────────────────────────
 class _EmptyState extends StatelessWidget {
   const _EmptyState({required this.theme});
-
   final ThemeData theme;
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(28),
-        decoration: BoxDecoration(
-          color: AppColors.card,
-          borderRadius: BorderRadius.circular(28),
-          border: Border.all(color: AppColors.border),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 76,
-              height: 76,
-              decoration: BoxDecoration(
-                color: AppColors.surfaceMuted,
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: const Icon(
-                Icons.account_balance_wallet_outlined,
-                color: AppColors.primary,
-                size: 34,
-              ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 72,
+            height: 72,
+            decoration: BoxDecoration(
+              color: AppColors.surfaceMuted,
+              borderRadius: BorderRadius.circular(22),
             ),
-            const SizedBox(height: 18),
-            Text(
-              'No transactions yet',
-              style: theme.textTheme.titleLarge?.copyWith(
-                color: AppColors.textPrimary,
-              ),
+            child: const Icon(
+              Icons.account_balance_wallet_outlined,
+              color: AppColors.secondary,
+              size: 32,
             ),
-            const SizedBox(height: 8),
-            Text(
-              'Start simple. Add an income or expense and your wallet summary will appear here.',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
-              ),
-              textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20),
+          Text(
+            'No transactions yet',
+            style: theme.textTheme.titleLarge?.copyWith(
+              color: AppColors.textPrimary,
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Add an income or expense and your\nwallet summary will appear here.',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: AppColors.textSecondary,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }

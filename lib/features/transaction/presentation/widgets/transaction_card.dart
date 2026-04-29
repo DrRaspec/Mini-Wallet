@@ -21,33 +21,37 @@ class TransactionCard extends StatelessWidget {
 
     return Material(
       color: AppColors.card,
-      borderRadius: BorderRadius.circular(24),
+      borderRadius: BorderRadius.circular(20),
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(20),
         onTap: onTap,
-        child: Ink(
-          padding: const EdgeInsets.all(18),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: AppColors.border),
+            borderRadius: BorderRadius.circular(20),
           ),
           child: Row(
             children: [
+              // ── Icon ──────────────────────────────────────────────
               Container(
-                width: 52,
-                height: 52,
+                width: 48,
+                height: 48,
                 decoration: BoxDecoration(
                   color: toneColor.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(18),
+                  borderRadius: BorderRadius.circular(14),
                 ),
                 child: Icon(
                   isIncome
                       ? Icons.south_west_rounded
                       : Icons.north_east_rounded,
                   color: toneColor,
+                  size: 20,
                 ),
               ),
               const SizedBox(width: 14),
+
+              // ── Title + date ──────────────────────────────────────
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,86 +64,29 @@ class TransactionCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 8),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        _MetaChip(
-                          icon: Icons.calendar_today_outlined,
-                          label: formatTransactionDate(transaction.date),
-                        ),
-                        _MetaChip(
-                          icon: isIncome
-                              ? Icons.arrow_downward_rounded
-                              : Icons.arrow_upward_rounded,
-                          label: isIncome ? 'Income' : 'Expense',
-                          foregroundColor: toneColor,
-                          backgroundColor: toneColor.withValues(alpha: 0.1),
-                        ),
-                      ],
+                    const SizedBox(height: 4),
+                    Text(
+                      formatTransactionDate(transaction.date),
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                   ],
                 ),
               ),
               const SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    formatTransactionAmount(transaction),
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: toneColor,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Icon(
-                    Icons.chevron_right_rounded,
-                    color: AppColors.textSecondary.withValues(alpha: 0.7),
-                  ),
-                ],
+
+              // ── Amount ────────────────────────────────────────────
+              Text(
+                formatTransactionAmount(transaction),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: toneColor,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _MetaChip extends StatelessWidget {
-  const _MetaChip({
-    required this.icon,
-    required this.label,
-    this.foregroundColor = AppColors.textSecondary,
-    this.backgroundColor = AppColors.surfaceMuted,
-  });
-
-  final IconData icon;
-  final String label;
-  final Color foregroundColor;
-  final Color backgroundColor;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(999),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 14, color: foregroundColor),
-          const SizedBox(width: 6),
-          Text(
-            label,
-            style: theme.textTheme.bodySmall?.copyWith(color: foregroundColor),
-          ),
-        ],
       ),
     );
   }

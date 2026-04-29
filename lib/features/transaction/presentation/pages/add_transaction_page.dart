@@ -21,7 +21,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
           child: Form(
             key: controller.addTransactionFormKey,
             child: Column(
@@ -33,21 +33,22 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                     color: AppColors.textPrimary,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 Text(
-                  'Keep it quick and minimal. Add the title, amount, and whether it is money in or out.',
+                  'Add the title, amount, and type.',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 28),
+
+                // ── Form card ───────────────────────────────────────
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: AppColors.card,
-                    borderRadius: BorderRadius.circular(28),
-                    border: Border.all(color: AppColors.border),
+                    borderRadius: BorderRadius.circular(24),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,30 +80,35 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                           },
                           showSelectedIcon: false,
                           style: ButtonStyle(
-                            minimumSize: MaterialStateProperty.all(
+                            minimumSize: WidgetStateProperty.all(
                               const Size.fromHeight(54),
                             ),
-                            side: MaterialStateProperty.all(BorderSide.none),
-                            backgroundColor: MaterialStateProperty.resolveWith((
+                            side: WidgetStateProperty.all(BorderSide.none),
+                            backgroundColor: WidgetStateProperty.resolveWith((
                               states,
                             ) {
-                              if (states.contains(MaterialState.selected)) {
+                              if (states.contains(WidgetState.selected)) {
                                 return AppColors.primary;
                               }
                               return AppColors.surfaceMuted;
                             }),
-                            foregroundColor: MaterialStateProperty.resolveWith((
+                            foregroundColor: WidgetStateProperty.resolveWith((
                               states,
                             ) {
-                              if (states.contains(MaterialState.selected)) {
+                              if (states.contains(WidgetState.selected)) {
                                 return Colors.white;
                               }
                               return AppColors.textSecondary;
                             }),
+                            shape: WidgetStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 22),
                       Text(
                         'Title',
                         style: theme.textTheme.titleMedium?.copyWith(
@@ -118,7 +124,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                           hintText: 'Salary, groceries, coffee...',
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 22),
                       Text(
                         'Amount',
                         style: theme.textTheme.titleMedium?.copyWith(
@@ -140,7 +146,9 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 24),
+
+                // ── Preview ─────────────────────────────────────────
                 Text(
                   'Preview',
                   style: theme.textTheme.titleMedium?.copyWith(
@@ -149,7 +157,9 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                 ),
                 const SizedBox(height: 12),
                 _TransactionPreview(controller: controller),
-                const SizedBox(height: 24),
+                const SizedBox(height: 28),
+
+                // ── Save button ─────────────────────────────────────
                 Obx(
                   () => SizedBox(
                     width: double.infinity,
@@ -198,7 +208,7 @@ class _TransactionPreview extends StatelessWidget {
       builder: (context, titleValue, _) {
         return ValueListenableBuilder<TextEditingValue>(
           valueListenable: controller.amountController,
-          builder: (context, amountValue, __) {
+          builder: (context, amountValue, _) {
             return Obx(() {
               final title = titleValue.text.trim().isEmpty
                   ? 'Untitled transaction'
@@ -213,7 +223,7 @@ class _TransactionPreview extends StatelessWidget {
               );
 
               return Opacity(
-                opacity: amount > 0 ? 1 : 0.78,
+                opacity: amount > 0 ? 1 : 0.6,
                 child: TransactionCard(transaction: preview),
               );
             });

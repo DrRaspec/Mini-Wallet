@@ -7,8 +7,8 @@ class AppText {
   static final TextTheme textTheme = TextTheme(
     displaySmall: GoogleFonts.manrope(
       fontSize: 34,
-      fontWeight: FontWeight.w800,
-      letterSpacing: 0,
+      fontWeight: FontWeight.w900,
+      letterSpacing: -0.5,
     ),
     headlineLarge: GoogleFonts.manrope(
       fontSize: 30,
@@ -29,6 +29,11 @@ class AppText {
       fontSize: 16,
       fontWeight: FontWeight.w700,
     ),
+    titleSmall: GoogleFonts.manrope(
+      fontSize: 14,
+      fontWeight: FontWeight.w800,
+      letterSpacing: 1.2,
+    ),
     bodyLarge: GoogleFonts.inter(
       fontSize: 15,
       fontWeight: FontWeight.w500,
@@ -48,6 +53,11 @@ class AppText {
     labelLarge: GoogleFonts.inter(
       fontSize: 14,
       fontWeight: FontWeight.w700,
+    ),
+    labelMedium: GoogleFonts.manrope(
+      fontSize: 12,
+      fontWeight: FontWeight.w800,
+      letterSpacing: 1.4,
     ),
   );
 }

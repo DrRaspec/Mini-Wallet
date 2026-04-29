@@ -18,27 +18,27 @@ class TransactionDetailsPage extends GetView<TransactionDetailsController> {
       appBar: AppBar(title: const Text('Transaction')),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // ── Hero card ─────────────────────────────────────────
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: AppColors.card,
-                  borderRadius: BorderRadius.circular(32),
-                  border: Border.all(color: AppColors.border),
+                  borderRadius: BorderRadius.circular(24),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: 56,
-                      height: 56,
+                      width: 52,
+                      height: 52,
                       decoration: BoxDecoration(
                         color: toneColor.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(16),
                       ),
                       child: Icon(
                         isIncome
@@ -54,7 +54,7 @@ class TransactionDetailsPage extends GetView<TransactionDetailsController> {
                         color: AppColors.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
                     Text(
                       isIncome ? 'Money received' : 'Money spent',
                       style: theme.textTheme.bodyMedium?.copyWith(
@@ -71,14 +71,15 @@ class TransactionDetailsPage extends GetView<TransactionDetailsController> {
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
+
+              // ── Info rows ─────────────────────────────────────────
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: AppColors.card,
-                  borderRadius: BorderRadius.circular(28),
-                  border: Border.all(color: AppColors.border),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Column(
                   children: [
@@ -87,12 +88,24 @@ class TransactionDetailsPage extends GetView<TransactionDetailsController> {
                       value: isIncome ? 'Income' : 'Expense',
                       valueColor: toneColor,
                     ),
-                    const SizedBox(height: 18),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      child: Divider(
+                        color: AppColors.border,
+                        height: 1,
+                      ),
+                    ),
                     _InfoRow(
                       label: 'Date',
                       value: formatTransactionDay(transaction.date),
                     ),
-                    const SizedBox(height: 18),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      child: Divider(
+                        color: AppColors.border,
+                        height: 1,
+                      ),
+                    ),
                     _InfoRow(label: 'Reference', value: transaction.id),
                   ],
                 ),
@@ -100,6 +113,7 @@ class TransactionDetailsPage extends GetView<TransactionDetailsController> {
 
               const Spacer(),
 
+              // ── Action buttons ────────────────────────────────────
               Row(
                 children: [
                   Expanded(
@@ -160,6 +174,8 @@ class _InfoRow extends StatelessWidget {
             value,
             textAlign: TextAlign.end,
             style: theme.textTheme.titleMedium?.copyWith(color: valueColor),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ],
@@ -175,22 +191,23 @@ class _DeleteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final errorColor = theme.colorScheme.error;
+    final errorColor = AppColors.expense;
 
     return SizedBox(
       height: 52,
       child: isDeleting
-          ? const CircularProgressIndicator()
+          ? const Center(
+              child: CircularProgressIndicator(color: AppColors.secondary),
+            )
           : OutlinedButton.icon(
               onPressed: onDeleteTap,
               icon: const Icon(Icons.delete_outline_rounded, size: 20),
               label: const Text('Delete'),
               style: OutlinedButton.styleFrom(
                 foregroundColor: errorColor,
-                side: BorderSide(color: errorColor.withValues(alpha: 0.35)),
+                side: BorderSide(color: errorColor.withValues(alpha: 0.30)),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(14),
                 ),
               ),
             ),
@@ -205,9 +222,6 @@ class _EditButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final primaryColor = theme.colorScheme.primary;
-
     return SizedBox(
       height: 52,
       child: ElevatedButton.icon(
@@ -215,10 +229,10 @@ class _EditButton extends StatelessWidget {
         icon: const Icon(Icons.edit_outlined, size: 20),
         label: const Text('Edit transaction'),
         style: ElevatedButton.styleFrom(
-          backgroundColor: primaryColor,
+          backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(14),
           ),
         ),
       ),

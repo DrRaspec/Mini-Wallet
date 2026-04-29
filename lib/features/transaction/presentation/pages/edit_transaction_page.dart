@@ -21,23 +21,25 @@ class EditTransactionPage extends GetView<EditTransactionController> {
           final isLoading = controller.isLoading.value;
 
           if (isLoading && transactions.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CircularProgressIndicator(color: AppColors.secondary),
+            );
           }
 
           return RefreshIndicator(
+            color: AppColors.secondary,
             onRefresh: controller.fetchTransactions,
             child: CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               slivers: [
                 SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+                  padding: const EdgeInsets.fromLTRB(24, 8, 24, 20),
                   sliver: SliverToBoxAdapter(
                     child: Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: AppColors.card,
-                        borderRadius: BorderRadius.circular(28),
-                        border: Border.all(color: AppColors.border),
+                        borderRadius: BorderRadius.circular(24),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,9 +50,9 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                               color: AppColors.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 6),
                           Text(
-                            'Open any transaction to review it, or swipe left here to remove an entry you no longer need.',
+                            'Open any transaction to review, or swipe left to remove.',
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: AppColors.textSecondary,
                             ),
@@ -65,7 +67,7 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                     hasScrollBody: false,
                     child: Center(
                       child: Padding(
-                        padding: const EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(24),
                         child: Text(
                           'Nothing to manage yet.',
                           style: theme.textTheme.titleMedium?.copyWith(
@@ -77,14 +79,14 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                   )
                 else
                   SliverPadding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+                    padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
                         final transaction = transactions[index];
 
                         return Padding(
                           padding: EdgeInsets.only(
-                            bottom: index == transactions.length - 1 ? 0 : 12,
+                            bottom: index == transactions.length - 1 ? 0 : 8,
                           ),
                           child: Dismissible(
                             key: ValueKey(transaction.id),
@@ -92,7 +94,7 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                             background: Container(
                               decoration: BoxDecoration(
                                 color: AppColors.expense,
-                                borderRadius: BorderRadius.circular(24),
+                                borderRadius: BorderRadius.circular(20),
                               ),
                               alignment: Alignment.centerRight,
                               padding: const EdgeInsets.symmetric(
@@ -108,6 +110,9 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                                 context: context,
                                 builder: (dialogContext) {
                                   return AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
                                     title: const Text('Delete transaction?'),
                                     content: const Text(
                                       'This action cannot be undone.',
@@ -125,6 +130,9 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                                         onPressed: () {
                                           Navigator.of(dialogContext).pop(true);
                                         },
+                                        style: TextButton.styleFrom(
+                                          foregroundColor: AppColors.expense,
+                                        ),
                                         child: const Text('Delete'),
                                       ),
                                     ],
