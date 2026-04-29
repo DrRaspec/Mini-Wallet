@@ -19,7 +19,7 @@ class TransactionModel {
       'title': title,
       'amount': amount,
       'isIncome': isIncome,
-      'date': date.toIso8601String(),
+      'createdAt': date.toIso8601String(),
     };
   }
 
@@ -29,7 +29,7 @@ class TransactionModel {
       title: map['title'] as String,
       amount: (map['amount'] as num).toDouble(),
       isIncome: _toBool(map['isIncome']),
-      date: DateTime.parse(map['date'] as String),
+      date: DateTime.parse(map['createdAt'] as String),
     );
   }
 
