@@ -25,10 +25,7 @@ class AppText {
       fontWeight: FontWeight.w700,
       letterSpacing: -0.2,
     ),
-    titleMedium: GoogleFonts.manrope(
-      fontSize: 16,
-      fontWeight: FontWeight.w700,
-    ),
+    titleMedium: GoogleFonts.manrope(fontSize: 16, fontWeight: FontWeight.w700),
     titleSmall: GoogleFonts.manrope(
       fontSize: 14,
       fontWeight: FontWeight.w800,
@@ -50,10 +47,7 @@ class AppText {
       color: Colors.grey,
       height: 1.4,
     ),
-    labelLarge: GoogleFonts.inter(
-      fontSize: 14,
-      fontWeight: FontWeight.w700,
-    ),
+    labelLarge: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w700),
     labelMedium: GoogleFonts.manrope(
       fontSize: 12,
       fontWeight: FontWeight.w800,

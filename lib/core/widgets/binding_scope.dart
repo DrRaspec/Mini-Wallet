@@ -2,11 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class BindingScope extends StatefulWidget {
-  const BindingScope({
-    super.key,
-    required this.binding,
-    required this.child,
-  });
+  const BindingScope({super.key, required this.binding, required this.child});
 
   final Bindings binding;
   final Widget child;
