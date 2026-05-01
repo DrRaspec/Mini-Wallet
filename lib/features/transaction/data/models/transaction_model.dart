@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 class TransactionModel {
   final String id;
   final String title;
@@ -20,19 +18,28 @@ class TransactionModel {
       'id': id,
       'title': title,
       'amount': amount,
-      'isIncome': isIncome ? 1 : 0,
-      'date': date.toIso8601String(),
+      'isIncome': isIncome,
+      'createdAt': date.toIso8601String(),
     };
   }
 
   factory TransactionModel.fromMap(Map<String, dynamic> map) {
     return TransactionModel(
-      id: map['id'] as String,
+      id: map['id'].toString(),
       title: map['title'] as String,
       amount: (map['amount'] as num).toDouble(),
-      isIncome: map['isIncome'] == 1,
-      date: DateFormat('yyyy-MM-ddTHH:mm:ss').parse(map['date'] as String),
+      isIncome: _toBool(map['isIncome']),
+      date: DateTime.parse(map['createdAt'] as String),
     );
+  }
+
+  static bool _toBool(Object? value) {
+    if (value is bool) return value;
+    if (value is num) return value == 1;
+    if (value is String) {
+      return value == 'true' || value == '1';
+    }
+    return false;
   }
 
   TransactionModel copyWith({

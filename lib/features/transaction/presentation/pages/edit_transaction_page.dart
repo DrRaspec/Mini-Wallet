@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
+import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
 import 'package:mini_wallet/features/transaction/presentation/controllers/edit_transaction_controller.dart';
 import 'package:mini_wallet/features/transaction/presentation/widgets/transaction_card.dart';
-import 'package:mini_wallet/routes/route_names.dart';
 
 class EditTransactionPage extends GetView<EditTransactionController> {
   const EditTransactionPage({super.key});
@@ -14,144 +14,230 @@ class EditTransactionPage extends GetView<EditTransactionController> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Manage Transactions')),
+      appBar: AppBar(
+        leading: BackButton(onPressed: () => context.pop()),
+        title: const Text('Edit Transaction'),
+      ),
       body: SafeArea(
         child: Obx(() {
-          final transactions = controller.transactions.toList();
-          final isLoading = controller.isLoading.value;
-
-          if (isLoading && transactions.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          return RefreshIndicator(
-            onRefresh: controller.fetchTransactions,
-            child: CustomScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              slivers: [
-                SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-                  sliver: SliverToBoxAdapter(
-                    child: Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: AppColors.card,
-                        borderRadius: BorderRadius.circular(28),
-                        border: Border.all(color: AppColors.border),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Clean up your history',
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              color: AppColors.textPrimary,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Open any transaction to review it, or swipe left here to remove an entry you no longer need.',
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+          if (controller.transaction.value == null) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Text(
+                  'Open a transaction detail before editing.',
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: AppColors.textSecondary,
                   ),
                 ),
-                if (transactions.isEmpty)
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Text(
-                          'Nothing to manage yet.',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                else
-                  SliverPadding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                        final transaction = transactions[index];
+              ),
+            );
+          }
 
-                        return Padding(
-                          padding: EdgeInsets.only(
-                            bottom: index == transactions.length - 1 ? 0 : 12,
-                          ),
-                          child: Dismissible(
-                            key: ValueKey(transaction.id),
-                            direction: DismissDirection.endToStart,
-                            background: Container(
-                              decoration: BoxDecoration(
-                                color: AppColors.expense,
-                                borderRadius: BorderRadius.circular(24),
-                              ),
-                              alignment: Alignment.centerRight,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                              ),
-                              child: const Icon(
-                                Icons.delete_outline_rounded,
-                                color: Colors.white,
-                              ),
-                            ),
-                            confirmDismiss: (_) async {
-                              return showDialog<bool>(
-                                context: context,
-                                builder: (dialogContext) {
-                                  return AlertDialog(
-                                    title: const Text('Delete transaction?'),
-                                    content: const Text(
-                                      'This action cannot be undone.',
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(
-                                            dialogContext,
-                                          ).pop(false);
-                                        },
-                                        child: const Text('Cancel'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(dialogContext).pop(true);
-                                        },
-                                        child: const Text('Delete'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                            onDismissed: (_) {
-                              controller.deleteTransaction(transaction.id);
-                            },
-                            child: TransactionCard(
-                              transaction: transaction,
-                              onTap: () => context.pushNamed(
-                                RouteNames.transactionDetails,
-                                extra: transaction,
-                              ),
-                            ),
-                          ),
-                        );
-                      }, childCount: transactions.length),
+          return SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+            child: Form(
+              key: controller.editTransactionFormKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Update this entry',
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      color: AppColors.textPrimary,
                     ),
                   ),
-              ],
+                  const SizedBox(height: 6),
+                  Text(
+                    'Adjust the title, amount, or type.',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: 28),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: AppColors.card,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Type',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        SegmentedButton<bool>(
+                          segments: const [
+                            ButtonSegment<bool>(
+                              value: true,
+                              icon: Icon(Icons.south_west_rounded),
+                              label: Text('Income'),
+                            ),
+                            ButtonSegment<bool>(
+                              value: false,
+                              icon: Icon(Icons.north_east_rounded),
+                              label: Text('Expense'),
+                            ),
+                          ],
+                          selected: {controller.isIncome.value},
+                          onSelectionChanged: (selection) {
+                            controller.isIncome.value = selection.first;
+                          },
+                          showSelectedIcon: false,
+                          style: ButtonStyle(
+                            minimumSize: WidgetStateProperty.all(
+                              const Size.fromHeight(54),
+                            ),
+                            side: WidgetStateProperty.all(BorderSide.none),
+                            backgroundColor: WidgetStateProperty.resolveWith((
+                              states,
+                            ) {
+                              if (states.contains(WidgetState.selected)) {
+                                return AppColors.primary;
+                              }
+                              return AppColors.surfaceMuted;
+                            }),
+                            foregroundColor: WidgetStateProperty.resolveWith((
+                              states,
+                            ) {
+                              if (states.contains(WidgetState.selected)) {
+                                return Colors.white;
+                              }
+                              return AppColors.textSecondary;
+                            }),
+                            shape: WidgetStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 22),
+                        Text(
+                          'Title',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TextFormField(
+                          controller: controller.titleController,
+                          validator: controller.validateTitle,
+                          textInputAction: TextInputAction.next,
+                          decoration: const InputDecoration(
+                            hintText: 'Salary, groceries, coffee...',
+                          ),
+                        ),
+                        const SizedBox(height: 22),
+                        Text(
+                          'Amount',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        TextFormField(
+                          controller: controller.amountController,
+                          validator: controller.validateAmount,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
+                          decoration: const InputDecoration(
+                            prefixText: '\$ ',
+                            hintText: '0.00',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    'Preview',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  _TransactionPreview(controller: controller),
+                  const SizedBox(height: 28),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: controller.isLoading.value
+                          ? null
+                          : () async {
+                              final updatedTransaction = await controller
+                                  .onUpdateTransaction();
+                              if (!context.mounted ||
+                                  updatedTransaction == null) {
+                                return;
+                              }
+                              context.pop(updatedTransaction);
+                            },
+                      child: controller.isLoading.value
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Text('Save Changes'),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         }),
       ),
+    );
+  }
+}
+
+class _TransactionPreview extends StatelessWidget {
+  const _TransactionPreview({required this.controller});
+
+  final EditTransactionController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<TextEditingValue>(
+      valueListenable: controller.titleController,
+      builder: (context, titleValue, _) {
+        return ValueListenableBuilder<TextEditingValue>(
+          valueListenable: controller.amountController,
+          builder: (context, amountValue, _) {
+            return Obx(() {
+              final currentTransaction = controller.transaction.value;
+              final title = titleValue.text.trim().isEmpty
+                  ? 'Untitled transaction'
+                  : titleValue.text.trim();
+              final amount = double.tryParse(amountValue.text.trim()) ?? 0;
+              final preview = TransactionModel(
+                id: currentTransaction?.id ?? 'preview',
+                title: title,
+                amount: amount,
+                isIncome: controller.isIncome.value,
+                date: currentTransaction?.date ?? DateTime.now(),
+              );
+
+              return Opacity(
+                opacity: amount > 0 ? 1 : 0.6,
+                child: TransactionCard(transaction: preview),
+              );
+            });
+          },
+        );
+      },
     );
   }
 }
