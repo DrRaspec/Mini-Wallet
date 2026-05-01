@@ -1,4 +1,10 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mini_wallet/core/storage/secure_token_storage.dart';
+import 'package:mini_wallet/features/auth/bindings/login_binding.dart';
+import 'package:mini_wallet/features/auth/bindings/register_binding.dart';
+import 'package:mini_wallet/features/auth/presentation/pages/login_page.dart';
+import 'package:mini_wallet/features/auth/presentation/pages/register_page.dart';
 import 'package:mini_wallet/features/transaction/bindings/add_transaction_binding.dart';
 import 'package:mini_wallet/features/transaction/bindings/edit_transaction_binding.dart';
 import 'package:mini_wallet/features/transaction/bindings/home_binding.dart';
@@ -15,8 +21,31 @@ import 'package:mini_wallet/routes/route_paths.dart';
 class AppRouter {
   AppRouter._();
 
+  static final _tokenStorage = SecureTokenStorage(const FlutterSecureStorage());
+
   static final routerConfig = GoRouter(
     initialLocation: RoutePaths.home,
+
+    redirect: (context, state) async {
+      final accessToken = await _tokenStorage.getAccessToken();
+      final isLoggedIn = accessToken != null && accessToken.trim().isNotEmpty;
+
+      final location = state.matchedLocation;
+
+      final isAuthRoute =
+          location == RoutePaths.login || location == RoutePaths.register;
+
+      if (!isLoggedIn && !isAuthRoute) {
+        return RoutePaths.login;
+      }
+
+      if (isLoggedIn && isAuthRoute) {
+        return RoutePaths.home;
+      }
+
+      return null;
+    },
+
     routes: [
       // ShellRoute(
       //   builder: (context, state, child) {
@@ -55,6 +84,27 @@ class AppRouter {
       //     ),
       //   ],
       // ),
+      GoRoute(
+        path: RoutePaths.login,
+        name: RouteNames.login,
+        builder: (context, state) {
+          return BindingScope(
+            binding: LoginBinding(),
+            child: const LoginPage(),
+          );
+        },
+      ),
+      GoRoute(
+        path: RoutePaths.register,
+        name: RouteNames.register,
+        builder: (context, state) {
+          return BindingScope(
+            binding: RegisterBinding(),
+            child: const RegisterPage(),
+          );
+        },
+      ),
+
       GoRoute(
         path: RoutePaths.home,
         name: RouteNames.home,

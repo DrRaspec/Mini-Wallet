@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:mini_wallet/core/network/api_client.dart';
 import 'package:mini_wallet/core/storage/secure_token_storage.dart';
 import 'package:mini_wallet/features/transaction/bindings/transaction_binding.dart';
+import 'package:mini_wallet/routes/app_router.dart';
+import 'package:mini_wallet/routes/route_paths.dart';
 
 class AppBinding extends Bindings {
   @override
@@ -13,7 +15,15 @@ class AppBinding extends Bindings {
       fenix: true,
     );
 
-    Get.lazyPut(() => ApiClient(Get.find<SecureTokenStorage>()), fenix: true);
+    Get.lazyPut(
+      () => ApiClient(
+        Get.find<SecureTokenStorage>(),
+        onUnauthorized: () {
+          AppRouter.routerConfig.go(RoutePaths.login);
+        },
+      ),
+      fenix: true,
+    );
 
     // Get.lazyPut(() => AuthApi(Get.find<ApiClient>()), fenix: true);
 
