@@ -4,11 +4,7 @@ import 'package:mini_wallet/features/transaction/data/models/transaction_model.d
 import 'package:mini_wallet/features/transaction/presentation/transaction_formatters.dart';
 
 class TransactionCard extends StatelessWidget {
-  const TransactionCard({
-    super.key,
-    required this.transaction,
-    this.onTap,
-  });
+  const TransactionCard({super.key, required this.transaction, this.onTap});
 
   final TransactionModel transaction;
   final VoidCallback? onTap;
@@ -28,9 +24,7 @@ class TransactionCard extends StatelessWidget {
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-          ),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
           child: Row(
             children: [
               // ── Icon ──────────────────────────────────────────────
