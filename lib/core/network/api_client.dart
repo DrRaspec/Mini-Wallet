@@ -29,7 +29,7 @@ class ApiClient {
               requestPath == ApiEndpoints.register ||
               requestPath == ApiEndpoints.refreshToken;
 
-          if (statusCode == 401 && !isAuthRequest) {
+          if (isAuthRequest || statusCode != 401) {
             handler.next(error);
             return;
           }

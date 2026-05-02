@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:get/state_manager.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
 import 'package:mini_wallet/features/auth/presentation/controllers/register_controller.dart';
@@ -108,55 +109,81 @@ class _RegisterFormCard extends StatelessWidget {
             const SizedBox(height: 20),
             _FieldLabel(label: 'Password', theme: theme),
             const SizedBox(height: 8),
-            TextFormField(
-              controller: controller.passwordController,
-              obscureText: true,
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                hintText: 'Create a password',
-                prefixIcon: Icon(Icons.lock_outline_rounded),
-                suffixIcon: Icon(Icons.visibility_off_outlined),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Password is required';
-                }
+            Obx(
+              () => TextFormField(
+                controller: controller.passwordController,
+                obscureText: !controller.passwordVisible.value,
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(
+                  hintText: 'Create a password',
+                  prefixIcon: Icon(Icons.lock_outline_rounded),
+                  suffixIcon: GestureDetector(
+                    child: Icon(
+                      controller.passwordVisible.value
+                          ? Icons.visibility
+                          : Icons.visibility_off_outlined,
+                    ),
+                    onTap: () => controller.passwordVisible.toggle(),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Password is required';
+                  }
 
-                return null;
-              },
+                  return null;
+                },
+              ),
             ),
             const SizedBox(height: 20),
             _FieldLabel(label: 'Confirm password', theme: theme),
             const SizedBox(height: 8),
-            TextFormField(
-              controller: controller.confirmPasswordController,
-              obscureText: true,
-              textInputAction: TextInputAction.done,
-              decoration: const InputDecoration(
-                hintText: 'Repeat your password',
-                prefixIcon: Icon(Icons.lock_outline_rounded),
-                suffixIcon: Icon(Icons.visibility_off_outlined),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Confirm password is required';
-                }
+            Obx(
+              () => TextFormField(
+                controller: controller.confirmPasswordController,
+                obscureText: !controller.confirmPasswordVisible.value,
+                textInputAction: TextInputAction.done,
+                decoration: InputDecoration(
+                  hintText: 'Repeat your password',
+                  prefixIcon: Icon(Icons.lock_outline_rounded),
+                  suffixIcon: GestureDetector(
+                    child: Icon(
+                      controller.confirmPasswordVisible.value
+                          ? Icons.visibility
+                          : Icons.visibility_off_outlined,
+                    ),
+                    onTap: () => controller.confirmPasswordVisible.toggle(),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Confirm password is required';
+                  }
 
-                return null;
-              },
+                  return null;
+                },
+              ),
             ),
             const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () async {
-                  final success = await controller.submitRegister();
+            Obx(
+              () => SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (controller.isLoading.value) return;
 
-                  if (!context.mounted || !success) return;
+                    final success = await controller.submitRegister();
 
-                  context.go(RoutePaths.home);
-                },
-                child: const Text('Register'),
+                    if (!context.mounted || !success) return;
+
+                    context.go(RoutePaths.home);
+                  },
+                  child: controller.isLoading.value
+                      ? CircularProgressIndicator(
+                          color: theme.colorScheme.onPrimary,
+                        )
+                      : const Text('Register'),
+                ),
               ),
             ),
           ],
