@@ -13,6 +13,9 @@ class RegisterController extends GetxController {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+  final passwordVisible = false.obs;
+  final confirmPasswordVisible = false.obs;
+
   final isLoading = false.obs;
 
   Future<bool> submitRegister() async {

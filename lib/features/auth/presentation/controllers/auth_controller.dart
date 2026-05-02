@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:mini_wallet/core/errors/network_error_message.dart';
 import 'package:mini_wallet/core/storage/secure_token_storage.dart';
 import 'package:mini_wallet/core/utils/app_logger.dart';
 import 'package:mini_wallet/features/auth/domain/entities/auth_result.dart';
@@ -36,13 +38,18 @@ class AuthController extends GetxController {
       );
 
       return const AuthResult.success();
+    } on DioException catch (e, stackTrace) {
+      return _failureFromDio(
+        e,
+        stackTrace,
+        operation: 'Login',
+        fallback: 'Please check your username and password.',
+      );
     } catch (e, stackTrace) {
       AppLogger.log('Login failed: $e');
       AppLogger.log(stackTrace.toString());
 
-      return const AuthResult.failure(
-        'Please check your username and password.',
-      );
+      return const AuthResult.failure('Unable to login. Please try again.');
     }
   }
 
@@ -75,6 +82,13 @@ class AuthController extends GetxController {
       );
 
       return const AuthResult.success();
+    } on DioException catch (e, stackTrace) {
+      return _failureFromDio(
+        e,
+        stackTrace,
+        operation: 'Register',
+        fallback: 'Unable to create account. Please try again.',
+      );
     } catch (e, stackTrace) {
       AppLogger.log('Register failed: $e');
       AppLogger.log(stackTrace.toString());
@@ -83,5 +97,19 @@ class AuthController extends GetxController {
         'Unable to create account. Please try again.',
       );
     }
+  }
+
+  AuthResult _failureFromDio(
+    DioException error,
+    StackTrace stackTrace, {
+    required String operation,
+    required String fallback,
+  }) {
+    AppLogger.log('$operation failed: $error');
+    AppLogger.log(stackTrace.toString());
+
+    return AuthResult.failure(
+      NetworkErrorMessage.fromDio(error, fallback: fallback),
+    );
   }
 }

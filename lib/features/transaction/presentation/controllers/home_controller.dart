@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:mini_wallet/core/errors/network_error_message.dart';
 import 'package:mini_wallet/core/utils/app_logger.dart';
 import 'package:mini_wallet/features/transaction/data/models/account_balance.dart';
 import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
@@ -33,6 +35,12 @@ class HomeController extends GetxController {
     try {
       isLoadingTransaction.value = true;
       transactions.value = await repository.getAll();
+    } on DioException catch (e) {
+      final message = NetworkErrorMessage.fromDio(
+        e,
+        fallback: 'Unable to fetch transactions right now.',
+      );
+      AppLogger.log('Error fetching transactions: $message');
     } catch (e) {
       AppLogger.log('Error fetching transactions: $e');
     } finally {
@@ -45,6 +53,12 @@ class HomeController extends GetxController {
       isLoadingBalance.value = true;
       accountBalance.value = await repository.getAccountBalance();
       AppLogger.log('Fetched account balance: ${accountBalance.value}');
+    } on DioException catch (e) {
+      final message = NetworkErrorMessage.fromDio(
+        e,
+        fallback: 'Unable to fetch total balance right now.',
+      );
+      AppLogger.log('Error fetching total balance: $message');
     } catch (e) {
       AppLogger.log('Error fetching total balance: $e');
     } finally {

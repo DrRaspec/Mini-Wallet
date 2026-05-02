@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mini_wallet/core/errors/network_error_message.dart';
 import 'package:mini_wallet/core/utils/app_logger.dart';
 import 'package:mini_wallet/core/widgets/app_toast.dart';
 import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
@@ -46,6 +48,13 @@ class TransactionDetailsController extends GetxController {
       if (context.mounted) {
         context.pop(true);
       }
+    } on DioException catch (e) {
+      final message = NetworkErrorMessage.fromDio(
+        e,
+        fallback: 'Unable to delete transaction right now.',
+      );
+      AppLogger.log('Error deleting transaction: $e');
+      AppToast.error('Error', message);
     } catch (e) {
       AppLogger.log('Error deleting transaction: $e');
       AppToast.error('Error', 'Unable to delete transaction right now.');
