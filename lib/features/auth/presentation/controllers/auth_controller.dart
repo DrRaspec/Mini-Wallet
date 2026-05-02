@@ -39,14 +39,11 @@ class AuthController extends GetxController {
 
       return const AuthResult.success();
     } on DioException catch (e, stackTrace) {
-      AppLogger.log('Login failed: $e');
-      AppLogger.log(stackTrace.toString());
-
-      return AuthResult.failure(
-        NetworkErrorMessage.fromDio(
-          e,
-          fallback: 'Please check your username and password.',
-        ),
+      return _failureFromDio(
+        e,
+        stackTrace,
+        operation: 'Login',
+        fallback: 'Please check your username and password.',
       );
     } catch (e, stackTrace) {
       AppLogger.log('Login failed: $e');
@@ -86,14 +83,11 @@ class AuthController extends GetxController {
 
       return const AuthResult.success();
     } on DioException catch (e, stackTrace) {
-      AppLogger.log('Register failed: $e');
-      AppLogger.log(stackTrace.toString());
-
-      return AuthResult.failure(
-        NetworkErrorMessage.fromDio(
-          e,
-          fallback: 'Unable to create account. Please try again.',
-        ),
+      return _failureFromDio(
+        e,
+        stackTrace,
+        operation: 'Register',
+        fallback: 'Unable to create account. Please try again.',
       );
     } catch (e, stackTrace) {
       AppLogger.log('Register failed: $e');
@@ -103,5 +97,19 @@ class AuthController extends GetxController {
         'Unable to create account. Please try again.',
       );
     }
+  }
+
+  AuthResult _failureFromDio(
+    DioException error,
+    StackTrace stackTrace, {
+    required String operation,
+    required String fallback,
+  }) {
+    AppLogger.log('$operation failed: $error');
+    AppLogger.log(stackTrace.toString());
+
+    return AuthResult.failure(
+      NetworkErrorMessage.fromDio(error, fallback: fallback),
+    );
   }
 }

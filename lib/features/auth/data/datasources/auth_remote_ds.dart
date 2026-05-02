@@ -14,7 +14,7 @@ class AuthRemoteDs {
       data: {'username': username, 'password': password},
     );
 
-    return AuthResponseModel.fromJson(res.data as Map<String, dynamic>);
+    return _parseAuthResponse(res);
   }
 
   Future<AuthResponseModel> register(String username, String password) async {
@@ -23,14 +23,7 @@ class AuthRemoteDs {
       data: {'username': username, 'password': password},
     );
 
-    if (res.data == null) {
-      throw DioException(
-        requestOptions: RequestOptions(path: ApiEndpoints.register),
-        error: 'Null response from server',
-      );
-    }
-
-    return AuthResponseModel.fromJson(res.data as Map<String, dynamic>);
+    return _parseAuthResponse(res);
   }
 
   Future<AuthResponseModel> refreshToken(String refreshToken) async {
@@ -39,6 +32,21 @@ class AuthRemoteDs {
       data: {'refreshToken': refreshToken},
     );
 
-    return AuthResponseModel.fromJson(res.data as Map<String, dynamic>);
+    return _parseAuthResponse(res);
+  }
+
+  AuthResponseModel _parseAuthResponse(Response<dynamic> response) {
+    final data = response.data;
+
+    if (data is! Map<String, dynamic>) {
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.badResponse,
+        error: 'Invalid auth response from server',
+      );
+    }
+
+    return AuthResponseModel.fromJson(data);
   }
 }
