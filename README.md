@@ -35,7 +35,12 @@ The app currently expects these API routes:
 
 1. Clone the Flutter app and open it in VS Code or Android Studio.
 2. Make sure the backend API is running.
-3. Configure the environment file that the app should load.
+3. Copy an example environment file and fill in local values:
+
+```bash
+cp assets/env/.env.dev.example assets/env/.env.dev
+cp assets/env/.env.prod.example assets/env/.env.prod
+```
 
 The app loads environment values from `assets/env/.env.dev` by default. You can switch files at launch time with `--dart-define=ENV_FILE=...`.
 
@@ -48,6 +53,8 @@ The app reads the following values from the selected `.env` file:
 - `API_PREFIX` - API prefix, for example `api`.
 - `API_VERSION` - API version, for example `v1`.
 - `API_TIMEOUT_SECONDS` - Network timeout in seconds.
+
+Example files are committed at `assets/env/.env.dev.example` and `assets/env/.env.prod.example`. Real `.env.*` files are ignored by Git.
 
 Example development configuration:
 
@@ -74,7 +81,7 @@ For production-style settings, point `ENV_FILE` at `assets/env/.env.prod`.
 - `lib/features/transaction` - Transaction data, repository, controllers, and pages.
 - `lib/features/shell` - App shell and shared navigation UI.
 - `lib/routes` - Central route definitions.
-- `assets/env` - Environment files used by the app at startup.
+- `assets/env` - Local environment files plus committed examples.
 
 ## Notes
 
