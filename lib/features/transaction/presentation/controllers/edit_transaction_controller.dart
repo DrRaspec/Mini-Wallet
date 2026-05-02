@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mini_wallet/core/errors/network_error_message.dart';
 import 'package:mini_wallet/core/utils/app_logger.dart';
 import 'package:mini_wallet/core/widgets/app_toast.dart';
 import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
@@ -81,6 +83,14 @@ class EditTransactionController extends GetxController {
       }
       AppToast.success('Updated', 'Transaction updated successfully.');
       return updatedTransaction;
+    } on DioException catch (e) {
+      final message = NetworkErrorMessage.fromDio(
+        e,
+        fallback: 'Unable to update transaction right now.',
+      );
+      AppLogger.log('Error updating transaction: $e');
+      AppToast.error('Error', message);
+      return null;
     } catch (e) {
       AppLogger.log('Error updating transaction: $e');
       AppToast.error('Error', 'Unable to update transaction right now.');

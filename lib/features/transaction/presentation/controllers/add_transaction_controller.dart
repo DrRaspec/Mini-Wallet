@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mini_wallet/core/errors/network_error_message.dart';
 import 'package:mini_wallet/core/utils/app_logger.dart';
 import 'package:mini_wallet/core/widgets/app_toast.dart';
 import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
@@ -50,6 +52,14 @@ class AddTransactionController extends GetxController {
       AppToast.success('Saved', 'Transaction added successfully.');
       AppLogger.log('Transaction added successfully: ${transaction.value}');
       return true;
+    } on DioException catch (e) {
+      final message = NetworkErrorMessage.fromDio(
+        e,
+        fallback: 'Unable to add transaction right now.',
+      );
+      AppLogger.log('Error occurred while adding transaction: $e');
+      AppToast.error('Error', message);
+      return false;
     } catch (e) {
       AppLogger.log('Error occurred while adding transaction: $e');
       AppToast.error('Error', 'Unable to add transaction right now.');
