@@ -69,6 +69,35 @@ API_TIMEOUT_SECONDS=15
 ## Run
 
 ```bash
+cp assets/env/.env.dev.example assets/env/.env.dev
+cp assets/env/.env.prod.example assets/env/.env.prod
+```
+
+For production-style settings, point `ENV_FILE` at `assets/env/.env.prod`.
+
+## Project Structure
+
+- `lib/core` - Shared configuration, networking, theme, storage, and widgets.
+- `lib/features/transaction` - Transaction data, repository, controllers, and pages.
+- `lib/features/shell` - App shell and shared navigation UI.
+- `lib/routes` - Central route definitions.
+- `assets/env` - Local environment files plus committed examples.
+
+## Notes
+
+Example development configuration:
+
+```env
+APP_FLAVOR=dev
+API_BASE_URL=http://10.0.2.2:8080
+API_PREFIX=api
+API_VERSION=v1
+API_TIMEOUT_SECONDS=15
+```
+
+## Run
+
+```bash
 flutter pub get
 flutter run --dart-define=ENV_FILE=assets/env/.env.dev
 ```
