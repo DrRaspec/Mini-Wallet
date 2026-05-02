@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
@@ -135,15 +136,23 @@ class _LoginFormCard extends StatelessWidget {
             const SizedBox(height: 12),
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () async {
-                  final success = await controller.submitLogin();
+              child: Obx(
+                () => ElevatedButton(
+                  onPressed: () async {
+                    if (controller.isLoading.value) return;
 
-                  if (!context.mounted || !success) return;
+                    final success = await controller.submitLogin();
 
-                  context.go(RoutePaths.home);
-                },
-                child: const Text('Login'),
+                    if (!context.mounted || !success) return;
+
+                    context.go(RoutePaths.home);
+                  },
+                  child: controller.isLoading.value
+                      ? CircularProgressIndicator(
+                          color: context.theme.colorScheme.onPrimary,
+                        )
+                      : const Text('Login'),
+                ),
               ),
             ),
           ],
