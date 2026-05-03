@@ -23,4 +23,18 @@ final Map<String, String> enUS = {
   AppKeys.confirmPasswordHint: 'Repeat your password',
   AppKeys.confirmPasswordRequired: 'Confirm password is required',
   AppKeys.passwordsDoNotMatch: 'Passwords do not match',
+
+  AppKeys.goodMorning: 'Good Morning',
+  AppKeys.goodAfternoon: 'Good Afternoon',
+  AppKeys.goodEvening: 'Good Evening',
+  AppKeys.recentActivity: 'Recent Activity',
+  AppKeys.walletBalance: 'Wallet Balance',
+  AppKeys.income: 'Income',
+  AppKeys.expenses: 'Expenses',
+  AppKeys.noTransactions: 'No transactions yet',
+  AppKeys.noTransactionDesc: 'Add an income or expense and your\nwallet summary will appear here.',
+  AppKeys.getStarted: 'Get Started',
+  AppKeys.addTransaction: 'Add Transaction',
+  AppKeys.keepItCurrent: 'Keep it current',
+  AppKeys.recordTheNextOne: 'Record the next one',
 };

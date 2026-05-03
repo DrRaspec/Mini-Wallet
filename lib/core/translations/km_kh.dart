@@ -23,4 +23,19 @@ final Map<String, String> kmKH = {
   AppKeys.confirmPasswordHint: 'បញ្ជាក់ពាក្យសម្ងាត់',
   AppKeys.confirmPasswordRequired: 'បញ្ជាក់ពាក្យសម្ងាត់គួរតែបានបញ្ចូល',
   AppKeys.passwordsDoNotMatch: 'ពាក្យសម្ងាត់មិនត្រូវគ្នា',
+
+  AppKeys.goodMorning: 'អរុណសួស្តី',
+  AppKeys.goodAfternoon: 'ទិវាសួស្តី',
+  AppKeys.goodEvening: 'សាយ័ណ្ហសួស្តី',
+  AppKeys.recentActivity: 'សកម្មភាពថ្មីៗ',
+  AppKeys.walletBalance: 'សមតុល្យកាបូប',
+  AppKeys.income: 'ចំណុចប្រាក់',
+  AppKeys.expenses: 'ចំណាយ',
+  AppKeys.noTransactions: 'គ្មានការធ្វើសកម្មភាពទេ',
+  AppKeys.noTransactionDesc:
+      'បន្ថែមចំណូល ឬចំណាយ ហើយរបាយការណ៍\nសង្ខេបកាបូបលុយរបស់អ្នកនឹងបង្ហាញនៅទីនេះ។',
+  AppKeys.getStarted: 'ចាប់ផ្តើម',
+  AppKeys.addTransaction: 'បន្ថែមប្រតិបត្តិការ',
+  AppKeys.keepItCurrent: 'រក្សាបច្ចុប្បន្នភាព',
+  AppKeys.recordTheNextOne: 'កត់ត្រាបន្តទៀត',
 };

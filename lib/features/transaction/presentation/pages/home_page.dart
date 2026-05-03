@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
+import 'package:mini_wallet/core/translations/app_keys.dart';
 import 'package:mini_wallet/features/transaction/presentation/controllers/home_controller.dart';
 import 'package:mini_wallet/features/transaction/presentation/transaction_formatters.dart';
 import 'package:mini_wallet/features/transaction/presentation/widgets/transaction_card.dart';
@@ -71,7 +72,7 @@ class HomePage extends GetView<HomeController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Recent Activity',
+                          AppKeys.recentActivity.tr,
                           style: theme.textTheme.titleLarge?.copyWith(
                             color: AppColors.textPrimary,
                           ),
@@ -157,9 +158,9 @@ class _TopBar extends StatelessWidget {
 
   String get _greeting {
     final hour = DateTime.now().hour;
-    if (hour < 12) return 'Good Morning';
-    if (hour < 17) return 'Good Afternoon';
-    return 'Good Evening';
+    if (hour < 12) return AppKeys.goodMorning.tr;
+    if (hour < 17) return AppKeys.goodAfternoon.tr;
+    return AppKeys.goodEvening.tr;
   }
 
   @override
@@ -198,7 +199,7 @@ class _TopBar extends StatelessWidget {
               ),
               const SizedBox(height: 2),
               Text(
-                'Mini Wallet',
+                AppKeys.appName.tr,
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: AppColors.textPrimary,
                 ),
@@ -247,7 +248,7 @@ class _BalanceSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Wallet Balance',
+          AppKeys.walletBalance.tr,
           style: theme.textTheme.bodyMedium?.copyWith(
             color: AppColors.textSecondary,
           ),
@@ -266,7 +267,7 @@ class _BalanceSection extends StatelessWidget {
           children: [
             Expanded(
               child: _StatCard(
-                label: 'Income',
+                label: AppKeys.income.tr,
                 value: formatCurrency(incomeTotal),
                 icon: Icons.south_west_rounded,
                 backgroundColor: AppColors.income.withValues(alpha: 0.08),
@@ -276,7 +277,7 @@ class _BalanceSection extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: _StatCard(
-                label: 'Expense',
+                label: AppKeys.expenses.tr,
                 value: formatCurrency(expenseTotal),
                 icon: Icons.north_east_rounded,
                 backgroundColor: AppColors.secondary.withValues(alpha: 0.10),
@@ -383,7 +384,7 @@ class _QuickAddBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  isEmpty ? 'Get started' : 'Keep it current',
+                  isEmpty ? AppKeys.getStarted.tr : AppKeys.keepItCurrent.tr,
                   style: theme.textTheme.titleMedium?.copyWith(
                     color: AppColors.textPrimary,
                   ),
@@ -391,8 +392,8 @@ class _QuickAddBanner extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   isEmpty
-                      ? 'Add your first transaction'
-                      : 'Record the next one',
+                      ? AppKeys.addTransaction.tr
+                      : AppKeys.recordTheNextOne.tr,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -451,14 +452,14 @@ class _EmptyState extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Text(
-            'No transactions yet',
+            AppKeys.noTransactions.tr,
             style: theme.textTheme.titleLarge?.copyWith(
               color: AppColors.textPrimary,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Add an income or expense and your\nwallet summary will appear here.',
+            AppKeys.noTransactionDesc.tr,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: AppColors.textSecondary,
             ),
