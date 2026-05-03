@@ -32,7 +32,7 @@ class LoginPage extends GetView<LoginController> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  AppKeys.loginDescription.tr,
+                  AppKeys.loginTitle.tr,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                   ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
-import 'package:get/state_manager.dart';
+import 'package:get/get.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
+import 'package:mini_wallet/core/translations/app_keys.dart';
 import 'package:mini_wallet/features/auth/presentation/controllers/register_controller.dart';
 import 'package:mini_wallet/routes/app_routes.dart';
 
@@ -26,14 +26,14 @@ class RegisterPage extends GetView<RegisterController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Create account',
+                  AppKeys.createAccountButton.tr,
                   style: theme.textTheme.headlineLarge?.copyWith(
                     color: AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Start tracking your money with a fresh wallet.',
+                  AppKeys.registerTitle.tr,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -45,14 +45,14 @@ class RegisterPage extends GetView<RegisterController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Already have an account?',
+                      AppKeys.alreadyHaveAccount.tr,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: AppColors.textSecondary,
                       ),
                     ),
                     TextButton(
                       onPressed: () => Get.offAllNamed(AppRoutes.login),
-                      child: const Text('Login'),
+                      child: Text(AppKeys.loginButton.tr),
                     ),
                   ],
                 ),
@@ -86,26 +86,26 @@ class _RegisterFormCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _FieldLabel(label: 'Username', theme: theme),
+            _FieldLabel(label: AppKeys.username.tr, theme: theme),
             const SizedBox(height: 8),
             TextFormField(
               controller: controller.usernameController,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                hintText: 'Enter your username',
+              decoration:  InputDecoration(
+                hintText: AppKeys.usernameHint.tr,
                 prefixIcon: Icon(Icons.person_outline_rounded),
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Username is required';
+                  return AppKeys.usernameRequired.tr;
                 }
 
                 return null;
               },
             ),
             const SizedBox(height: 20),
-            _FieldLabel(label: 'Password', theme: theme),
+            _FieldLabel(label: AppKeys.password.tr, theme: theme),
             const SizedBox(height: 8),
             Obx(
               () => TextFormField(
@@ -113,7 +113,7 @@ class _RegisterFormCard extends StatelessWidget {
                 obscureText: !controller.passwordVisible.value,
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
-                  hintText: 'Create a password',
+                  hintText: AppKeys.passwordHint.tr,
                   prefixIcon: Icon(Icons.lock_outline_rounded),
                   suffixIcon: GestureDetector(
                     child: Icon(
@@ -126,7 +126,7 @@ class _RegisterFormCard extends StatelessWidget {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Password is required';
+                    return AppKeys.passwordRequired.tr;
                   }
 
                   return null;
@@ -134,7 +134,7 @@ class _RegisterFormCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            _FieldLabel(label: 'Confirm password', theme: theme),
+            _FieldLabel(label: AppKeys.confirmPassword.tr, theme: theme),
             const SizedBox(height: 8),
             Obx(
               () => TextFormField(
@@ -142,7 +142,7 @@ class _RegisterFormCard extends StatelessWidget {
                 obscureText: !controller.confirmPasswordVisible.value,
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
-                  hintText: 'Repeat your password',
+                  hintText: AppKeys.confirmPasswordHint.tr,
                   prefixIcon: Icon(Icons.lock_outline_rounded),
                   suffixIcon: GestureDetector(
                     child: Icon(
@@ -155,7 +155,9 @@ class _RegisterFormCard extends StatelessWidget {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Confirm password is required';
+                    return AppKeys.confirmPasswordRequired.tr;
+                  } else if (value != controller.passwordController.text) {
+                    return AppKeys.passwordsDoNotMatch.tr;
                   }
 
                   return null;
@@ -180,7 +182,7 @@ class _RegisterFormCard extends StatelessWidget {
                       ? CircularProgressIndicator(
                           color: theme.colorScheme.onPrimary,
                         )
-                      : const Text('Register'),
+                      : Text(AppKeys.registerButton.tr),
                 ),
               ),
             ),
