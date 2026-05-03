@@ -5,6 +5,14 @@ import 'package:mini_wallet/routes/app_routes.dart';
 class AuthMiddleware extends GetMiddleware {
   AuthMiddleware({super.priority});
 
+  // redirect vs redirectDelegate
+  // redirectDelegate is the async, navigation-aware version of redirect
+  // redirect cannot use async operations, but redirectDelegate can await
+
+  // Runs before navigation for routes using this middleware.
+  // Return:
+  // - new route → redirect
+  // - current route → allow
   @override
   Future<GetNavConfig?> redirectDelegate(GetNavConfig route) async {
     final tokenStorage = Get.find<SecureTokenStorage>();
