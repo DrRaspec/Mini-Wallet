@@ -43,7 +43,7 @@ class TransactionDetailsController extends GetxController {
       await repository.delete(transaction.id);
       AppToast.success('Deleted', 'Transaction deleted successfully.');
       if (context.mounted) {
-        context.pop(true);
+        Get.back(result: true);
       }
     } on DioException catch (e) {
       final message = NetworkErrorMessage.fromDio(
