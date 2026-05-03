@@ -11,7 +11,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    // final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -28,14 +28,14 @@ class AddTransactionPage extends GetView<AddTransactionController> {
               children: [
                 Text(
                   'Record a new entry',
-                  style: theme.textTheme.headlineSmall?.copyWith(
+                  style: Get.theme.textTheme.headlineSmall?.copyWith(
                     color: context.appTextPrimary,
                   ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   'Add the title, amount, and type.',
-                  style: theme.textTheme.bodyMedium?.copyWith(
+                  style: Get.theme.textTheme.bodyMedium?.copyWith(
                     color: context.appTextSecondary,
                   ),
                 ),
@@ -54,7 +54,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                     children: [
                       Text(
                         'Type',
-                        style: theme.textTheme.titleMedium?.copyWith(
+                        style: Get.theme.textTheme.titleMedium?.copyWith(
                           color: context.appTextPrimary,
                         ),
                       ),
@@ -110,7 +110,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                       const SizedBox(height: 22),
                       Text(
                         'Title',
-                        style: theme.textTheme.titleMedium?.copyWith(
+                        style: Get.theme.textTheme.titleMedium?.copyWith(
                           color: context.appTextPrimary,
                         ),
                       ),
@@ -126,7 +126,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                       const SizedBox(height: 22),
                       Text(
                         'Amount',
-                        style: theme.textTheme.titleMedium?.copyWith(
+                        style: Get.theme.textTheme.titleMedium?.copyWith(
                           color: context.appTextPrimary,
                         ),
                       ),
@@ -150,7 +150,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                 // ── Preview ─────────────────────────────────────────
                 Text(
                   'Preview',
-                  style: theme.textTheme.titleMedium?.copyWith(
+                  style: Get.theme.textTheme.titleMedium?.copyWith(
                     color: context.appTextPrimary,
                   ),
                 ),

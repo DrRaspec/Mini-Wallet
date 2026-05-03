@@ -10,8 +10,6 @@ class RegisterPage extends GetView<RegisterController> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(onPressed: () => Get.offAllNamed(AppRoutes.login)),
@@ -27,14 +25,14 @@ class RegisterPage extends GetView<RegisterController> {
               children: [
                 Text(
                   AppKeys.createAccountButton.tr,
-                  style: theme.textTheme.headlineLarge?.copyWith(
+                  style: Get.theme.textTheme.headlineLarge?.copyWith(
                     color: context.appTextPrimary,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   AppKeys.registerTitle.tr,
-                  style: theme.textTheme.bodyMedium?.copyWith(
+                  style: Get.theme.textTheme.bodyMedium?.copyWith(
                     color: context.appTextSecondary,
                   ),
                 ),
@@ -46,7 +44,7 @@ class RegisterPage extends GetView<RegisterController> {
                   children: [
                     Text(
                       AppKeys.alreadyHaveAccount.tr,
-                      style: theme.textTheme.bodyMedium?.copyWith(
+                      style: Get.theme.textTheme.bodyMedium?.copyWith(
                         color: context.appTextSecondary,
                       ),
                     ),

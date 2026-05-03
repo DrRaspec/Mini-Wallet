@@ -12,7 +12,7 @@ class HomePage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    // final theme = Theme.of(context);
 
     return Scaffold(
       body: SafeArea(
@@ -38,7 +38,7 @@ class HomePage extends GetView<HomeController> {
                 // ── Header ──────────────────────────────────────────
                 SliverPadding(
                   padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
-                  sliver: SliverToBoxAdapter(child: _TopBar(theme: theme)),
+                  sliver: SliverToBoxAdapter(child: _TopBar(theme: Get.theme)),
                 ),
 
                 // ── Balance card ────────────────────────────────────
@@ -73,7 +73,7 @@ class HomePage extends GetView<HomeController> {
                       children: [
                         Text(
                           AppKeys.recentActivity.tr,
-                          style: theme.textTheme.titleLarge?.copyWith(
+                          style: Get.theme.textTheme.titleLarge?.copyWith(
                             color: context.appTextPrimary,
                           ),
                         ),
@@ -89,7 +89,7 @@ class HomePage extends GetView<HomeController> {
                             ),
                             child: Text(
                               '${transactions.length}',
-                              style: theme.textTheme.bodySmall?.copyWith(
+                              style: Get.theme.textTheme.bodySmall?.copyWith(
                                 color: context.appTextPrimary,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -106,7 +106,7 @@ class HomePage extends GetView<HomeController> {
                     hasScrollBody: false,
                     child: Padding(
                       padding: const EdgeInsets.all(24),
-                      child: _EmptyState(theme: theme),
+                      child: _EmptyState(theme: Get.theme),
                     ),
                   )
                 else

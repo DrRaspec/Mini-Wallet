@@ -9,7 +9,7 @@ class TransactionDetailsPage extends GetView<TransactionDetailsController> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    // final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Transaction')),
@@ -55,21 +55,21 @@ class TransactionDetailsPage extends GetView<TransactionDetailsController> {
                       const SizedBox(height: 20),
                       Text(
                         transaction.title,
-                        style: theme.textTheme.headlineSmall?.copyWith(
+                        style: Get.theme.textTheme.headlineSmall?.copyWith(
                           color: context.appTextPrimary,
                         ),
                       ),
                       const SizedBox(height: 6),
                       Text(
                         isIncome ? 'Money received' : 'Money spent',
-                        style: theme.textTheme.bodyMedium?.copyWith(
+                        style: Get.theme.textTheme.bodyMedium?.copyWith(
                           color: context.appTextSecondary,
                         ),
                       ),
                       const SizedBox(height: 24),
                       Text(
                         formatTransactionAmount(transaction),
-                        style: theme.textTheme.displaySmall?.copyWith(
+                        style: Get.theme.textTheme.displaySmall?.copyWith(
                           color: toneColor,
                         ),
                       ),

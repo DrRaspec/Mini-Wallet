@@ -10,8 +10,6 @@ class LoginPage extends GetView<LoginController> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       body: SafeArea(
         child: GestureDetector(
@@ -26,14 +24,14 @@ class LoginPage extends GetView<LoginController> {
                 const SizedBox(height: 36),
                 Text(
                   AppKeys.welcomeMessage.tr,
-                  style: theme.textTheme.headlineLarge?.copyWith(
+                  style: Get.theme.textTheme.headlineLarge?.copyWith(
                     color: context.appTextPrimary,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   AppKeys.loginTitle.tr,
-                  style: theme.textTheme.bodyMedium?.copyWith(
+                  style: Get.theme.textTheme.bodyMedium?.copyWith(
                     color: context.appTextSecondary,
                   ),
                 ),
@@ -45,7 +43,7 @@ class LoginPage extends GetView<LoginController> {
                   children: [
                     Text(
                       AppKeys.newUser.tr,
-                      style: theme.textTheme.bodyMedium?.copyWith(
+                      style: Get.theme.textTheme.bodyMedium?.copyWith(
                         color: context.appTextSecondary,
                       ),
                     ),
