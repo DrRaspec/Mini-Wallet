@@ -11,6 +11,7 @@ import 'package:mini_wallet/features/transaction/presentation/pages/add_transact
 import 'package:mini_wallet/features/transaction/presentation/pages/edit_transaction_page.dart';
 import 'package:mini_wallet/features/transaction/presentation/pages/home_page.dart';
 import 'package:mini_wallet/features/transaction/presentation/pages/transaction_details_page.dart';
+import 'package:mini_wallet/features/settings/presentation/pages/settings_page.dart';
 import 'package:mini_wallet/routes/app_routes.dart';
 import 'package:mini_wallet/routes/auth_middleware.dart';
 
@@ -61,6 +62,12 @@ class AppPages {
       name: AppRoutes.editTransaction,
       page: () => const EditTransactionPage(),
       binding: EditTransactionBinding(),
+      middlewares: [_authMiddleware],
+    ),
+
+    GetPage(
+      name: AppRoutes.settings,
+      page: () => const SettingsPage(),
       middlewares: [_authMiddleware],
     ),
   ];
