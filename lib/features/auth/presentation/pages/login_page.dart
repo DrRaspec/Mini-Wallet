@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
 import 'package:mini_wallet/features/auth/presentation/controllers/login_controller.dart';
-import 'package:mini_wallet/routes/route_names.dart';
-import 'package:mini_wallet/routes/route_paths.dart';
+import 'package:mini_wallet/routes/app_routes.dart';
 
 class LoginPage extends GetView<LoginController> {
   const LoginPage({super.key});
@@ -52,7 +49,7 @@ class LoginPage extends GetView<LoginController> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () => context.goNamed(RouteNames.register),
+                      onPressed: () => Get.toNamed(AppRoutes.register),
                       child: const Text('Create account'),
                     ),
                   ],
@@ -145,7 +142,7 @@ class _LoginFormCard extends StatelessWidget {
 
                     if (!context.mounted || !success) return;
 
-                    context.go(RoutePaths.home);
+                    Get.offAllNamed(AppRoutes.home);
                   },
                   child: controller.isLoading.value
                       ? CircularProgressIndicator(

@@ -1,22 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mini_wallet/core/errors/network_error_message.dart';
 import 'package:mini_wallet/core/utils/app_logger.dart';
 import 'package:mini_wallet/core/widgets/app_toast.dart';
 import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
 import 'package:mini_wallet/features/transaction/domain/repositories/transaction_repository.dart';
-import 'package:mini_wallet/routes/route_paths.dart';
+import 'package:mini_wallet/routes/app_routes.dart';
 
 class TransactionDetailsController extends GetxController {
-  TransactionDetailsController({
-    required this.transaction,
-    required this.repository,
-  });
+  TransactionDetailsController({required this.repository});
 
   final TransactionRepository repository;
-  final TransactionModel transaction;
   final selectedTransaction = Rx<TransactionModel?>(null);
 
   final isDeleting = false.obs;
@@ -24,14 +19,16 @@ class TransactionDetailsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    selectedTransaction.value = transaction;
+    selectedTransaction.value = Get.arguments as TransactionModel?;
   }
 
   Future<void> onEdit(BuildContext context) async {
-    final updatedTransaction = await context.push<TransactionModel>(
-      RoutePaths.editTransaction,
-      extra: selectedTransaction.value,
-    );
+    final updatedTransaction =
+        Get.toNamed(
+              AppRoutes.editTransaction,
+              arguments: selectedTransaction.value,
+            )
+            as TransactionModel?;
     if (updatedTransaction != null) {
       selectedTransaction.value = updatedTransaction;
     }

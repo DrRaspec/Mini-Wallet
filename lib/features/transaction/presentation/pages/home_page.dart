@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
 import 'package:mini_wallet/features/transaction/presentation/controllers/home_controller.dart';
 import 'package:mini_wallet/features/transaction/presentation/transaction_formatters.dart';
 import 'package:mini_wallet/features/transaction/presentation/widgets/transaction_card.dart';
-import 'package:mini_wallet/routes/route_names.dart';
-import 'package:mini_wallet/routes/route_paths.dart';
+import 'package:mini_wallet/routes/app_routes.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
@@ -59,8 +57,7 @@ class HomePage extends GetView<HomeController> {
                   padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
                   sliver: SliverToBoxAdapter(
                     child: _QuickAddBanner(
-                      onAddPressed: () =>
-                          context.push(RoutePaths.addTransaction),
+                      onAddPressed: () => Get.toNamed(AppRoutes.addTransaction),
                       isEmpty: transactions.isEmpty,
                     ),
                   ),
@@ -124,11 +121,10 @@ class HomePage extends GetView<HomeController> {
                           child: TransactionCard(
                             transaction: transaction,
                             onTap: () async {
-                              final shouldRefresh = await context
-                                  .pushNamed<bool>(
-                                    RouteNames.transactionDetails,
-                                    extra: transaction,
-                                  );
+                              final shouldRefresh = await Get.toNamed<bool>(
+                                AppRoutes.transactionDetails,
+                                arguments: transaction,
+                              );
 
                               if (shouldRefresh == true && context.mounted) {
                                 await controller.refreshHome();
@@ -145,7 +141,7 @@ class HomePage extends GetView<HomeController> {
         }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push(RoutePaths.addTransaction),
+        onPressed: () => Get.toNamed(AppRoutes.addTransaction),
         child: const Icon(Icons.add),
       ),
     );

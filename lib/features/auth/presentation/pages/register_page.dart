@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
 import 'package:mini_wallet/features/auth/presentation/controllers/register_controller.dart';
-import 'package:mini_wallet/routes/route_names.dart';
-import 'package:mini_wallet/routes/route_paths.dart';
+import 'package:mini_wallet/routes/app_routes.dart';
 
 class RegisterPage extends GetView<RegisterController> {
   const RegisterPage({super.key});
@@ -16,7 +14,7 @@ class RegisterPage extends GetView<RegisterController> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(onPressed: () => context.goNamed(RouteNames.login)),
+        leading: BackButton(onPressed: () => Get.offAllNamed(AppRoutes.login)),
       ),
       body: SafeArea(
         child: GestureDetector(
@@ -53,7 +51,7 @@ class RegisterPage extends GetView<RegisterController> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () => context.goNamed(RouteNames.login),
+                      onPressed: () => Get.offAllNamed(AppRoutes.login),
                       child: const Text('Login'),
                     ),
                   ],
@@ -176,7 +174,7 @@ class _RegisterFormCard extends StatelessWidget {
 
                     if (!context.mounted || !success) return;
 
-                    context.go(RoutePaths.home);
+                    Get.offAllNamed(AppRoutes.home);
                   },
                   child: controller.isLoading.value
                       ? CircularProgressIndicator(

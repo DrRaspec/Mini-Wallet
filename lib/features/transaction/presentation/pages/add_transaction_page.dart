@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
 import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
 import 'package:mini_wallet/features/transaction/presentation/controllers/add_transaction_controller.dart';
 import 'package:mini_wallet/features/transaction/presentation/widgets/transaction_card.dart';
-import 'package:mini_wallet/routes/route_paths.dart';
+import 'package:mini_wallet/routes/app_routes.dart';
 
 class AddTransactionPage extends GetView<AddTransactionController> {
   const AddTransactionPage({super.key});
@@ -16,7 +15,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(onPressed: () => context.pop()),
+        leading: BackButton(onPressed: () => Get.back()),
         title: const Text('Add Transaction'),
       ),
       body: SafeArea(
@@ -172,7 +171,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                               if (!context.mounted || !didSave) {
                                 return;
                               }
-                              context.go(RoutePaths.home);
+                              Get.offAllNamed(AppRoutes.home);
                             },
                       child: controller.isLoading.value
                           ? const SizedBox(

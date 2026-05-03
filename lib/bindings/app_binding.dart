@@ -3,8 +3,7 @@ import 'package:get/get.dart';
 import 'package:mini_wallet/core/network/api_client.dart';
 import 'package:mini_wallet/core/storage/secure_token_storage.dart';
 import 'package:mini_wallet/features/transaction/bindings/transaction_binding.dart';
-import 'package:mini_wallet/routes/app_router.dart';
-import 'package:mini_wallet/routes/route_paths.dart';
+import 'package:mini_wallet/routes/app_routes.dart';
 
 class AppBinding extends Bindings {
   @override
@@ -19,7 +18,7 @@ class AppBinding extends Bindings {
       () => ApiClient(
         Get.find<SecureTokenStorage>(),
         onUnauthorized: () {
-          AppRouter.routerConfig.go(RoutePaths.login);
+          Get.offAllNamed(AppRoutes.login);
         },
       ),
       fenix: true,

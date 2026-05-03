@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
 import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
 import 'package:mini_wallet/features/transaction/presentation/controllers/edit_transaction_controller.dart';
@@ -15,7 +14,7 @@ class EditTransactionPage extends GetView<EditTransactionController> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(onPressed: () => context.pop()),
+        leading: BackButton(onPressed: () => Get.back()),
         title: const Text('Edit Transaction'),
       ),
       body: SafeArea(
@@ -179,7 +178,7 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                                   updatedTransaction == null) {
                                 return;
                               }
-                              context.pop(updatedTransaction);
+                              Get.back(result: updatedTransaction);
                             },
                       child: controller.isLoading.value
                           ? const SizedBox(
