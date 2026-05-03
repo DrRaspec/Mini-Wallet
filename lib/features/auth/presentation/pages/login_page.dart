@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
+import 'package:mini_wallet/core/translations/app_keys.dart';
 import 'package:mini_wallet/features/auth/presentation/controllers/login_controller.dart';
 import 'package:mini_wallet/routes/app_routes.dart';
 
@@ -24,14 +25,14 @@ class LoginPage extends GetView<LoginController> {
                 const _AuthMark(),
                 const SizedBox(height: 36),
                 Text(
-                  'Welcome back',
+                  AppKeys.welcomeMessage.tr,
                   style: theme.textTheme.headlineLarge?.copyWith(
                     color: AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Sign in to continue managing your wallet.',
+                  AppKeys.loginDescription.tr,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -43,14 +44,14 @@ class LoginPage extends GetView<LoginController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'New to Mini Wallet?',
+                      AppKeys.newUser.tr,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: AppColors.textSecondary,
                       ),
                     ),
                     TextButton(
                       onPressed: () => Get.toNamed(AppRoutes.register),
-                      child: const Text('Create account'),
+                      child: Text(AppKeys.createAccountButton.tr),
                     ),
                   ],
                 ),
@@ -84,39 +85,39 @@ class _LoginFormCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _FieldLabel(label: 'Username', theme: theme),
+            _FieldLabel(label: AppKeys.username.tr, theme: theme),
             const SizedBox(height: 8),
             TextFormField(
               controller: controller.lUsernameController,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                hintText: 'Enter your username',
+              decoration: InputDecoration(
+                hintText: AppKeys.usernameHint.tr,
                 prefixIcon: Icon(Icons.person_outline_rounded),
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Username is required';
+                  return AppKeys.usernameRequired.tr;
                 }
 
                 return null;
               },
             ),
             const SizedBox(height: 20),
-            _FieldLabel(label: 'Password', theme: theme),
+            _FieldLabel(label: AppKeys.password.tr, theme: theme),
             const SizedBox(height: 8),
             TextFormField(
               controller: controller.rPasswordController,
               obscureText: true,
               textInputAction: TextInputAction.done,
-              decoration: const InputDecoration(
-                hintText: 'Enter your password',
+              decoration: InputDecoration(
+                hintText: AppKeys.passwordHint.tr,
                 prefixIcon: Icon(Icons.lock_outline_rounded),
                 suffixIcon: Icon(Icons.visibility_off_outlined),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Password is required';
+                  return AppKeys.passwordRequired.tr;
                 }
 
                 return null;
@@ -127,7 +128,7 @@ class _LoginFormCard extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {},
-                child: const Text('Forgot password?'),
+                child: Text(AppKeys.forgotPassword.tr),
               ),
             ),
             const SizedBox(height: 12),
@@ -148,7 +149,7 @@ class _LoginFormCard extends StatelessWidget {
                       ? CircularProgressIndicator(
                           color: context.theme.colorScheme.onPrimary,
                         )
-                      : const Text('Login'),
+                      : Text(AppKeys.loginButton.tr),
                 ),
               ),
             ),
@@ -183,7 +184,7 @@ class _AuthMark extends StatelessWidget {
         ),
         const SizedBox(width: 14),
         Text(
-          'Mini Wallet',
+          AppKeys.appName.tr,
           style: theme.textTheme.titleLarge?.copyWith(
             color: AppColors.textPrimary,
           ),
