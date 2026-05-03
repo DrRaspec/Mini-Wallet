@@ -1,108 +1,112 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
+import 'package:mini_wallet/features/settings/presentation/controllers/settings_controller.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends GetView<SettingsController> {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    final colors = _SettingsColors(isDark: isDark);
+    return Obx(() {
+      final appTheme = controller.appTheme.value;
+      final appLocale = controller.appLocale.value;
+      final colors = _SettingsColors(
+        isDark: Theme.of(context).brightness == Brightness.dark,
+      );
 
-    return Scaffold(
-      backgroundColor: colors.background,
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverPadding(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-              sliver: SliverToBoxAdapter(
-                child: _SettingsHeader(theme: theme, colors: colors),
-              ),
-            ),
-            SliverPadding(
-              padding: const EdgeInsets.fromLTRB(20, 28, 20, 0),
-              sliver: SliverToBoxAdapter(
-                child: _SettingsSection(
-                  title: 'Appearance',
-                  children: [
-                    _ChoiceTile(
-                      icon: Icons.light_mode_rounded,
-                      title: 'Light mode',
-                      subtitle: 'Use the bright wallet theme',
-                      isSelected: !isDark,
-                      colors: colors,
-                      onTap: () {
-                        // TODO: Call your change theme logic here.
-                      },
-                    ),
-                    _ChoiceTile(
-                      icon: Icons.dark_mode_rounded,
-                      title: 'Dark mode',
-                      subtitle: 'Use the low-light wallet theme',
-                      isSelected: isDark,
-                      colors: colors,
-                      onTap: () {
-                        // TODO: Call your change theme logic here.
-                      },
-                    ),
-                    _ChoiceTile(
-                      icon: Icons.settings_suggest_rounded,
-                      title: 'System default',
-                      subtitle: 'Follow the device theme',
-                      isSelected: false,
-                      colors: colors,
-                      onTap: () {
-                        // TODO: Call your change theme logic here.
-                      },
-                    ),
-                  ],
+      return Scaffold(
+        backgroundColor: colors.background,
+        body: SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+                sliver: SliverToBoxAdapter(
+                  child: _SettingsHeader(colors: colors),
                 ),
               ),
-            ),
-            SliverPadding(
-              padding: const EdgeInsets.fromLTRB(20, 28, 20, 32),
-              sliver: SliverToBoxAdapter(
-                child: _SettingsSection(
-                  title: 'Language',
-                  children: [
-                    _ChoiceTile(
-                      icon: Icons.language_rounded,
-                      title: 'English',
-                      subtitle: 'United States',
-                      isSelected: Get.locale?.languageCode != 'km',
-                      colors: colors,
-                      onTap: () {
-                        // TODO: Call your change language logic here.
-                      },
-                    ),
-                    _ChoiceTile(
-                      icon: Icons.translate_rounded,
-                      title: 'Khmer',
-                      subtitle: 'Cambodia',
-                      isSelected: Get.locale?.languageCode == 'km',
-                      colors: colors,
-                      onTap: () {
-                        // TODO: Call your change language logic here.
-                      },
-                    ),
-                  ],
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(20, 28, 20, 0),
+                sliver: SliverToBoxAdapter(
+                  child: _SettingsSection(
+                    title: 'Appearance',
+                    children: [
+                      _ChoiceTile(
+                        icon: Icons.light_mode_rounded,
+                        title: 'Light mode',
+                        subtitle: 'Use the bright wallet theme',
+                        isSelected: appTheme == ThemeMode.light,
+                        colors: colors,
+                        onTap: () {
+                          controller.onThemeChange(ThemeMode.light);
+                        },
+                      ),
+                      _ChoiceTile(
+                        icon: Icons.dark_mode_rounded,
+                        title: 'Dark mode',
+                        subtitle: 'Use the low-light wallet theme',
+                        isSelected: appTheme == ThemeMode.dark,
+                        colors: colors,
+                        onTap: () {
+                          controller.onThemeChange(ThemeMode.dark);
+                        },
+                      ),
+                      _ChoiceTile(
+                        icon: Icons.settings_suggest_rounded,
+                        title: 'System default',
+                        subtitle: 'Follow the device theme',
+                        isSelected: appTheme == ThemeMode.system,
+                        colors: colors,
+                        onTap: () {
+                          controller.onThemeChange(ThemeMode.system);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(20, 28, 20, 32),
+                sliver: SliverToBoxAdapter(
+                  child: _SettingsSection(
+                    title: 'Language',
+                    children: [
+                      _ChoiceTile(
+                        icon: Icons.language_rounded,
+                        title: 'English',
+                        subtitle: 'United States',
+                        isSelected: appLocale.languageCode == 'en',
+                        colors: colors,
+                        onTap: () {
+                          controller.onLanguageChange(const Locale('en', 'US'));
+                        },
+                      ),
+                      _ChoiceTile(
+                        icon: Icons.translate_rounded,
+                        title: 'Khmer',
+                        subtitle: 'Cambodia',
+                        isSelected: appLocale.languageCode == 'km',
+                        colors: colors,
+                        onTap: () {
+                          controller.onLanguageChange(const Locale('km', 'KH'));
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 
 class _SettingsHeader extends StatelessWidget {
-  const _SettingsHeader({required this.theme, required this.colors});
+  const _SettingsHeader({required this.colors});
 
-  final ThemeData theme;
   final _SettingsColors colors;
 
   @override
@@ -121,14 +125,14 @@ class _SettingsHeader extends StatelessWidget {
             children: [
               Text(
                 'Settings',
-                style: theme.textTheme.headlineSmall?.copyWith(
+                style: Get.theme.textTheme.headlineSmall?.copyWith(
                   color: colors.textPrimary,
                 ),
               ),
               const SizedBox(height: 2),
               Text(
                 'Theme and language',
-                style: theme.textTheme.bodyMedium?.copyWith(
+                style: Get.theme.textTheme.bodyMedium?.copyWith(
                   color: colors.textSecondary,
                 ),
               ),

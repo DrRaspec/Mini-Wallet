@@ -27,14 +27,14 @@ class LoginPage extends GetView<LoginController> {
                 Text(
                   AppKeys.welcomeMessage.tr,
                   style: theme.textTheme.headlineLarge?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: context.appTextPrimary,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   AppKeys.loginTitle.tr,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: context.appTextSecondary,
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -46,7 +46,7 @@ class LoginPage extends GetView<LoginController> {
                     Text(
                       AppKeys.newUser.tr,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: context.appTextSecondary,
                       ),
                     ),
                     TextButton(
@@ -77,7 +77,7 @@ class _LoginFormCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.appCard,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Form(
@@ -173,7 +173,7 @@ class _AuthMark extends StatelessWidget {
           width: 48,
           height: 48,
           decoration: BoxDecoration(
-            color: AppColors.secondary,
+            color: context.appSecondary,
             borderRadius: BorderRadius.circular(16),
           ),
           child: const Icon(
@@ -186,7 +186,7 @@ class _AuthMark extends StatelessWidget {
         Text(
           AppKeys.appName.tr,
           style: theme.textTheme.titleLarge?.copyWith(
-            color: AppColors.textPrimary,
+            color: context.appTextPrimary,
           ),
         ),
       ],
@@ -205,7 +205,7 @@ class _FieldLabel extends StatelessWidget {
     return Text(
       label,
       style: theme.textTheme.titleMedium?.copyWith(
-        color: AppColors.textPrimary,
+        color: context.appTextPrimary,
       ),
     );
   }

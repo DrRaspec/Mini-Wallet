@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
 import 'package:mini_wallet/core/theme/app_text.dart';
 
@@ -21,7 +20,7 @@ class AppTheme {
       onSurface: AppColors.textPrimary,
       error: AppColors.expense,
     ),
-    fontFamily: GoogleFonts.inter().fontFamily,
+    fontFamily: AppText.bodyFontFamily,
     scaffoldBackgroundColor: AppColors.background,
     cardColor: AppColors.card,
     dividerColor: AppColors.border,
@@ -140,7 +139,7 @@ class AppTheme {
       onSurface: AppColors.darkTextPrimary,
       error: AppColors.darkExpense,
     ),
-    fontFamily: GoogleFonts.inter().fontFamily,
+    fontFamily: AppText.bodyFontFamily,
     scaffoldBackgroundColor: AppColors.darkBackground,
     cardColor: AppColors.darkCard,
     dividerColor: AppColors.darkBorder,

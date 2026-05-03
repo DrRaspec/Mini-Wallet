@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mini_wallet/bindings/app_binding.dart';
+import 'package:mini_wallet/core/controllers/app_settings_controller.dart';
+import 'package:mini_wallet/core/storage/local_storage.dart';
 import 'package:mini_wallet/core/theme/app_theme.dart';
 import 'package:mini_wallet/core/translations/app_translations.dart';
 import 'package:mini_wallet/routes/app_pages.dart';
@@ -12,18 +13,21 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final settings = Get.find<AppSettingsController>();
+
     return ToastificationWrapper(
-      child: GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.light,
-        translations: AppTranslations(),
-        locale: const Locale('en', 'US'),
-        fallbackLocale: const Locale('en', 'US'),
-        initialBinding: AppBinding(),
-        initialRoute: AppRoutes.home,
-        getPages: AppPages.pages,
+      child: Obx(
+        () => GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: settings.themeMode.value,
+          translations: AppTranslations(),
+          locale: settings.locale.value,
+          fallbackLocale: LocaleStorage.fallbackLocale,
+          initialRoute: AppRoutes.home,
+          getPages: AppPages.pages,
+        ),
       ),
     );
   }

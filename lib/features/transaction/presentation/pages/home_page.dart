@@ -24,13 +24,13 @@ class HomePage extends GetView<HomeController> {
           final balance = controller.accountBalance.value.total;
 
           if (isLoading && transactions.isEmpty) {
-            return const Center(
-              child: CircularProgressIndicator(color: AppColors.secondary),
+            return Center(
+              child: CircularProgressIndicator(color: context.appSecondary),
             );
           }
 
           return RefreshIndicator(
-            color: AppColors.secondary,
+            color: context.appSecondary,
             onRefresh: controller.refreshHome,
             child: CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
@@ -74,7 +74,7 @@ class HomePage extends GetView<HomeController> {
                         Text(
                           AppKeys.recentActivity.tr,
                           style: theme.textTheme.titleLarge?.copyWith(
-                            color: AppColors.textPrimary,
+                            color: context.appTextPrimary,
                           ),
                         ),
                         if (transactions.isNotEmpty)
@@ -84,13 +84,13 @@ class HomePage extends GetView<HomeController> {
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: AppColors.surfaceMuted,
+                              color: context.appSurfaceMuted,
                               borderRadius: BorderRadius.circular(999),
                             ),
                             child: Text(
                               '${transactions.length}',
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: AppColors.textPrimary,
+                                color: context.appTextPrimary,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -172,7 +172,7 @@ class _TopBar extends StatelessWidget {
           width: 42,
           height: 42,
           decoration: BoxDecoration(
-            color: AppColors.secondary,
+            color: context.appSecondary,
             borderRadius: BorderRadius.circular(14),
           ),
           child: const Center(
@@ -194,14 +194,14 @@ class _TopBar extends StatelessWidget {
               Text(
                 _greeting.toUpperCase(),
                 style: theme.textTheme.labelMedium?.copyWith(
-                  color: AppColors.textSecondary,
+                  color: context.appTextSecondary,
                 ),
               ),
               const SizedBox(height: 2),
               Text(
                 AppKeys.appName.tr,
                 style: theme.textTheme.titleMedium?.copyWith(
-                  color: AppColors.textPrimary,
+                  color: context.appTextPrimary,
                 ),
               ),
             ],
@@ -214,12 +214,12 @@ class _TopBar extends StatelessWidget {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: AppColors.surfaceMuted,
+              color: context.appSurfaceMuted,
               borderRadius: BorderRadius.circular(14),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.settings_rounded,
-              color: AppColors.textPrimary,
+              color: context.appTextPrimary,
               size: 20,
             ),
           ),
@@ -253,14 +253,14 @@ class _BalanceSection extends StatelessWidget {
         Text(
           AppKeys.walletBalance.tr,
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: AppColors.textSecondary,
+            color: context.appTextSecondary,
           ),
         ),
         const SizedBox(height: 8),
         Text(
           formatCurrency(balance),
           style: theme.textTheme.displaySmall?.copyWith(
-            color: AppColors.textPrimary,
+            color: context.appTextPrimary,
           ),
         ),
         const SizedBox(height: 20),
@@ -273,8 +273,8 @@ class _BalanceSection extends StatelessWidget {
                 label: AppKeys.income.tr,
                 value: formatCurrency(incomeTotal),
                 icon: Icons.south_west_rounded,
-                backgroundColor: AppColors.income.withValues(alpha: 0.08),
-                iconColor: AppColors.income,
+                backgroundColor: context.appIncome.withValues(alpha: 0.08),
+                iconColor: context.appIncome,
               ),
             ),
             const SizedBox(width: 12),
@@ -283,8 +283,8 @@ class _BalanceSection extends StatelessWidget {
                 label: AppKeys.expenses.tr,
                 value: formatCurrency(expenseTotal),
                 icon: Icons.north_east_rounded,
-                backgroundColor: AppColors.secondary.withValues(alpha: 0.10),
-                iconColor: AppColors.secondary,
+                backgroundColor: context.appSecondary.withValues(alpha: 0.10),
+                iconColor: context.appSecondary,
               ),
             ),
           ],
@@ -316,7 +316,7 @@ class _StatCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.appCard,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -335,14 +335,14 @@ class _StatCard extends StatelessWidget {
           Text(
             label,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
+              color: context.appTextSecondary,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             value,
             style: theme.textTheme.titleMedium?.copyWith(
-              color: AppColors.textPrimary,
+              color: context.appTextPrimary,
             ),
           ),
         ],
@@ -367,7 +367,7 @@ class _QuickAddBanner extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.secondary.withValues(alpha: 0.10),
+        color: context.appSecondary.withValues(alpha: 0.10),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -376,7 +376,7 @@ class _QuickAddBanner extends StatelessWidget {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: AppColors.secondary,
+              color: context.appSecondary,
               borderRadius: BorderRadius.circular(14),
             ),
             child: const Icon(Icons.add_rounded, color: Colors.white, size: 22),
@@ -389,7 +389,7 @@ class _QuickAddBanner extends StatelessWidget {
                 Text(
                   isEmpty ? AppKeys.getStarted.tr : AppKeys.keepItCurrent.tr,
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: context.appTextPrimary,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -398,7 +398,7 @@ class _QuickAddBanner extends StatelessWidget {
                       ? AppKeys.addTransaction.tr
                       : AppKeys.recordTheNextOne.tr,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: context.appTextSecondary,
                   ),
                 ),
               ],
@@ -406,7 +406,7 @@ class _QuickAddBanner extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           Material(
-            color: AppColors.primary,
+            color: context.appPrimary,
             borderRadius: BorderRadius.circular(12),
             child: InkWell(
               borderRadius: BorderRadius.circular(12),
@@ -444,12 +444,12 @@ class _EmptyState extends StatelessWidget {
             width: 72,
             height: 72,
             decoration: BoxDecoration(
-              color: AppColors.surfaceMuted,
+              color: context.appSurfaceMuted,
               borderRadius: BorderRadius.circular(22),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.account_balance_wallet_outlined,
-              color: AppColors.secondary,
+              color: context.appSecondary,
               size: 32,
             ),
           ),
@@ -457,14 +457,14 @@ class _EmptyState extends StatelessWidget {
           Text(
             AppKeys.noTransactions.tr,
             style: theme.textTheme.titleLarge?.copyWith(
-              color: AppColors.textPrimary,
+              color: context.appTextPrimary,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             AppKeys.noTransactionDesc.tr,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
+              color: context.appTextSecondary,
             ),
             textAlign: TextAlign.center,
           ),

@@ -3,6 +3,7 @@ import 'package:mini_wallet/features/auth/bindings/login_binding.dart';
 import 'package:mini_wallet/features/auth/bindings/register_binding.dart';
 import 'package:mini_wallet/features/auth/presentation/pages/login_page.dart';
 import 'package:mini_wallet/features/auth/presentation/pages/register_page.dart';
+import 'package:mini_wallet/features/settings/bindings/settings_binding.dart';
 import 'package:mini_wallet/features/transaction/bindings/add_transaction_binding.dart';
 import 'package:mini_wallet/features/transaction/bindings/edit_transaction_binding.dart';
 import 'package:mini_wallet/features/transaction/bindings/home_binding.dart';
@@ -68,6 +69,7 @@ class AppPages {
     GetPage(
       name: AppRoutes.settings,
       page: () => const SettingsPage(),
+      binding: SettingsBinding(),
       middlewares: [_authMiddleware],
     ),
   ];

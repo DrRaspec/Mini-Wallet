@@ -29,14 +29,14 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                 Text(
                   'Record a new entry',
                   style: theme.textTheme.headlineSmall?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: context.appTextPrimary,
                   ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   'Add the title, amount, and type.',
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: context.appTextSecondary,
                   ),
                 ),
                 const SizedBox(height: 28),
@@ -46,7 +46,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: AppColors.card,
+                    color: context.appCard,
                     borderRadius: BorderRadius.circular(24),
                   ),
                   child: Column(
@@ -55,7 +55,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                       Text(
                         'Type',
                         style: theme.textTheme.titleMedium?.copyWith(
-                          color: AppColors.textPrimary,
+                          color: context.appTextPrimary,
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -87,9 +87,9 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                               states,
                             ) {
                               if (states.contains(WidgetState.selected)) {
-                                return AppColors.primary;
+                                return context.appPrimary;
                               }
-                              return AppColors.surfaceMuted;
+                              return context.appSurfaceMuted;
                             }),
                             foregroundColor: WidgetStateProperty.resolveWith((
                               states,
@@ -97,7 +97,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                               if (states.contains(WidgetState.selected)) {
                                 return Colors.white;
                               }
-                              return AppColors.textSecondary;
+                              return context.appTextSecondary;
                             }),
                             shape: WidgetStateProperty.all(
                               RoundedRectangleBorder(
@@ -111,7 +111,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                       Text(
                         'Title',
                         style: theme.textTheme.titleMedium?.copyWith(
-                          color: AppColors.textPrimary,
+                          color: context.appTextPrimary,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -127,7 +127,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                       Text(
                         'Amount',
                         style: theme.textTheme.titleMedium?.copyWith(
-                          color: AppColors.textPrimary,
+                          color: context.appTextPrimary,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -151,7 +151,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                 Text(
                   'Preview',
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: context.appTextPrimary,
                   ),
                 ),
                 const SizedBox(height: 12),

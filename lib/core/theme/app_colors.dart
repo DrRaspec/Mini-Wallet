@@ -38,3 +38,23 @@ class AppColors {
   static const darkIncome = Color(0xFF5CC08E);
   static const darkExpense = Color(0xFFFFA77B);
 }
+
+extension AppThemeColors on BuildContext {
+  bool get _isDark => Theme.of(this).brightness == Brightness.dark;
+
+  Color get appPrimary => _isDark ? AppColors.darkPrimary : AppColors.primary;
+  Color get appSecondary =>
+      _isDark ? AppColors.darkSecondary : AppColors.secondary;
+  Color get appBackground =>
+      _isDark ? AppColors.darkBackground : AppColors.background;
+  Color get appCard => _isDark ? AppColors.darkCard : AppColors.card;
+  Color get appSurfaceMuted =>
+      _isDark ? AppColors.darkSurfaceMuted : AppColors.surfaceMuted;
+  Color get appBorder => _isDark ? AppColors.darkBorder : AppColors.border;
+  Color get appTextPrimary =>
+      _isDark ? AppColors.darkTextPrimary : AppColors.textPrimary;
+  Color get appTextSecondary =>
+      _isDark ? AppColors.darkTextSecondary : AppColors.textSecondary;
+  Color get appIncome => _isDark ? AppColors.darkIncome : AppColors.income;
+  Color get appExpense => _isDark ? AppColors.darkExpense : AppColors.expense;
+}

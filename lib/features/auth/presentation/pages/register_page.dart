@@ -28,14 +28,14 @@ class RegisterPage extends GetView<RegisterController> {
                 Text(
                   AppKeys.createAccountButton.tr,
                   style: theme.textTheme.headlineLarge?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: context.appTextPrimary,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   AppKeys.registerTitle.tr,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: context.appTextSecondary,
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -47,7 +47,7 @@ class RegisterPage extends GetView<RegisterController> {
                     Text(
                       AppKeys.alreadyHaveAccount.tr,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: context.appTextSecondary,
                       ),
                     ),
                     TextButton(
@@ -78,7 +78,7 @@ class _RegisterFormCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.appCard,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Form(
@@ -92,7 +92,7 @@ class _RegisterFormCard extends StatelessWidget {
               controller: controller.usernameController,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.next,
-              decoration:  InputDecoration(
+              decoration: InputDecoration(
                 hintText: AppKeys.usernameHint.tr,
                 prefixIcon: Icon(Icons.person_outline_rounded),
               ),
@@ -204,7 +204,7 @@ class _FieldLabel extends StatelessWidget {
     return Text(
       label,
       style: theme.textTheme.titleMedium?.copyWith(
-        color: AppColors.textPrimary,
+        color: context.appTextPrimary,
       ),
     );
   }
