@@ -21,4 +21,20 @@ class AppColors {
   // ── Semantic ──────────────────────────────────────────────────────────
   static const income = Color(0xFF2F7D5A);
   static const expense = Color(0xFFE8956A);
+
+  // ── Dark theme ────────────────────────────────────────────────────────
+  static const darkPrimary = Color(0xFFFDF5EF);
+  static const darkSecondary = Color(0xFFE8956A);
+  static const darkAccent = Color(0xFFF2C4A0);
+
+  static const darkBackground = Color(0xFF11111F);
+  static const darkCard = Color(0xFF1A1A2E);
+  static const darkSurfaceMuted = Color(0xFF252538);
+  static const darkBorder = Color(0xFF34344A);
+
+  static const darkTextPrimary = Color(0xFFF8EDE3);
+  static const darkTextSecondary = Color(0xFFB8ADA4);
+
+  static const darkIncome = Color(0xFF5CC08E);
+  static const darkExpense = Color(0xFFFFA77B);
 }

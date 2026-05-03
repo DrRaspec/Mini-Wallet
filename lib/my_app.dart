@@ -16,7 +16,11 @@ class MainApp extends StatelessWidget {
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: ThemeMode.light,
         translations: AppTranslations(),
+        locale: const Locale('en', 'US'),
+        fallbackLocale: const Locale('en', 'US'),
         initialBinding: AppBinding(),
         initialRoute: AppRoutes.home,
         getPages: AppPages.pages,
