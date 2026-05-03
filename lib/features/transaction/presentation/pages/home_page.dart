@@ -207,18 +207,21 @@ class _TopBar extends StatelessWidget {
             ],
           ),
         ),
-        // Decorative wave icon (matches reference)
-        Container(
-          width: 42,
-          height: 42,
-          decoration: BoxDecoration(
-            color: AppColors.surfaceMuted,
-            borderRadius: BorderRadius.circular(14),
-          ),
-          child: const Icon(
-            Icons.notifications_none_rounded,
-            color: AppColors.textPrimary,
-            size: 20,
+        InkWell(
+          borderRadius: BorderRadius.circular(14),
+          onTap: () => Get.toNamed(AppRoutes.settings),
+          child: Container(
+            width: 42,
+            height: 42,
+            decoration: BoxDecoration(
+              color: AppColors.surfaceMuted,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: const Icon(
+              Icons.settings_rounded,
+              color: AppColors.textPrimary,
+              size: 20,
+            ),
           ),
         ),
       ],
