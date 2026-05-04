@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:mini_wallet/bindings/app_binding.dart';
 import 'package:mini_wallet/my_app.dart';
 
@@ -16,8 +15,6 @@ void main() async {
   await dotenv.load(fileName: envFile);
 
   await GetStorage.init();
-
-  GoogleFonts.config.allowRuntimeFetching = true;
 
   AppBinding().dependencies();
 

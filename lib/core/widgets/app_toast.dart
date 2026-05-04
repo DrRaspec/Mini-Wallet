@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
 import 'package:mini_wallet/core/theme/app_text.dart';
 import 'package:toastification/toastification.dart';
@@ -47,6 +48,9 @@ class AppToast {
     required String message,
     required ToastificationType type,
   }) {
+    final locale = Get.locale ?? const Locale('en');
+    final textTheme = AppText.getTextTheme(locale);
+
     toastification.show(
       alignment: Alignment.bottomCenter,
       autoCloseDuration: const Duration(seconds: 3),
@@ -54,15 +58,11 @@ class AppToast {
       style: ToastificationStyle.flat,
       title: Text(
         title,
-        style: AppText.textTheme.titleMedium?.copyWith(
-          color: AppColors.textPrimary,
-        ),
+        style: textTheme.titleMedium?.copyWith(color: AppColors.textPrimary),
       ),
       description: Text(
         message,
-        style: AppText.textTheme.bodyMedium?.copyWith(
-          color: AppColors.textSecondary,
-        ),
+        style: textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
       ),
       primaryColor: type.color,
       backgroundColor: AppColors.card,
