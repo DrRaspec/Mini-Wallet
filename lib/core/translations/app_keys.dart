@@ -37,4 +37,21 @@ class AppKeys {
   static const String addTransaction = 'add_transaction';
   static const String keepItCurrent = 'keep_it_current';
   static const String recordTheNextOne = 'record_the_next_one';
+
+  static const String settingsTitle = 'settings_title';
+  static const String settingsSubtitle = 'settings_subtitle';
+  static const String appearance = 'appearance';
+  static const String lightMode = 'light_mode';
+  static const String lightModeDesc = 'light_mode_desc';
+  static const String darkMode = 'dark_mode';
+  static const String darkModeDesc = 'dark_mode_desc';
+  static const String systemDefault = 'system_default';
+  static const String systemDefaultDesc = 'system_default_desc';
+  static const String language = 'language';
+  static const String languageEnglish = 'language_english';
+  static const String languageEnglishCountry = 'language_english_country';
+  static const String languageKhmer = 'language_khmer';
+  static const String languageKhmerCountry = 'language_khmer_country';
+  static const String account = 'account';
+  static const String signOut = 'sign_out';
 }
