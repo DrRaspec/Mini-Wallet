@@ -101,7 +101,7 @@ class SettingsPage extends GetView<SettingsController> {
                 padding: const EdgeInsets.fromLTRB(20, 28, 20, 32),
                 sliver: SliverToBoxAdapter(
                   child: _SettingsSection(
-                    title: 'Logout',
+                    title: 'Account',
                     children: [
                       _SignOutButton(
                         onTap: () {
