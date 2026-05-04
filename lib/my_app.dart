@@ -8,8 +8,8 @@ import 'package:mini_wallet/routes/app_pages.dart';
 import 'package:mini_wallet/routes/app_routes.dart';
 import 'package:toastification/toastification.dart';
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

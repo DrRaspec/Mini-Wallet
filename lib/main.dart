@@ -18,5 +18,5 @@ void main() async {
 
   AppBinding().dependencies();
 
-  runApp(const MainApp());
+  runApp(const MyApp());
 }
