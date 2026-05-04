@@ -122,7 +122,7 @@ class HomePage extends GetView<HomeController> {
                           child: TransactionCard(
                             transaction: transaction,
                             onTap: () async {
-                              final shouldRefresh = await Get.toNamed<bool>(
+                              final shouldRefresh = await Get.toNamed(
                                 AppRoutes.transactionDetails,
                                 arguments: transaction,
                               );
@@ -411,11 +411,11 @@ class _QuickAddBanner extends StatelessWidget {
             child: InkWell(
               borderRadius: BorderRadius.circular(12),
               onTap: onAddPressed,
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.all(10),
                 child: Icon(
                   Icons.arrow_forward_rounded,
-                  color: Colors.white,
+                  color: theme.colorScheme.onPrimary,
                   size: 20,
                 ),
               ),

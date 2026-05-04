@@ -11,8 +11,6 @@ class AddTransactionPage extends GetView<AddTransactionController> {
 
   @override
   Widget build(BuildContext context) {
-    // final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(onPressed: () => Get.back()),
@@ -21,172 +19,176 @@ class AddTransactionPage extends GetView<AddTransactionController> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
-          child: Form(
-            key: controller.addTransactionFormKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Record a new entry',
-                  style: Get.theme.textTheme.headlineSmall?.copyWith(
-                    color: context.appTextPrimary,
+          child: GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            behavior: HitTestBehavior.opaque,
+            child: Form(
+              key: controller.addTransactionFormKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Record a new entry',
+                    style: Get.theme.textTheme.headlineSmall?.copyWith(
+                      color: context.appTextPrimary,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'Add the title, amount, and type.',
-                  style: Get.theme.textTheme.bodyMedium?.copyWith(
-                    color: context.appTextSecondary,
+                  const SizedBox(height: 6),
+                  Text(
+                    'Add the title, amount, and type.',
+                    style: Get.theme.textTheme.bodyMedium?.copyWith(
+                      color: context.appTextSecondary,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 28),
+                  const SizedBox(height: 28),
 
-                // ── Form card ───────────────────────────────────────
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: context.appCard,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Type',
-                        style: Get.theme.textTheme.titleMedium?.copyWith(
-                          color: context.appTextPrimary,
+                  // ── Form card ───────────────────────────────────────
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: context.appCard,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Type',
+                          style: Get.theme.textTheme.titleMedium?.copyWith(
+                            color: context.appTextPrimary,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 12),
-                      Obx(
-                        () => SegmentedButton<bool>(
-                          segments: const [
-                            ButtonSegment<bool>(
-                              value: true,
-                              icon: Icon(Icons.south_west_rounded),
-                              label: Text('Income'),
-                            ),
-                            ButtonSegment<bool>(
-                              value: false,
-                              icon: Icon(Icons.north_east_rounded),
-                              label: Text('Expense'),
-                            ),
-                          ],
-                          selected: {controller.isIncome.value},
-                          onSelectionChanged: (selection) {
-                            controller.isIncome.value = selection.first;
-                          },
-                          showSelectedIcon: false,
-                          style: ButtonStyle(
-                            minimumSize: WidgetStateProperty.all(
-                              const Size.fromHeight(54),
-                            ),
-                            side: WidgetStateProperty.all(BorderSide.none),
-                            backgroundColor: WidgetStateProperty.resolveWith((
-                              states,
-                            ) {
-                              if (states.contains(WidgetState.selected)) {
-                                return context.appPrimary;
-                              }
-                              return context.appSurfaceMuted;
-                            }),
-                            foregroundColor: WidgetStateProperty.resolveWith((
-                              states,
-                            ) {
-                              if (states.contains(WidgetState.selected)) {
-                                return Colors.white;
-                              }
-                              return context.appTextSecondary;
-                            }),
-                            shape: WidgetStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14),
+                        const SizedBox(height: 12),
+                        Obx(
+                          () => SegmentedButton<bool>(
+                            segments: const [
+                              ButtonSegment<bool>(
+                                value: true,
+                                icon: Icon(Icons.south_west_rounded),
+                                label: Text('Income'),
+                              ),
+                              ButtonSegment<bool>(
+                                value: false,
+                                icon: Icon(Icons.north_east_rounded),
+                                label: Text('Expense'),
+                              ),
+                            ],
+                            selected: {controller.isIncome.value},
+                            onSelectionChanged: (selection) {
+                              controller.isIncome.value = selection.first;
+                            },
+                            showSelectedIcon: false,
+                            style: ButtonStyle(
+                              minimumSize: WidgetStateProperty.all(
+                                const Size.fromHeight(54),
+                              ),
+                              side: WidgetStateProperty.all(BorderSide.none),
+                              backgroundColor: WidgetStateProperty.resolveWith((
+                                states,
+                              ) {
+                                if (states.contains(WidgetState.selected)) {
+                                  return context.appPrimary;
+                                }
+                                return context.appSurfaceMuted;
+                              }),
+                              foregroundColor: WidgetStateProperty.resolveWith((
+                                states,
+                              ) {
+                                if (states.contains(WidgetState.selected)) {
+                                  return Colors.white;
+                                }
+                                return context.appTextSecondary;
+                              }),
+                              shape: WidgetStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 22),
-                      Text(
-                        'Title',
-                        style: Get.theme.textTheme.titleMedium?.copyWith(
-                          color: context.appTextPrimary,
+                        const SizedBox(height: 22),
+                        Text(
+                          'Title',
+                          style: Get.theme.textTheme.titleMedium?.copyWith(
+                            color: context.appTextPrimary,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      TextFormField(
-                        controller: controller.titleController,
-                        validator: controller.validateTitle,
-                        textInputAction: TextInputAction.next,
-                        decoration: const InputDecoration(
-                          hintText: 'Salary, groceries, coffee...',
+                        const SizedBox(height: 8),
+                        TextFormField(
+                          controller: controller.titleController,
+                          validator: controller.validateTitle,
+                          textInputAction: TextInputAction.next,
+                          decoration: const InputDecoration(
+                            hintText: 'Salary, groceries, coffee...',
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 22),
-                      Text(
-                        'Amount',
-                        style: Get.theme.textTheme.titleMedium?.copyWith(
-                          color: context.appTextPrimary,
+                        const SizedBox(height: 22),
+                        Text(
+                          'Amount',
+                          style: Get.theme.textTheme.titleMedium?.copyWith(
+                            color: context.appTextPrimary,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      TextFormField(
-                        controller: controller.amountController,
-                        validator: controller.validateAmount,
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
+                        const SizedBox(height: 8),
+                        TextFormField(
+                          controller: controller.amountController,
+                          validator: controller.validateAmount,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
+                          decoration: const InputDecoration(
+                            prefixText: '\$ ',
+                            hintText: '0.00',
+                          ),
                         ),
-                        decoration: const InputDecoration(
-                          prefixText: '\$ ',
-                          hintText: '0.00',
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 24),
-
-                // ── Preview ─────────────────────────────────────────
-                Text(
-                  'Preview',
-                  style: Get.theme.textTheme.titleMedium?.copyWith(
-                    color: context.appTextPrimary,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                _TransactionPreview(controller: controller),
-                const SizedBox(height: 28),
-
-                // ── Save button ─────────────────────────────────────
-                Obx(
-                  () => SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: controller.isLoading.value
-                          ? null
-                          : () async {
-                              final didSave = await controller
-                                  .onAddTransaction();
-                              if (!context.mounted || !didSave) {
-                                return;
-                              }
-                              Get.offAllNamed(AppRoutes.home);
-                            },
-                      child: controller.isLoading.value
-                          ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Colors.white,
-                              ),
-                            )
-                          : const Text('Save Transaction'),
+                      ],
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 24),
+
+                  // ── Preview ─────────────────────────────────────────
+                  Text(
+                    'Preview',
+                    style: Get.theme.textTheme.titleMedium?.copyWith(
+                      color: context.appTextPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  _TransactionPreview(controller: controller),
+                  const SizedBox(height: 28),
+
+                  // ── Save button ─────────────────────────────────────
+                  Obx(
+                    () => SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: controller.isLoading.value
+                            ? null
+                            : () async {
+                                final didSave = await controller
+                                    .onAddTransaction();
+                                if (!context.mounted || !didSave) {
+                                  return;
+                                }
+                                Get.offAllNamed(AppRoutes.home);
+                              },
+                        child: controller.isLoading.value
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : const Text('Save Transaction'),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
