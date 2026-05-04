@@ -7,6 +7,8 @@ class LoginController extends GetxController {
 
   final AuthController authController;
 
+  final isPasswordVisible = false.obs;
+
   final isLoading = false.obs;
 
   Future<bool> submitLogin(String username, String password) async {

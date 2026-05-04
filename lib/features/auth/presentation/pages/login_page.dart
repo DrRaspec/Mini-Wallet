@@ -92,8 +92,6 @@ class _LoginFormCardState extends State<_LoginFormCard> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -106,7 +104,7 @@ class _LoginFormCardState extends State<_LoginFormCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _FieldLabel(label: AppKeys.username.tr, theme: theme),
+            _FieldLabel(label: AppKeys.username.tr, theme: Get.theme),
             const SizedBox(height: 8),
             TextFormField(
               controller: _usernameController,
@@ -125,25 +123,36 @@ class _LoginFormCardState extends State<_LoginFormCard> {
               },
             ),
             const SizedBox(height: 20),
-            _FieldLabel(label: AppKeys.password.tr, theme: theme),
+            _FieldLabel(label: AppKeys.password.tr, theme: Get.theme),
             const SizedBox(height: 8),
-            TextFormField(
-              controller: _passwordController,
-              obscureText: true,
-              textInputAction: TextInputAction.done,
-              decoration: InputDecoration(
-                hintText: AppKeys.passwordHint.tr,
-                prefixIcon: Icon(Icons.lock_outline_rounded),
-                suffixIcon: Icon(Icons.visibility_off_outlined),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return AppKeys.passwordRequired.tr;
-                }
+            Obx(() {
+              final isPasswordVisible =
+                  widget.controller.isPasswordVisible.value;
+              return TextFormField(
+                controller: _passwordController,
+                obscureText: !isPasswordVisible,
+                textInputAction: TextInputAction.done,
+                decoration: InputDecoration(
+                  hintText: AppKeys.passwordHint.tr,
+                  prefixIcon: Icon(Icons.lock_outline_rounded),
+                  suffixIcon: GestureDetector(
+                    onTap: widget.controller.isPasswordVisible.toggle,
+                    child: Icon(
+                      isPasswordVisible
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                    ),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return AppKeys.passwordRequired.tr;
+                  }
 
-                return null;
-              },
-            ),
+                  return null;
+                },
+              );
+            }),
             const SizedBox(height: 12),
             Align(
               alignment: Alignment.centerRight,
