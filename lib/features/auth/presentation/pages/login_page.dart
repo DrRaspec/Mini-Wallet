@@ -62,10 +62,33 @@ class LoginPage extends GetView<LoginController> {
   }
 }
 
-class _LoginFormCard extends StatelessWidget {
+class _LoginFormCard extends StatefulWidget {
   const _LoginFormCard({required this.controller});
 
   final LoginController controller;
+
+  @override
+  State<_LoginFormCard> createState() => _LoginFormCardState();
+}
+
+class _LoginFormCardState extends State<_LoginFormCard> {
+  final _formKey = GlobalKey<FormState>();
+  late final TextEditingController _usernameController;
+  late final TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _usernameController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,14 +102,14 @@ class _LoginFormCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
       ),
       child: Form(
-        key: controller.loginFormKey,
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _FieldLabel(label: AppKeys.username.tr, theme: theme),
             const SizedBox(height: 8),
             TextFormField(
-              controller: controller.lUsernameController,
+              controller: _usernameController,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(
@@ -105,7 +128,7 @@ class _LoginFormCard extends StatelessWidget {
             _FieldLabel(label: AppKeys.password.tr, theme: theme),
             const SizedBox(height: 8),
             TextFormField(
-              controller: controller.rPasswordController,
+              controller: _passwordController,
               obscureText: true,
               textInputAction: TextInputAction.done,
               decoration: InputDecoration(
@@ -135,15 +158,19 @@ class _LoginFormCard extends StatelessWidget {
               child: Obx(
                 () => ElevatedButton(
                   onPressed: () async {
-                    if (controller.isLoading.value) return;
+                    if (widget.controller.isLoading.value) return;
+                    if (!(_formKey.currentState?.validate() ?? false)) return;
 
-                    final success = await controller.submitLogin();
+                    final success = await widget.controller.submitLogin(
+                      _usernameController.text.trim(),
+                      _passwordController.text,
+                    );
 
                     if (!context.mounted || !success) return;
 
                     Get.offAllNamed(AppRoutes.home);
                   },
-                  child: controller.isLoading.value
+                  child: widget.controller.isLoading.value
                       ? CircularProgressIndicator(
                           color: context.theme.colorScheme.onPrimary,
                         )

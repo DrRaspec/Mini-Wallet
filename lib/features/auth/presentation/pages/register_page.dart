@@ -63,10 +63,36 @@ class RegisterPage extends GetView<RegisterController> {
   }
 }
 
-class _RegisterFormCard extends StatelessWidget {
+class _RegisterFormCard extends StatefulWidget {
   const _RegisterFormCard({required this.controller});
 
   final RegisterController controller;
+
+  @override
+  State<_RegisterFormCard> createState() => _RegisterFormCardState();
+}
+
+class _RegisterFormCardState extends State<_RegisterFormCard> {
+  final _formKey = GlobalKey<FormState>();
+  late final TextEditingController _usernameController;
+  late final TextEditingController _passwordController;
+  late final TextEditingController _confirmPasswordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _usernameController = TextEditingController();
+    _passwordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,14 +106,14 @@ class _RegisterFormCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
       ),
       child: Form(
-        key: controller.formKey,
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _FieldLabel(label: AppKeys.username.tr, theme: theme),
             const SizedBox(height: 8),
             TextFormField(
-              controller: controller.usernameController,
+              controller: _usernameController,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(
@@ -107,19 +133,19 @@ class _RegisterFormCard extends StatelessWidget {
             const SizedBox(height: 8),
             Obx(
               () => TextFormField(
-                controller: controller.passwordController,
-                obscureText: !controller.passwordVisible.value,
+                controller: _passwordController,
+                obscureText: !widget.controller.passwordVisible.value,
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                   hintText: AppKeys.passwordHint.tr,
                   prefixIcon: Icon(Icons.lock_outline_rounded),
                   suffixIcon: GestureDetector(
                     child: Icon(
-                      controller.passwordVisible.value
+                      widget.controller.passwordVisible.value
                           ? Icons.visibility
                           : Icons.visibility_off_outlined,
                     ),
-                    onTap: () => controller.passwordVisible.toggle(),
+                    onTap: () => widget.controller.passwordVisible.toggle(),
                   ),
                 ),
                 validator: (value) {
@@ -136,25 +162,26 @@ class _RegisterFormCard extends StatelessWidget {
             const SizedBox(height: 8),
             Obx(
               () => TextFormField(
-                controller: controller.confirmPasswordController,
-                obscureText: !controller.confirmPasswordVisible.value,
+                controller: _confirmPasswordController,
+                obscureText: !widget.controller.confirmPasswordVisible.value,
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
                   hintText: AppKeys.confirmPasswordHint.tr,
                   prefixIcon: Icon(Icons.lock_outline_rounded),
                   suffixIcon: GestureDetector(
                     child: Icon(
-                      controller.confirmPasswordVisible.value
+                      widget.controller.confirmPasswordVisible.value
                           ? Icons.visibility
                           : Icons.visibility_off_outlined,
                     ),
-                    onTap: () => controller.confirmPasswordVisible.toggle(),
+                    onTap: () =>
+                        widget.controller.confirmPasswordVisible.toggle(),
                   ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return AppKeys.confirmPasswordRequired.tr;
-                  } else if (value != controller.passwordController.text) {
+                  } else if (value != _passwordController.text) {
                     return AppKeys.passwordsDoNotMatch.tr;
                   }
 
@@ -168,15 +195,19 @@ class _RegisterFormCard extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
-                    if (controller.isLoading.value) return;
+                    if (widget.controller.isLoading.value) return;
+                    if (!(_formKey.currentState?.validate() ?? false)) return;
 
-                    final success = await controller.submitRegister();
+                    final success = await widget.controller.submitRegister(
+                      username: _usernameController.text.trim(),
+                      password: _passwordController.text,
+                    );
 
                     if (!context.mounted || !success) return;
 
                     Get.offAllNamed(AppRoutes.home);
                   },
-                  child: controller.isLoading.value
+                  child: widget.controller.isLoading.value
                       ? CircularProgressIndicator(
                           color: theme.colorScheme.onPrimary,
                         )
