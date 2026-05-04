@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
+import 'package:mini_wallet/core/translations/app_keys.dart';
 import 'package:mini_wallet/features/auth/presentation/controllers/login_controller.dart';
-import 'package:mini_wallet/routes/route_names.dart';
-import 'package:mini_wallet/routes/route_paths.dart';
+import 'package:mini_wallet/routes/app_routes.dart';
 
 class LoginPage extends GetView<LoginController> {
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       body: SafeArea(
         child: GestureDetector(
@@ -26,16 +23,16 @@ class LoginPage extends GetView<LoginController> {
                 const _AuthMark(),
                 const SizedBox(height: 36),
                 Text(
-                  'Welcome back',
-                  style: theme.textTheme.headlineLarge?.copyWith(
-                    color: AppColors.textPrimary,
+                  AppKeys.welcomeMessage.tr,
+                  style: Get.theme.textTheme.headlineLarge?.copyWith(
+                    color: context.appTextPrimary,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Sign in to continue managing your wallet.',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                  AppKeys.loginTitle.tr,
+                  style: Get.theme.textTheme.bodyMedium?.copyWith(
+                    color: context.appTextSecondary,
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -45,14 +42,14 @@ class LoginPage extends GetView<LoginController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'New to Mini Wallet?',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
+                      AppKeys.newUser.tr,
+                      style: Get.theme.textTheme.bodyMedium?.copyWith(
+                        color: context.appTextSecondary,
                       ),
                     ),
                     TextButton(
-                      onPressed: () => context.goNamed(RouteNames.register),
-                      child: const Text('Create account'),
+                      onPressed: () => Get.toNamed(AppRoutes.register),
+                      child: Text(AppKeys.createAccountButton.tr),
                     ),
                   ],
                 ),
@@ -65,85 +62,129 @@ class LoginPage extends GetView<LoginController> {
   }
 }
 
-class _LoginFormCard extends StatelessWidget {
+class _LoginFormCard extends StatefulWidget {
   const _LoginFormCard({required this.controller});
 
   final LoginController controller;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+  State<_LoginFormCard> createState() => _LoginFormCardState();
+}
 
+class _LoginFormCardState extends State<_LoginFormCard> {
+  final _formKey = GlobalKey<FormState>();
+  late final TextEditingController _usernameController;
+  late final TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _usernameController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.appCard,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Form(
-        key: controller.loginFormKey,
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _FieldLabel(label: 'Username', theme: theme),
+            _FieldLabel(label: AppKeys.username.tr, theme: Get.theme),
             const SizedBox(height: 8),
             TextFormField(
-              controller: controller.lUsernameController,
+              controller: _usernameController,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                hintText: 'Enter your username',
+              decoration: InputDecoration(
+                hintText: AppKeys.usernameHint.tr,
                 prefixIcon: Icon(Icons.person_outline_rounded),
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Username is required';
+                  return AppKeys.usernameRequired.tr;
                 }
 
                 return null;
               },
             ),
             const SizedBox(height: 20),
-            _FieldLabel(label: 'Password', theme: theme),
+            _FieldLabel(label: AppKeys.password.tr, theme: Get.theme),
             const SizedBox(height: 8),
-            TextFormField(
-              controller: controller.rPasswordController,
-              obscureText: true,
-              textInputAction: TextInputAction.done,
-              decoration: const InputDecoration(
-                hintText: 'Enter your password',
-                prefixIcon: Icon(Icons.lock_outline_rounded),
-                suffixIcon: Icon(Icons.visibility_off_outlined),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Password is required';
-                }
+            Obx(() {
+              final isPasswordVisible =
+                  widget.controller.isPasswordVisible.value;
+              return TextFormField(
+                controller: _passwordController,
+                obscureText: !isPasswordVisible,
+                textInputAction: TextInputAction.done,
+                decoration: InputDecoration(
+                  hintText: AppKeys.passwordHint.tr,
+                  prefixIcon: Icon(Icons.lock_outline_rounded),
+                  suffixIcon: GestureDetector(
+                    onTap: widget.controller.isPasswordVisible.toggle,
+                    child: Icon(
+                      isPasswordVisible
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                    ),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return AppKeys.passwordRequired.tr;
+                  }
 
-                return null;
-              },
-            ),
+                  return null;
+                },
+              );
+            }),
             const SizedBox(height: 12),
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {},
-                child: const Text('Forgot password?'),
+                child: Text(AppKeys.forgotPassword.tr),
               ),
             ),
             const SizedBox(height: 12),
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () async {
-                  final success = await controller.submitLogin();
+              child: Obx(
+                () => ElevatedButton(
+                  onPressed: () async {
+                    if (widget.controller.isLoading.value) return;
+                    if (!(_formKey.currentState?.validate() ?? false)) return;
 
-                  if (!context.mounted || !success) return;
+                    final success = await widget.controller.submitLogin(
+                      _usernameController.text.trim(),
+                      _passwordController.text,
+                    );
 
-                  context.go(RoutePaths.home);
-                },
-                child: const Text('Login'),
+                    if (!context.mounted || !success) return;
+
+                    Get.offAllNamed(AppRoutes.home);
+                  },
+                  child: widget.controller.isLoading.value
+                      ? CircularProgressIndicator(
+                          color: context.theme.colorScheme.onPrimary,
+                        )
+                      : Text(AppKeys.loginButton.tr),
+                ),
               ),
             ),
           ],
@@ -166,7 +207,7 @@ class _AuthMark extends StatelessWidget {
           width: 48,
           height: 48,
           decoration: BoxDecoration(
-            color: AppColors.secondary,
+            color: context.appSecondary,
             borderRadius: BorderRadius.circular(16),
           ),
           child: const Icon(
@@ -177,9 +218,9 @@ class _AuthMark extends StatelessWidget {
         ),
         const SizedBox(width: 14),
         Text(
-          'Mini Wallet',
+          AppKeys.appName.tr,
           style: theme.textTheme.titleLarge?.copyWith(
-            color: AppColors.textPrimary,
+            color: context.appTextPrimary,
           ),
         ),
       ],
@@ -198,7 +239,7 @@ class _FieldLabel extends StatelessWidget {
     return Text(
       label,
       style: theme.textTheme.titleMedium?.copyWith(
-        color: AppColors.textPrimary,
+        color: context.appTextPrimary,
       ),
     );
   }

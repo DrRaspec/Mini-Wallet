@@ -1,193 +1,194 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
 import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
 import 'package:mini_wallet/features/transaction/presentation/controllers/add_transaction_controller.dart';
 import 'package:mini_wallet/features/transaction/presentation/widgets/transaction_card.dart';
-import 'package:mini_wallet/routes/route_paths.dart';
+import 'package:mini_wallet/routes/app_routes.dart';
 
 class AddTransactionPage extends GetView<AddTransactionController> {
   const AddTransactionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(onPressed: () => context.pop()),
+        leading: BackButton(onPressed: () => Get.back()),
         title: const Text('Add Transaction'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
-          child: Form(
-            key: controller.addTransactionFormKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Record a new entry',
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    color: AppColors.textPrimary,
+          child: GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            behavior: HitTestBehavior.opaque,
+            child: Form(
+              key: controller.addTransactionFormKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Record a new entry',
+                    style: Get.theme.textTheme.headlineSmall?.copyWith(
+                      color: context.appTextPrimary,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'Add the title, amount, and type.',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                  const SizedBox(height: 6),
+                  Text(
+                    'Add the title, amount, and type.',
+                    style: Get.theme.textTheme.bodyMedium?.copyWith(
+                      color: context.appTextSecondary,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 28),
+                  const SizedBox(height: 28),
 
-                // ── Form card ───────────────────────────────────────
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: AppColors.card,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Type',
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          color: AppColors.textPrimary,
+                  // ── Form card ───────────────────────────────────────
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: context.appCard,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Type',
+                          style: Get.theme.textTheme.titleMedium?.copyWith(
+                            color: context.appTextPrimary,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 12),
-                      Obx(
-                        () => SegmentedButton<bool>(
-                          segments: const [
-                            ButtonSegment<bool>(
-                              value: true,
-                              icon: Icon(Icons.south_west_rounded),
-                              label: Text('Income'),
-                            ),
-                            ButtonSegment<bool>(
-                              value: false,
-                              icon: Icon(Icons.north_east_rounded),
-                              label: Text('Expense'),
-                            ),
-                          ],
-                          selected: {controller.isIncome.value},
-                          onSelectionChanged: (selection) {
-                            controller.isIncome.value = selection.first;
-                          },
-                          showSelectedIcon: false,
-                          style: ButtonStyle(
-                            minimumSize: WidgetStateProperty.all(
-                              const Size.fromHeight(54),
-                            ),
-                            side: WidgetStateProperty.all(BorderSide.none),
-                            backgroundColor: WidgetStateProperty.resolveWith((
-                              states,
-                            ) {
-                              if (states.contains(WidgetState.selected)) {
-                                return AppColors.primary;
-                              }
-                              return AppColors.surfaceMuted;
-                            }),
-                            foregroundColor: WidgetStateProperty.resolveWith((
-                              states,
-                            ) {
-                              if (states.contains(WidgetState.selected)) {
-                                return Colors.white;
-                              }
-                              return AppColors.textSecondary;
-                            }),
-                            shape: WidgetStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14),
+                        const SizedBox(height: 12),
+                        Obx(
+                          () => SegmentedButton<bool>(
+                            segments: const [
+                              ButtonSegment<bool>(
+                                value: true,
+                                icon: Icon(Icons.south_west_rounded),
+                                label: Text('Income'),
+                              ),
+                              ButtonSegment<bool>(
+                                value: false,
+                                icon: Icon(Icons.north_east_rounded),
+                                label: Text('Expense'),
+                              ),
+                            ],
+                            selected: {controller.isIncome.value},
+                            onSelectionChanged: (selection) {
+                              controller.isIncome.value = selection.first;
+                            },
+                            showSelectedIcon: false,
+                            style: ButtonStyle(
+                              minimumSize: WidgetStateProperty.all(
+                                const Size.fromHeight(54),
+                              ),
+                              side: WidgetStateProperty.all(BorderSide.none),
+                              backgroundColor: WidgetStateProperty.resolveWith((
+                                states,
+                              ) {
+                                if (states.contains(WidgetState.selected)) {
+                                  return context.appPrimary;
+                                }
+                                return context.appSurfaceMuted;
+                              }),
+                              foregroundColor: WidgetStateProperty.resolveWith((
+                                states,
+                              ) {
+                                if (states.contains(WidgetState.selected)) {
+                                  return Colors.white;
+                                }
+                                return context.appTextSecondary;
+                              }),
+                              shape: WidgetStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 22),
-                      Text(
-                        'Title',
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          color: AppColors.textPrimary,
+                        const SizedBox(height: 22),
+                        Text(
+                          'Title',
+                          style: Get.theme.textTheme.titleMedium?.copyWith(
+                            color: context.appTextPrimary,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      TextFormField(
-                        controller: controller.titleController,
-                        validator: controller.validateTitle,
-                        textInputAction: TextInputAction.next,
-                        decoration: const InputDecoration(
-                          hintText: 'Salary, groceries, coffee...',
+                        const SizedBox(height: 8),
+                        TextFormField(
+                          controller: controller.titleController,
+                          validator: controller.validateTitle,
+                          textInputAction: TextInputAction.next,
+                          decoration: const InputDecoration(
+                            hintText: 'Salary, groceries, coffee...',
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 22),
-                      Text(
-                        'Amount',
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          color: AppColors.textPrimary,
+                        const SizedBox(height: 22),
+                        Text(
+                          'Amount',
+                          style: Get.theme.textTheme.titleMedium?.copyWith(
+                            color: context.appTextPrimary,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      TextFormField(
-                        controller: controller.amountController,
-                        validator: controller.validateAmount,
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
+                        const SizedBox(height: 8),
+                        TextFormField(
+                          controller: controller.amountController,
+                          validator: controller.validateAmount,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
+                          decoration: const InputDecoration(
+                            prefixText: '\$ ',
+                            hintText: '0.00',
+                          ),
                         ),
-                        decoration: const InputDecoration(
-                          prefixText: '\$ ',
-                          hintText: '0.00',
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 24),
-
-                // ── Preview ─────────────────────────────────────────
-                Text(
-                  'Preview',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                _TransactionPreview(controller: controller),
-                const SizedBox(height: 28),
-
-                // ── Save button ─────────────────────────────────────
-                Obx(
-                  () => SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: controller.isLoading.value
-                          ? null
-                          : () async {
-                              final didSave = await controller
-                                  .onAddTransaction();
-                              if (!context.mounted || !didSave) {
-                                return;
-                              }
-                              context.go(RoutePaths.home);
-                            },
-                      child: controller.isLoading.value
-                          ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Colors.white,
-                              ),
-                            )
-                          : const Text('Save Transaction'),
+                      ],
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 24),
+
+                  // ── Preview ─────────────────────────────────────────
+                  Text(
+                    'Preview',
+                    style: Get.theme.textTheme.titleMedium?.copyWith(
+                      color: context.appTextPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  _TransactionPreview(controller: controller),
+                  const SizedBox(height: 28),
+
+                  // ── Save button ─────────────────────────────────────
+                  Obx(
+                    () => SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: controller.isLoading.value
+                            ? null
+                            : () async {
+                                final didSave = await controller
+                                    .onAddTransaction();
+                                if (!context.mounted || !didSave) {
+                                  return;
+                                }
+                                Get.offAllNamed(AppRoutes.home);
+                              },
+                        child: controller.isLoading.value
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : const Text('Save Transaction'),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -9,13 +9,9 @@ import 'package:mini_wallet/features/transaction/domain/repositories/transaction
 import 'package:mini_wallet/features/transaction/presentation/controllers/home_controller.dart';
 
 class EditTransactionController extends GetxController {
-  EditTransactionController({
-    required this.repository,
-    required this.initialTransaction,
-  });
+  EditTransactionController({required this.repository});
 
   final TransactionRepository repository;
-  final TransactionModel? initialTransaction;
 
   final editTransactionFormKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
@@ -27,8 +23,8 @@ class EditTransactionController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    transaction.value = initialTransaction;
-    final selectedTransaction = initialTransaction;
+    transaction.value = Get.arguments as TransactionModel?;
+    final selectedTransaction = transaction.value;
     if (selectedTransaction != null) {
       titleController.text = selectedTransaction.title;
       amountController.text = selectedTransaction.amount.toStringAsFixed(2);

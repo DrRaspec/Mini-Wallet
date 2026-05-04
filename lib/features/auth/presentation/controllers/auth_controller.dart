@@ -99,6 +99,29 @@ class AuthController extends GetxController {
     }
   }
 
+  Future<AuthResult> logout() async {
+    try {
+      final refreshToken = await tokenStorage.getRefreshToken() ?? '';
+      await authRepository.logout(refreshToken);
+
+      await tokenStorage.deleteTokens();
+
+      return const AuthResult.success();
+    } on DioException catch (e, stackTrace) {
+      return _failureFromDio(
+        e,
+        stackTrace,
+        operation: 'Logout',
+        fallback: 'Unable to logout. Please try again.',
+      );
+    } catch (e, stackTrace) {
+      AppLogger.log('Logout failed: $e');
+      AppLogger.log(stackTrace.toString());
+
+      return const AuthResult.failure('Unable to logout. Please try again.');
+    }
+  }
+
   AuthResult _failureFromDio(
     DioException error,
     StackTrace stackTrace, {

@@ -29,7 +29,9 @@ class ApiClient {
               requestPath == ApiEndpoints.register ||
               requestPath == ApiEndpoints.refreshToken;
 
-          if (isAuthRequest || statusCode != 401) {
+          final isAuthFailure = statusCode == 401 || statusCode == 403;
+
+          if (isAuthRequest || !isAuthFailure) {
             handler.next(error);
             return;
           }
@@ -97,7 +99,7 @@ class ApiClient {
     try {
       final res = await _refreshDio.post<Map<String, dynamic>>(
         ApiEndpoints.refreshToken,
-        data: {'refresh_token': refreshToken},
+        data: {'refreshToken': refreshToken},
       );
 
       final data = res.data;

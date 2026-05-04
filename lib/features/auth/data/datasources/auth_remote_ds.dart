@@ -26,6 +26,13 @@ class AuthRemoteDs {
     return _parseAuthResponse(res);
   }
 
+  Future<void> logout(String refreshToken) async {
+    await apiClient.dio.post(
+      ApiEndpoints.logout,
+      data: {'refreshToken': refreshToken},
+    );
+  }
+
   Future<AuthResponseModel> refreshToken(String refreshToken) async {
     final res = await apiClient.dio.post(
       ApiEndpoints.refreshToken,

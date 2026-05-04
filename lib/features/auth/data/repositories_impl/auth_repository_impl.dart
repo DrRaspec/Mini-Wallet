@@ -21,4 +21,9 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<AuthResponseModel> register(String username, String password) {
     return remote.register(username, password);
   }
+
+  @override
+  Future<void> logout(String refreshToken) {
+    return remote.logout(refreshToken);
+  }
 }

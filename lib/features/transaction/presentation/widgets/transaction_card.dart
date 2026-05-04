@@ -13,10 +13,10 @@ class TransactionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isIncome = transaction.isIncome;
-    final toneColor = isIncome ? AppColors.income : AppColors.expense;
+    final toneColor = isIncome ? context.appIncome : context.appExpense;
 
     return Material(
-      color: AppColors.card,
+      color: context.appCard,
       borderRadius: BorderRadius.circular(20),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -53,7 +53,7 @@ class TransactionCard extends StatelessWidget {
                     Text(
                       transaction.title,
                       style: theme.textTheme.titleMedium?.copyWith(
-                        color: AppColors.textPrimary,
+                        color: context.appTextPrimary,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -62,7 +62,7 @@ class TransactionCard extends StatelessWidget {
                     Text(
                       formatTransactionDate(transaction.date),
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: context.appTextSecondary,
                       ),
                     ),
                   ],

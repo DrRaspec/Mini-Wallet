@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
+import 'package:mini_wallet/core/translations/app_keys.dart';
 import 'package:mini_wallet/features/transaction/presentation/controllers/home_controller.dart';
 import 'package:mini_wallet/features/transaction/presentation/transaction_formatters.dart';
 import 'package:mini_wallet/features/transaction/presentation/widgets/transaction_card.dart';
-import 'package:mini_wallet/routes/route_names.dart';
-import 'package:mini_wallet/routes/route_paths.dart';
+import 'package:mini_wallet/routes/app_routes.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    // final theme = Theme.of(context);
 
     return Scaffold(
       body: SafeArea(
@@ -25,13 +24,13 @@ class HomePage extends GetView<HomeController> {
           final balance = controller.accountBalance.value.total;
 
           if (isLoading && transactions.isEmpty) {
-            return const Center(
-              child: CircularProgressIndicator(color: AppColors.secondary),
+            return Center(
+              child: CircularProgressIndicator(color: context.appSecondary),
             );
           }
 
           return RefreshIndicator(
-            color: AppColors.secondary,
+            color: context.appSecondary,
             onRefresh: controller.refreshHome,
             child: CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
@@ -39,7 +38,7 @@ class HomePage extends GetView<HomeController> {
                 // ── Header ──────────────────────────────────────────
                 SliverPadding(
                   padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
-                  sliver: SliverToBoxAdapter(child: _TopBar(theme: theme)),
+                  sliver: SliverToBoxAdapter(child: _TopBar(theme: Get.theme)),
                 ),
 
                 // ── Balance card ────────────────────────────────────
@@ -59,8 +58,7 @@ class HomePage extends GetView<HomeController> {
                   padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
                   sliver: SliverToBoxAdapter(
                     child: _QuickAddBanner(
-                      onAddPressed: () =>
-                          context.push(RoutePaths.addTransaction),
+                      onAddPressed: () => Get.toNamed(AppRoutes.addTransaction),
                       isEmpty: transactions.isEmpty,
                     ),
                   ),
@@ -74,9 +72,9 @@ class HomePage extends GetView<HomeController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Recent Activity',
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            color: AppColors.textPrimary,
+                          AppKeys.recentActivity.tr,
+                          style: Get.theme.textTheme.titleLarge?.copyWith(
+                            color: context.appTextPrimary,
                           ),
                         ),
                         if (transactions.isNotEmpty)
@@ -86,13 +84,13 @@ class HomePage extends GetView<HomeController> {
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: AppColors.surfaceMuted,
+                              color: context.appSurfaceMuted,
                               borderRadius: BorderRadius.circular(999),
                             ),
                             child: Text(
                               '${transactions.length}',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: AppColors.textPrimary,
+                              style: Get.theme.textTheme.bodySmall?.copyWith(
+                                color: context.appTextPrimary,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -108,7 +106,7 @@ class HomePage extends GetView<HomeController> {
                     hasScrollBody: false,
                     child: Padding(
                       padding: const EdgeInsets.all(24),
-                      child: _EmptyState(theme: theme),
+                      child: _EmptyState(theme: Get.theme),
                     ),
                   )
                 else
@@ -124,11 +122,10 @@ class HomePage extends GetView<HomeController> {
                           child: TransactionCard(
                             transaction: transaction,
                             onTap: () async {
-                              final shouldRefresh = await context
-                                  .pushNamed<bool>(
-                                    RouteNames.transactionDetails,
-                                    extra: transaction,
-                                  );
+                              final shouldRefresh = await Get.toNamed(
+                                AppRoutes.transactionDetails,
+                                arguments: transaction,
+                              );
 
                               if (shouldRefresh == true && context.mounted) {
                                 await controller.refreshHome();
@@ -145,7 +142,7 @@ class HomePage extends GetView<HomeController> {
         }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push(RoutePaths.addTransaction),
+        onPressed: () => Get.toNamed(AppRoutes.addTransaction),
         child: const Icon(Icons.add),
       ),
     );
@@ -161,9 +158,9 @@ class _TopBar extends StatelessWidget {
 
   String get _greeting {
     final hour = DateTime.now().hour;
-    if (hour < 12) return 'Good Morning';
-    if (hour < 17) return 'Good Afternoon';
-    return 'Good Evening';
+    if (hour < 12) return AppKeys.goodMorning.tr;
+    if (hour < 17) return AppKeys.goodAfternoon.tr;
+    return AppKeys.goodEvening.tr;
   }
 
   @override
@@ -175,7 +172,7 @@ class _TopBar extends StatelessWidget {
           width: 42,
           height: 42,
           decoration: BoxDecoration(
-            color: AppColors.secondary,
+            color: context.appSecondary,
             borderRadius: BorderRadius.circular(14),
           ),
           child: const Center(
@@ -197,31 +194,34 @@ class _TopBar extends StatelessWidget {
               Text(
                 _greeting.toUpperCase(),
                 style: theme.textTheme.labelMedium?.copyWith(
-                  color: AppColors.textSecondary,
+                  color: context.appTextSecondary,
                 ),
               ),
               const SizedBox(height: 2),
               Text(
-                'Mini Wallet',
+                AppKeys.appName.tr,
                 style: theme.textTheme.titleMedium?.copyWith(
-                  color: AppColors.textPrimary,
+                  color: context.appTextPrimary,
                 ),
               ),
             ],
           ),
         ),
-        // Decorative wave icon (matches reference)
-        Container(
-          width: 42,
-          height: 42,
-          decoration: BoxDecoration(
-            color: AppColors.surfaceMuted,
-            borderRadius: BorderRadius.circular(14),
-          ),
-          child: const Icon(
-            Icons.notifications_none_rounded,
-            color: AppColors.textPrimary,
-            size: 20,
+        InkWell(
+          borderRadius: BorderRadius.circular(14),
+          onTap: () => Get.toNamed(AppRoutes.settings),
+          child: Container(
+            width: 42,
+            height: 42,
+            decoration: BoxDecoration(
+              color: context.appSurfaceMuted,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Icon(
+              Icons.settings_rounded,
+              color: context.appTextPrimary,
+              size: 20,
+            ),
           ),
         ),
       ],
@@ -251,16 +251,16 @@ class _BalanceSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Wallet Balance',
+          AppKeys.walletBalance.tr,
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: AppColors.textSecondary,
+            color: context.appTextSecondary,
           ),
         ),
         const SizedBox(height: 8),
         Text(
           formatCurrency(balance),
           style: theme.textTheme.displaySmall?.copyWith(
-            color: AppColors.textPrimary,
+            color: context.appTextPrimary,
           ),
         ),
         const SizedBox(height: 20),
@@ -270,21 +270,21 @@ class _BalanceSection extends StatelessWidget {
           children: [
             Expanded(
               child: _StatCard(
-                label: 'Income',
+                label: AppKeys.income.tr,
                 value: formatCurrency(incomeTotal),
                 icon: Icons.south_west_rounded,
-                backgroundColor: AppColors.income.withValues(alpha: 0.08),
-                iconColor: AppColors.income,
+                backgroundColor: context.appIncome.withValues(alpha: 0.08),
+                iconColor: context.appIncome,
               ),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: _StatCard(
-                label: 'Expense',
+                label: AppKeys.expenses.tr,
                 value: formatCurrency(expenseTotal),
                 icon: Icons.north_east_rounded,
-                backgroundColor: AppColors.secondary.withValues(alpha: 0.10),
-                iconColor: AppColors.secondary,
+                backgroundColor: context.appSecondary.withValues(alpha: 0.10),
+                iconColor: context.appSecondary,
               ),
             ),
           ],
@@ -316,7 +316,7 @@ class _StatCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.appCard,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -335,14 +335,14 @@ class _StatCard extends StatelessWidget {
           Text(
             label,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
+              color: context.appTextSecondary,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             value,
             style: theme.textTheme.titleMedium?.copyWith(
-              color: AppColors.textPrimary,
+              color: context.appTextPrimary,
             ),
           ),
         ],
@@ -367,7 +367,7 @@ class _QuickAddBanner extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.secondary.withValues(alpha: 0.10),
+        color: context.appSecondary.withValues(alpha: 0.10),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -376,7 +376,7 @@ class _QuickAddBanner extends StatelessWidget {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: AppColors.secondary,
+              color: context.appSecondary,
               borderRadius: BorderRadius.circular(14),
             ),
             child: const Icon(Icons.add_rounded, color: Colors.white, size: 22),
@@ -387,18 +387,18 @@ class _QuickAddBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  isEmpty ? 'Get started' : 'Keep it current',
+                  isEmpty ? AppKeys.getStarted.tr : AppKeys.keepItCurrent.tr,
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: context.appTextPrimary,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   isEmpty
-                      ? 'Add your first transaction'
-                      : 'Record the next one',
+                      ? AppKeys.addTransaction.tr
+                      : AppKeys.recordTheNextOne.tr,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
+                    color: context.appTextSecondary,
                   ),
                 ),
               ],
@@ -406,16 +406,16 @@ class _QuickAddBanner extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           Material(
-            color: AppColors.primary,
+            color: context.appPrimary,
             borderRadius: BorderRadius.circular(12),
             child: InkWell(
               borderRadius: BorderRadius.circular(12),
               onTap: onAddPressed,
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.all(10),
                 child: Icon(
                   Icons.arrow_forward_rounded,
-                  color: Colors.white,
+                  color: theme.colorScheme.onPrimary,
                   size: 20,
                 ),
               ),
@@ -444,27 +444,27 @@ class _EmptyState extends StatelessWidget {
             width: 72,
             height: 72,
             decoration: BoxDecoration(
-              color: AppColors.surfaceMuted,
+              color: context.appSurfaceMuted,
               borderRadius: BorderRadius.circular(22),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.account_balance_wallet_outlined,
-              color: AppColors.secondary,
+              color: context.appSecondary,
               size: 32,
             ),
           ),
           const SizedBox(height: 20),
           Text(
-            'No transactions yet',
+            AppKeys.noTransactions.tr,
             style: theme.textTheme.titleLarge?.copyWith(
-              color: AppColors.textPrimary,
+              color: context.appTextPrimary,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Add an income or expense and your\nwallet summary will appear here.',
+            AppKeys.noTransactionDesc.tr,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
+              color: context.appTextSecondary,
             ),
             textAlign: TextAlign.center,
           ),

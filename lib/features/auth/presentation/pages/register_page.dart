@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:get/state_manager.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
+import 'package:mini_wallet/core/translations/app_keys.dart';
 import 'package:mini_wallet/features/auth/presentation/controllers/register_controller.dart';
-import 'package:mini_wallet/routes/route_names.dart';
-import 'package:mini_wallet/routes/route_paths.dart';
+import 'package:mini_wallet/routes/app_routes.dart';
 
 class RegisterPage extends GetView<RegisterController> {
   const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(onPressed: () => context.goNamed(RouteNames.login)),
+        leading: BackButton(onPressed: () => Get.offAllNamed(AppRoutes.login)),
       ),
       body: SafeArea(
         child: GestureDetector(
@@ -28,16 +24,16 @@ class RegisterPage extends GetView<RegisterController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Create account',
-                  style: theme.textTheme.headlineLarge?.copyWith(
-                    color: AppColors.textPrimary,
+                  AppKeys.createAccountButton.tr,
+                  style: Get.theme.textTheme.headlineLarge?.copyWith(
+                    color: context.appTextPrimary,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Start tracking your money with a fresh wallet.',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                  AppKeys.registerTitle.tr,
+                  style: Get.theme.textTheme.bodyMedium?.copyWith(
+                    color: context.appTextSecondary,
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -47,14 +43,14 @@ class RegisterPage extends GetView<RegisterController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Already have an account?',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
+                      AppKeys.alreadyHaveAccount.tr,
+                      style: Get.theme.textTheme.bodyMedium?.copyWith(
+                        color: context.appTextSecondary,
                       ),
                     ),
                     TextButton(
-                      onPressed: () => context.goNamed(RouteNames.login),
-                      child: const Text('Login'),
+                      onPressed: () => Get.offAllNamed(AppRoutes.login),
+                      child: Text(AppKeys.loginButton.tr),
                     ),
                   ],
                 ),
@@ -67,10 +63,36 @@ class RegisterPage extends GetView<RegisterController> {
   }
 }
 
-class _RegisterFormCard extends StatelessWidget {
+class _RegisterFormCard extends StatefulWidget {
   const _RegisterFormCard({required this.controller});
 
   final RegisterController controller;
+
+  @override
+  State<_RegisterFormCard> createState() => _RegisterFormCardState();
+}
+
+class _RegisterFormCardState extends State<_RegisterFormCard> {
+  final _formKey = GlobalKey<FormState>();
+  late final TextEditingController _usernameController;
+  late final TextEditingController _passwordController;
+  late final TextEditingController _confirmPasswordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _usernameController = TextEditingController();
+    _passwordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,55 +102,55 @@ class _RegisterFormCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.appCard,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Form(
-        key: controller.formKey,
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _FieldLabel(label: 'Username', theme: theme),
+            _FieldLabel(label: AppKeys.username.tr, theme: theme),
             const SizedBox(height: 8),
             TextFormField(
-              controller: controller.usernameController,
+              controller: _usernameController,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                hintText: 'Enter your username',
+              decoration: InputDecoration(
+                hintText: AppKeys.usernameHint.tr,
                 prefixIcon: Icon(Icons.person_outline_rounded),
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Username is required';
+                  return AppKeys.usernameRequired.tr;
                 }
 
                 return null;
               },
             ),
             const SizedBox(height: 20),
-            _FieldLabel(label: 'Password', theme: theme),
+            _FieldLabel(label: AppKeys.password.tr, theme: theme),
             const SizedBox(height: 8),
             Obx(
               () => TextFormField(
-                controller: controller.passwordController,
-                obscureText: !controller.passwordVisible.value,
+                controller: _passwordController,
+                obscureText: !widget.controller.passwordVisible.value,
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
-                  hintText: 'Create a password',
+                  hintText: AppKeys.passwordHint.tr,
                   prefixIcon: Icon(Icons.lock_outline_rounded),
                   suffixIcon: GestureDetector(
                     child: Icon(
-                      controller.passwordVisible.value
+                      widget.controller.passwordVisible.value
                           ? Icons.visibility
                           : Icons.visibility_off_outlined,
                     ),
-                    onTap: () => controller.passwordVisible.toggle(),
+                    onTap: () => widget.controller.passwordVisible.toggle(),
                   ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Password is required';
+                    return AppKeys.passwordRequired.tr;
                   }
 
                   return null;
@@ -136,28 +158,31 @@ class _RegisterFormCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            _FieldLabel(label: 'Confirm password', theme: theme),
+            _FieldLabel(label: AppKeys.confirmPassword.tr, theme: theme),
             const SizedBox(height: 8),
             Obx(
               () => TextFormField(
-                controller: controller.confirmPasswordController,
-                obscureText: !controller.confirmPasswordVisible.value,
+                controller: _confirmPasswordController,
+                obscureText: !widget.controller.confirmPasswordVisible.value,
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
-                  hintText: 'Repeat your password',
+                  hintText: AppKeys.confirmPasswordHint.tr,
                   prefixIcon: Icon(Icons.lock_outline_rounded),
                   suffixIcon: GestureDetector(
                     child: Icon(
-                      controller.confirmPasswordVisible.value
+                      widget.controller.confirmPasswordVisible.value
                           ? Icons.visibility
                           : Icons.visibility_off_outlined,
                     ),
-                    onTap: () => controller.confirmPasswordVisible.toggle(),
+                    onTap: () =>
+                        widget.controller.confirmPasswordVisible.toggle(),
                   ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Confirm password is required';
+                    return AppKeys.confirmPasswordRequired.tr;
+                  } else if (value != _passwordController.text) {
+                    return AppKeys.passwordsDoNotMatch.tr;
                   }
 
                   return null;
@@ -170,19 +195,23 @@ class _RegisterFormCard extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
-                    if (controller.isLoading.value) return;
+                    if (widget.controller.isLoading.value) return;
+                    if (!(_formKey.currentState?.validate() ?? false)) return;
 
-                    final success = await controller.submitRegister();
+                    final success = await widget.controller.submitRegister(
+                      username: _usernameController.text.trim(),
+                      password: _passwordController.text,
+                    );
 
                     if (!context.mounted || !success) return;
 
-                    context.go(RoutePaths.home);
+                    Get.offAllNamed(AppRoutes.home);
                   },
-                  child: controller.isLoading.value
+                  child: widget.controller.isLoading.value
                       ? CircularProgressIndicator(
                           color: theme.colorScheme.onPrimary,
                         )
-                      : const Text('Register'),
+                      : Text(AppKeys.registerButton.tr),
                 ),
               ),
             ),
@@ -204,7 +233,7 @@ class _FieldLabel extends StatelessWidget {
     return Text(
       label,
       style: theme.textTheme.titleMedium?.copyWith(
-        color: AppColors.textPrimary,
+        color: context.appTextPrimary,
       ),
     );
   }

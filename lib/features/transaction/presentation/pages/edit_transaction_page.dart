@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
 import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
 import 'package:mini_wallet/features/transaction/presentation/controllers/edit_transaction_controller.dart';
@@ -11,11 +10,11 @@ class EditTransactionPage extends GetView<EditTransactionController> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    // final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(onPressed: () => context.pop()),
+        leading: BackButton(onPressed: () => Get.back()),
         title: const Text('Edit Transaction'),
       ),
       body: SafeArea(
@@ -27,8 +26,8 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                 child: Text(
                   'Open a transaction detail before editing.',
                   textAlign: TextAlign.center,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: AppColors.textSecondary,
+                  style: Get.theme.textTheme.titleMedium?.copyWith(
+                    color: context.appTextSecondary,
                   ),
                 ),
               ),
@@ -44,15 +43,15 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                 children: [
                   Text(
                     'Update this entry',
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      color: AppColors.textPrimary,
+                    style: Get.theme.textTheme.headlineSmall?.copyWith(
+                      color: context.appTextPrimary,
                     ),
                   ),
                   const SizedBox(height: 6),
                   Text(
                     'Adjust the title, amount, or type.',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
+                    style: Get.theme.textTheme.bodyMedium?.copyWith(
+                      color: context.appTextSecondary,
                     ),
                   ),
                   const SizedBox(height: 28),
@@ -60,7 +59,7 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                     width: double.infinity,
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: AppColors.card,
+                      color: context.appCard,
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: Column(
@@ -68,8 +67,8 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                       children: [
                         Text(
                           'Type',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: AppColors.textPrimary,
+                          style: Get.theme.textTheme.titleMedium?.copyWith(
+                            color: context.appTextPrimary,
                           ),
                         ),
                         const SizedBox(height: 12),
@@ -100,9 +99,9 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                               states,
                             ) {
                               if (states.contains(WidgetState.selected)) {
-                                return AppColors.primary;
+                                return context.appPrimary;
                               }
-                              return AppColors.surfaceMuted;
+                              return context.appSurfaceMuted;
                             }),
                             foregroundColor: WidgetStateProperty.resolveWith((
                               states,
@@ -110,7 +109,7 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                               if (states.contains(WidgetState.selected)) {
                                 return Colors.white;
                               }
-                              return AppColors.textSecondary;
+                              return context.appTextSecondary;
                             }),
                             shape: WidgetStateProperty.all(
                               RoundedRectangleBorder(
@@ -122,8 +121,8 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                         const SizedBox(height: 22),
                         Text(
                           'Title',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: AppColors.textPrimary,
+                          style: Get.theme.textTheme.titleMedium?.copyWith(
+                            color: context.appTextPrimary,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -138,8 +137,8 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                         const SizedBox(height: 22),
                         Text(
                           'Amount',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: AppColors.textPrimary,
+                          style: Get.theme.textTheme.titleMedium?.copyWith(
+                            color: context.appTextPrimary,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -160,8 +159,8 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                   const SizedBox(height: 24),
                   Text(
                     'Preview',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: AppColors.textPrimary,
+                    style: Get.theme.textTheme.titleMedium?.copyWith(
+                      color: context.appTextPrimary,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -179,7 +178,7 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                                   updatedTransaction == null) {
                                 return;
                               }
-                              context.pop(updatedTransaction);
+                              Get.back(result: updatedTransaction);
                             },
                       child: controller.isLoading.value
                           ? const SizedBox(
