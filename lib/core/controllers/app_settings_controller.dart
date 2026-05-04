@@ -45,4 +45,11 @@ class AppSettingsController extends GetxController {
 
     changeThemeMode(nextMode);
   }
+
+  void clearAppSetting() {
+    themeStorage.clear();
+    localeStorage.clear();
+    changeThemeMode(ThemeMode.system);
+    changeLanguage(LocaleStorage.fallbackLocale);
+  }
 }

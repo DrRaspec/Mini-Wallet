@@ -67,7 +67,7 @@ class SettingsPage extends GetView<SettingsController> {
                 ),
               ),
               SliverPadding(
-                padding: const EdgeInsets.fromLTRB(20, 28, 20, 32),
+                padding: const EdgeInsets.fromLTRB(20, 28, 20, 0),
                 sliver: SliverToBoxAdapter(
                   child: _SettingsSection(
                     title: 'Language',
@@ -91,6 +91,23 @@ class SettingsPage extends GetView<SettingsController> {
                         onTap: () {
                           controller.onLanguageChange(const Locale('km', 'KH'));
                         },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(20, 28, 20, 32),
+                sliver: SliverToBoxAdapter(
+                  child: _SettingsSection(
+                    title: 'Logout',
+                    children: [
+                      _SignOutButton(
+                        onTap: () {
+                          controller.signOut();
+                        },
+                        isLoading: controller.isLogoutInProgress,
                       ),
                     ],
                   ),
@@ -298,6 +315,49 @@ class _IconButtonSurface extends StatelessWidget {
           width: 42,
           height: 42,
           child: Icon(icon, color: colors.textPrimary, size: 21),
+        ),
+      ),
+    );
+  }
+}
+
+class _SignOutButton extends StatelessWidget {
+  final VoidCallback onTap;
+  final RxBool isLoading;
+  const _SignOutButton({required this.onTap, required this.isLoading});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      borderRadius: BorderRadius.circular(18),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(18),
+        onTap: onTap,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: Get.theme.colorScheme.errorContainer,
+            borderRadius: BorderRadius.circular(18),
+          ),
+          child: Obx(() {
+            if (isLoading.value) {
+              return Center(
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation(
+                      Get.theme.colorScheme.onErrorContainer,
+                    ),
+                  ),
+                ),
+              );
+            }
+
+            return Center(child: Text("Sign Out"));
+          }),
         ),
       ),
     );

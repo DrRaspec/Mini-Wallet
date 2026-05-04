@@ -4,4 +4,5 @@ abstract class AuthRepository {
   Future<AuthResponseModel> login(String username, String password);
   Future<AuthResponseModel> register(String username, String password);
   Future<AuthResponseModel> refreshToken(String refreshToken);
+  Future<void> logout(String refreshToken);
 }

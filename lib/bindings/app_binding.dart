@@ -6,6 +6,7 @@ import 'package:mini_wallet/core/services/storage_service.dart';
 import 'package:mini_wallet/core/storage/local_storage.dart';
 import 'package:mini_wallet/core/storage/secure_token_storage.dart';
 import 'package:mini_wallet/core/storage/theme_storage.dart';
+import 'package:mini_wallet/features/auth/bindings/auth_binding.dart';
 import 'package:mini_wallet/features/transaction/bindings/transaction_binding.dart';
 import 'package:mini_wallet/routes/app_routes.dart';
 
@@ -41,9 +42,8 @@ class AppBinding extends Bindings {
       permanent: true,
     );
 
-    // Get.lazyPut(() => AuthApi(Get.find<ApiClient>()), fenix: true);
+    AuthBinding().dependencies();
 
-    // AppShellBinding().dependencies();
     TransactionBinding().dependencies();
   }
 }
