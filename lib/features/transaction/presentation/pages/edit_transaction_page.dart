@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
 import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
+import 'package:mini_wallet/core/translations/app_keys.dart';
 import 'package:mini_wallet/features/transaction/presentation/controllers/edit_transaction_controller.dart';
 import 'package:mini_wallet/features/transaction/presentation/widgets/transaction_card.dart';
 
@@ -15,7 +16,7 @@ class EditTransactionPage extends GetView<EditTransactionController> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(onPressed: () => Get.back()),
-        title: const Text('Edit Transaction'),
+        title: Text(AppKeys.editTransaction.tr),
       ),
       body: SafeArea(
         child: Obx(() {
@@ -24,7 +25,7 @@ class EditTransactionPage extends GetView<EditTransactionController> {
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: Text(
-                  'Open a transaction detail before editing.',
+                  AppKeys.openTransactionDetail.tr,
                   textAlign: TextAlign.center,
                   style: Get.theme.textTheme.titleMedium?.copyWith(
                     color: context.appTextSecondary,
@@ -42,14 +43,14 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Update this entry',
+                    AppKeys.updateEntry.tr,
                     style: Get.theme.textTheme.headlineSmall?.copyWith(
                       color: context.appTextPrimary,
                     ),
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Adjust the title, amount, or type.',
+                    AppKeys.updateEntryDesc.tr,
                     style: Get.theme.textTheme.bodyMedium?.copyWith(
                       color: context.appTextSecondary,
                     ),
@@ -66,23 +67,23 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Type',
+                          AppKeys.type.tr,
                           style: Get.theme.textTheme.titleMedium?.copyWith(
                             color: context.appTextPrimary,
                           ),
                         ),
                         const SizedBox(height: 12),
                         SegmentedButton<bool>(
-                          segments: const [
+                          segments: [
                             ButtonSegment<bool>(
                               value: true,
-                              icon: Icon(Icons.south_west_rounded),
-                              label: Text('Income'),
+                              icon: const Icon(Icons.south_west_rounded),
+                              label: Text(AppKeys.income.tr),
                             ),
                             ButtonSegment<bool>(
                               value: false,
-                              icon: Icon(Icons.north_east_rounded),
-                              label: Text('Expense'),
+                              icon: const Icon(Icons.north_east_rounded),
+                              label: Text(AppKeys.expenses.tr),
                             ),
                           ],
                           selected: {controller.isIncome.value},
@@ -120,7 +121,7 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                         ),
                         const SizedBox(height: 22),
                         Text(
-                          'Title',
+                          AppKeys.title.tr,
                           style: Get.theme.textTheme.titleMedium?.copyWith(
                             color: context.appTextPrimary,
                           ),
@@ -130,13 +131,13 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                           controller: controller.titleController,
                           validator: controller.validateTitle,
                           textInputAction: TextInputAction.next,
-                          decoration: const InputDecoration(
-                            hintText: 'Salary, groceries, coffee...',
+                          decoration: InputDecoration(
+                            hintText: AppKeys.titleHint.tr,
                           ),
                         ),
                         const SizedBox(height: 22),
                         Text(
-                          'Amount',
+                          AppKeys.amount.tr,
                           style: Get.theme.textTheme.titleMedium?.copyWith(
                             color: context.appTextPrimary,
                           ),
@@ -158,7 +159,7 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'Preview',
+                    AppKeys.preview.tr,
                     style: Get.theme.textTheme.titleMedium?.copyWith(
                       color: context.appTextPrimary,
                     ),
@@ -189,7 +190,7 @@ class EditTransactionPage extends GetView<EditTransactionController> {
                                 color: Colors.white,
                               ),
                             )
-                          : const Text('Save Changes'),
+                          : Text(AppKeys.saveChanges.tr),
                     ),
                   ),
                 ],
@@ -218,7 +219,7 @@ class _TransactionPreview extends StatelessWidget {
             return Obx(() {
               final currentTransaction = controller.transaction.value;
               final title = titleValue.text.trim().isEmpty
-                  ? 'Untitled transaction'
+                  ? AppKeys.untitledTransaction.tr
                   : titleValue.text.trim();
               final amount = double.tryParse(amountValue.text.trim()) ?? 0;
               final preview = TransactionModel(

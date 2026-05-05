@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
+import 'package:mini_wallet/core/translations/app_keys.dart';
 import 'package:mini_wallet/features/settings/presentation/controllers/settings_controller.dart';
 
 class SettingsPage extends GetView<SettingsController> {
@@ -30,12 +31,12 @@ class SettingsPage extends GetView<SettingsController> {
                 padding: const EdgeInsets.fromLTRB(20, 28, 20, 0),
                 sliver: SliverToBoxAdapter(
                   child: _SettingsSection(
-                    title: 'Appearance',
+                    title: AppKeys.appearance.tr,
                     children: [
                       _ChoiceTile(
                         icon: Icons.light_mode_rounded,
-                        title: 'Light mode',
-                        subtitle: 'Use the bright wallet theme',
+                        title: AppKeys.lightMode.tr,
+                        subtitle: AppKeys.lightModeDesc.tr,
                         isSelected: appTheme == ThemeMode.light,
                         colors: colors,
                         onTap: () {
@@ -44,8 +45,8 @@ class SettingsPage extends GetView<SettingsController> {
                       ),
                       _ChoiceTile(
                         icon: Icons.dark_mode_rounded,
-                        title: 'Dark mode',
-                        subtitle: 'Use the low-light wallet theme',
+                        title: AppKeys.darkMode.tr,
+                        subtitle: AppKeys.darkModeDesc.tr,
                         isSelected: appTheme == ThemeMode.dark,
                         colors: colors,
                         onTap: () {
@@ -54,8 +55,8 @@ class SettingsPage extends GetView<SettingsController> {
                       ),
                       _ChoiceTile(
                         icon: Icons.settings_suggest_rounded,
-                        title: 'System default',
-                        subtitle: 'Follow the device theme',
+                        title: AppKeys.systemDefault.tr,
+                        subtitle: AppKeys.systemDefaultDesc.tr,
                         isSelected: appTheme == ThemeMode.system,
                         colors: colors,
                         onTap: () {
@@ -70,12 +71,12 @@ class SettingsPage extends GetView<SettingsController> {
                 padding: const EdgeInsets.fromLTRB(20, 28, 20, 0),
                 sliver: SliverToBoxAdapter(
                   child: _SettingsSection(
-                    title: 'Language',
+                    title: AppKeys.language.tr,
                     children: [
                       _ChoiceTile(
                         icon: Icons.language_rounded,
-                        title: 'English',
-                        subtitle: 'United States',
+                        title: AppKeys.languageEnglish.tr,
+                        subtitle: AppKeys.languageEnglishCountry.tr,
                         isSelected: appLocale.languageCode == 'en',
                         colors: colors,
                         onTap: () {
@@ -84,8 +85,8 @@ class SettingsPage extends GetView<SettingsController> {
                       ),
                       _ChoiceTile(
                         icon: Icons.translate_rounded,
-                        title: 'Khmer',
-                        subtitle: 'Cambodia',
+                        title: AppKeys.languageKhmer.tr,
+                        subtitle: AppKeys.languageKhmerCountry.tr,
                         isSelected: appLocale.languageCode == 'km',
                         colors: colors,
                         onTap: () {
@@ -101,7 +102,7 @@ class SettingsPage extends GetView<SettingsController> {
                 padding: const EdgeInsets.fromLTRB(20, 28, 20, 32),
                 sliver: SliverToBoxAdapter(
                   child: _SettingsSection(
-                    title: 'Account',
+                    title: AppKeys.account.tr,
                     children: [
                       _SignOutButton(
                         onTap: () {
@@ -141,14 +142,14 @@ class _SettingsHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Settings',
+                AppKeys.settingsTitle.tr,
                 style: Get.theme.textTheme.headlineSmall?.copyWith(
                   color: colors.textPrimary,
                 ),
               ),
               const SizedBox(height: 2),
               Text(
-                'Theme and language',
+                AppKeys.settingsSubtitle.tr,
                 style: Get.theme.textTheme.bodyMedium?.copyWith(
                   color: colors.textSecondary,
                 ),
@@ -356,7 +357,15 @@ class _SignOutButton extends StatelessWidget {
               );
             }
 
-            return Center(child: Text("Sign Out"));
+            return Center(
+              child: Text(
+                AppKeys.signOut.tr,
+                style: Get.theme.textTheme.titleMedium?.copyWith(
+                  color: Get.theme.colorScheme.onErrorContainer,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            );
           }),
         ),
       ),

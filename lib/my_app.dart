@@ -16,19 +16,21 @@ class MyApp extends StatelessWidget {
     final settings = Get.find<AppSettingsController>();
 
     return ToastificationWrapper(
-      child: Obx(
-        () => GetMaterialApp(
+      child: Obx(() {
+        final locale = settings.locale.value;
+
+        return GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
+          theme: AppTheme.lightTheme(locale),
+          darkTheme: AppTheme.darkTheme(locale),
           themeMode: settings.themeMode.value,
           translations: AppTranslations(),
           locale: settings.locale.value,
           fallbackLocale: LocaleStorage.fallbackLocale,
           initialRoute: AppRoutes.home,
           getPages: AppPages.pages,
-        ),
-      ),
+        );
+      }),
     );
   }
 }
