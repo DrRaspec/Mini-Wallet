@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
+import 'package:mini_wallet/core/translations/app_keys.dart';
 import 'package:mini_wallet/features/transaction/presentation/controllers/transaction_details_controller.dart';
 import 'package:mini_wallet/features/transaction/presentation/transaction_formatters.dart';
 
@@ -12,7 +13,7 @@ class TransactionDetailsPage extends GetView<TransactionDetailsController> {
     // final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Transaction')),
+      appBar: AppBar(title: Text(AppKeys.transaction.tr)),
       body: SafeArea(
         child: Obx(() {
           final transaction = controller.selectedTransaction.value;
@@ -61,7 +62,7 @@ class TransactionDetailsPage extends GetView<TransactionDetailsController> {
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        isIncome ? 'Money received' : 'Money spent',
+                        isIncome ? AppKeys.moneyReceived.tr : AppKeys.moneySpent.tr,
                         style: Get.theme.textTheme.bodyMedium?.copyWith(
                           color: context.appTextSecondary,
                         ),
@@ -87,8 +88,8 @@ class TransactionDetailsPage extends GetView<TransactionDetailsController> {
                   child: Column(
                     children: [
                       _InfoRow(
-                        label: 'Type',
-                        value: isIncome ? 'Income' : 'Expense',
+                        label: AppKeys.type.tr,
+                        value: isIncome ? AppKeys.income.tr : AppKeys.expenses.tr,
                         valueColor: toneColor,
                       ),
                       Padding(
@@ -96,14 +97,14 @@ class TransactionDetailsPage extends GetView<TransactionDetailsController> {
                         child: Divider(color: context.appBorder, height: 1),
                       ),
                       _InfoRow(
-                        label: 'Date',
+                        label: AppKeys.date.tr,
                         value: formatTransactionDay(transaction.date),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         child: Divider(color: context.appBorder, height: 1),
                       ),
-                      _InfoRow(label: 'Reference', value: transaction.id),
+                      _InfoRow(label: AppKeys.reference.tr, value: transaction.id),
                     ],
                   ),
                 ),
@@ -195,7 +196,7 @@ class _DeleteButton extends StatelessWidget {
           : OutlinedButton.icon(
               onPressed: onDeleteTap,
               icon: const Icon(Icons.delete_outline_rounded, size: 20),
-              label: const Text('Delete'),
+              label: Text(AppKeys.delete.tr),
               style: OutlinedButton.styleFrom(
                 foregroundColor: errorColor,
                 side: BorderSide(color: errorColor.withValues(alpha: 0.30)),
@@ -220,7 +221,7 @@ class _EditButton extends StatelessWidget {
       child: ElevatedButton.icon(
         onPressed: onEditTap,
         icon: const Icon(Icons.edit_outlined, size: 20),
-        label: const Text('Edit transaction'),
+        label: Text(AppKeys.editTransactionBtn.tr),
         style: ElevatedButton.styleFrom(
           backgroundColor: context.appPrimary,
           foregroundColor: Colors.white,
