@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mini_wallet/core/theme/app_colors.dart';
 import 'package:mini_wallet/features/transaction/data/models/transaction_model.dart';
+import 'package:mini_wallet/core/translations/app_keys.dart';
 import 'package:mini_wallet/features/transaction/presentation/controllers/add_transaction_controller.dart';
 import 'package:mini_wallet/features/transaction/presentation/widgets/transaction_card.dart';
 import 'package:mini_wallet/routes/app_routes.dart';
@@ -14,7 +15,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(onPressed: () => Get.back()),
-        title: const Text('Add Transaction'),
+        title: Text(AppKeys.addTransaction.tr),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -28,14 +29,14 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Record a new entry',
+                    AppKeys.recordNewEntry.tr,
                     style: Get.theme.textTheme.headlineSmall?.copyWith(
                       color: context.appTextPrimary,
                     ),
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Add the title, amount, and type.',
+                    AppKeys.recordNewEntryDesc.tr,
                     style: Get.theme.textTheme.bodyMedium?.copyWith(
                       color: context.appTextSecondary,
                     ),
@@ -54,7 +55,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Type',
+                          AppKeys.type.tr,
                           style: Get.theme.textTheme.titleMedium?.copyWith(
                             color: context.appTextPrimary,
                           ),
@@ -62,16 +63,16 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                         const SizedBox(height: 12),
                         Obx(
                           () => SegmentedButton<bool>(
-                            segments: const [
+                            segments: [
                               ButtonSegment<bool>(
                                 value: true,
-                                icon: Icon(Icons.south_west_rounded),
-                                label: Text('Income'),
+                                icon: const Icon(Icons.south_west_rounded),
+                                label: Text(AppKeys.income.tr),
                               ),
                               ButtonSegment<bool>(
                                 value: false,
-                                icon: Icon(Icons.north_east_rounded),
-                                label: Text('Expense'),
+                                icon: const Icon(Icons.north_east_rounded),
+                                label: Text(AppKeys.expenses.tr),
                               ),
                             ],
                             selected: {controller.isIncome.value},
@@ -110,7 +111,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                         ),
                         const SizedBox(height: 22),
                         Text(
-                          'Title',
+                          AppKeys.title.tr,
                           style: Get.theme.textTheme.titleMedium?.copyWith(
                             color: context.appTextPrimary,
                           ),
@@ -120,13 +121,13 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                           controller: controller.titleController,
                           validator: controller.validateTitle,
                           textInputAction: TextInputAction.next,
-                          decoration: const InputDecoration(
-                            hintText: 'Salary, groceries, coffee...',
+                          decoration: InputDecoration(
+                            hintText: AppKeys.titleHint.tr,
                           ),
                         ),
                         const SizedBox(height: 22),
                         Text(
-                          'Amount',
+                          AppKeys.amount.tr,
                           style: Get.theme.textTheme.titleMedium?.copyWith(
                             color: context.appTextPrimary,
                           ),
@@ -150,7 +151,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
 
                   // ── Preview ─────────────────────────────────────────
                   Text(
-                    'Preview',
+                    AppKeys.preview.tr,
                     style: Get.theme.textTheme.titleMedium?.copyWith(
                       color: context.appTextPrimary,
                     ),
@@ -183,7 +184,7 @@ class AddTransactionPage extends GetView<AddTransactionController> {
                                   color: Colors.white,
                                 ),
                               )
-                            : const Text('Save Transaction'),
+                            : Text(AppKeys.saveTransaction.tr),
                       ),
                     ),
                   ),
@@ -212,7 +213,7 @@ class _TransactionPreview extends StatelessWidget {
           builder: (context, amountValue, _) {
             return Obx(() {
               final title = titleValue.text.trim().isEmpty
-                  ? 'Untitled transaction'
+                  ? AppKeys.untitledTransaction.tr
                   : titleValue.text.trim();
               final amount = double.tryParse(amountValue.text.trim()) ?? 0;
               final preview = TransactionModel(
