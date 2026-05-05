@@ -357,7 +357,15 @@ class _SignOutButton extends StatelessWidget {
               );
             }
 
-            return Center(child: Text("Sign Out"));
+            return Center(
+              child: Text(
+                AppKeys.signOut.tr,
+                style: Get.theme.textTheme.titleMedium?.copyWith(
+                  color: Get.theme.colorScheme.onErrorContainer,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            );
           }),
         ),
       ),
