@@ -38,7 +38,31 @@ final Map<String, String> enUS = {
   AppKeys.addTransaction: 'Add Transaction',
   AppKeys.keepItCurrent: 'Keep it current',
   AppKeys.recordTheNextOne: 'Record the next one',
-  
+
+  AppKeys.recordNewEntry: 'Record a new entry',
+  AppKeys.recordNewEntryDesc: 'Add the title, amount, and type.',
+  AppKeys.type: 'Type',
+  AppKeys.title: 'Title',
+  AppKeys.titleHint: 'Salary, groceries, coffee...',
+  AppKeys.amount: 'Amount',
+  AppKeys.preview: 'Preview',
+  AppKeys.saveTransaction: 'Save Transaction',
+  AppKeys.untitledTransaction: 'Untitled transaction',
+
+  AppKeys.editTransaction: 'Edit Transaction',
+  AppKeys.openTransactionDetail: 'Open a transaction detail before editing.',
+  AppKeys.updateEntry: 'Update this entry',
+  AppKeys.updateEntryDesc: 'Adjust the title, amount, or type.',
+  AppKeys.saveChanges: 'Save Changes',
+
+  AppKeys.transaction: 'Transaction',
+  AppKeys.moneyReceived: 'Money received',
+  AppKeys.moneySpent: 'Money spent',
+  AppKeys.date: 'Date',
+  AppKeys.reference: 'Reference',
+  AppKeys.delete: 'Delete',
+  AppKeys.editTransactionBtn: 'Edit transaction',
+
   AppKeys.settingsTitle: 'Settings',
   AppKeys.settingsSubtitle: 'Customize your app experience',
   AppKeys.appearance: 'Appearance',

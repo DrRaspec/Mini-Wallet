@@ -38,6 +38,30 @@ class AppKeys {
   static const String keepItCurrent = 'keep_it_current';
   static const String recordTheNextOne = 'record_the_next_one';
 
+  static const String recordNewEntry = 'record_new_entry';
+  static const String recordNewEntryDesc = 'record_new_entry_desc';
+  static const String type = 'type';
+  static const String title = 'title';
+  static const String titleHint = 'title_hint';
+  static const String amount = 'amount';
+  static const String preview = 'preview';
+  static const String saveTransaction = 'save_transaction';
+  static const String untitledTransaction = 'untitled_transaction';
+
+  static const String editTransaction = 'edit_transaction';
+  static const String openTransactionDetail = 'open_transaction_detail';
+  static const String updateEntry = 'update_entry';
+  static const String updateEntryDesc = 'update_entry_desc';
+  static const String saveChanges = 'save_changes';
+
+  static const String transaction = 'transaction';
+  static const String moneyReceived = 'money_received';
+  static const String moneySpent = 'money_spent';
+  static const String date = 'date';
+  static const String reference = 'reference';
+  static const String delete = 'delete';
+  static const String editTransactionBtn = 'edit_transaction_btn';
+
   static const String settingsTitle = 'settings_title';
   static const String settingsSubtitle = 'settings_subtitle';
   static const String appearance = 'appearance';
